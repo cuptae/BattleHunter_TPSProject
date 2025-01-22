@@ -245,37 +245,12 @@ MonoBehaviour:
   rotationSpeed: 4
   gravity: 500
   Weapon: {fileID: 3565711009542853978}
---- !u!1 &7208011937490431567
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2583233107929068357}
-  m_Layer: 0
-  m_Name: FirePos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2583233107929068357
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7208011937490431567}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.00020042062, y: 0.13459975, z: 0.6892998}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 9097559352611061216}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  aimingPos: {fileID: 0}
+  damage: 56.7
+  fireRate: 0.05
 --- !u!1 &7431960832431129758
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,8 +296,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34dffa81be9cba1438eb2f57160f178f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firePos: {fileID: 2583233107929068357}
-  aimObj: {fileID: 0}
 --- !u!1001 &243343524724065360
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -377,10 +350,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 9016630465028422064, guid: 8441480850b33d347bdfcc98928e29db, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2583233107929068357}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8441480850b33d347bdfcc98928e29db, type: 3}
 --- !u!1 &3565711009542853978 stripped

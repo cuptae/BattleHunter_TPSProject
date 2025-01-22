@@ -23,6 +23,7 @@ public class PlayerCtrl : MonoBehaviour
     public float rotationSpeed = 4.0f;
     public float gravity = 20.0f;
     public GameObject Weapon;
+    public LayerMask targetLayer;
     
 
 
@@ -36,7 +37,6 @@ public class PlayerCtrl : MonoBehaviour
     protected virtual void Update()
     {
         Move();
-        //Shooting();
     }
     void Move()
     {

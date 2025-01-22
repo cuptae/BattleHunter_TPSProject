@@ -6,7 +6,6 @@ using UnityEngine;
 public class ThirdPersonCamera : MonoBehaviour
 {
     private Vector3 clampAngle;
-    public GameObject aimPoint;
     private float rotX;
     private float rotY;
     public float sensitivity = 10f;

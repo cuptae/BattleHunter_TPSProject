@@ -19,9 +19,9 @@ public class EnemyCtrl : MonoBehaviour
         
     }
 
-    public int GetDamage(float damage,Vector3 hitPos)
+    public int GetDamage(float damage,Vector3 hitPos, Quaternion hitDir)
     {
-        Instantiate(hitEffect, hitPos, Quaternion.identity);
+        Instantiate(hitEffect, hitPos, hitDir);
         hp -= Mathf.FloorToInt(damage);
         return hp;
     }

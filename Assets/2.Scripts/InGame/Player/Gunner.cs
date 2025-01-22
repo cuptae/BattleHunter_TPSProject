@@ -9,7 +9,6 @@ public class Gunner : PlayerCtrl
     private Ray ray;
     private float nextFireTime = 0f;
 
-    public Transform firePos;
     public Transform aimingPos;
     public float damage = 56.7f;
     public float fireRate = 0.05f;
@@ -61,22 +60,21 @@ public class Gunner : PlayerCtrl
 
     void Fire()
     {
-        if(!isFire)
-            return;
+         if(!isFire)
+             return;
 
         ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
         Vector3 direction = ray.direction.normalized;
-        ray = new Ray(firePos.position, direction);
-
-        Debug.DrawRay(firePos.position, direction * 30f, Color.red);
+        ray = new Ray(mainCamera.transform.position, direction);
 
         if (Physics.Raycast(ray, out RaycastHit hitInfo, 50.0f))
         {
             aimingPos.transform.position = hitInfo.point + Vector3.up * 0.5f;
             if(hitInfo.collider.tag == "Enemy")
             {
-                Debug.Log($"{hitInfo.collider.name}'s HP : {hitInfo.collider.GetComponent<EnemyCtrl>().GetDamage(damage,hitInfo.point)}");
+                Quaternion hitDir = Quaternion.LookRotation(-direction);
+                Debug.Log($"{hitInfo.collider.name}'s HP : {hitInfo.collider.GetComponent<EnemyCtrl>().GetDamage(damage,hitInfo.point,hitDir)}");
             }
         }
     }
