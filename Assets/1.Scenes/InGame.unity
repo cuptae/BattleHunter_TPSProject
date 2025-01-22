@@ -802,10 +802,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158b8c58c05a342429f95a0f32fea7e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visible: 0
+  visible: 1
   onlySelected: 0
   myColor: {r: 1, g: 0, b: 0, a: 1}
-  radius: 0.1
+  radius: 0.2
 --- !u!4 &1657806423 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8494213104221976377, guid: 67804a7d38146d04a8214b85ad13d09f, type: 3}
@@ -1281,6 +1281,10 @@ PrefabInstance:
       propertyPath: aimingPos
       value: 
       objectReference: {fileID: 1610683312}
+    - target: {fileID: 9056284707556471631, guid: 67804a7d38146d04a8214b85ad13d09f, type: 3}
+      propertyPath: m_Data.m_SourceObjects.m_Item0.weight
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9056284707556471631, guid: 67804a7d38146d04a8214b85ad13d09f, type: 3}
       propertyPath: m_Data.m_SourceObjects.m_Item0.transform
       value: 

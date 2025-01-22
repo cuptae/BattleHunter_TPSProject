@@ -29,7 +29,7 @@ public class Gunner : PlayerCtrl
     protected override void Update()
     {
         base.Update();
-        Shooting();
+        FireAnim();
         if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
         {
             Fire();
@@ -37,7 +37,7 @@ public class Gunner : PlayerCtrl
         }
     }
 
-    void Shooting()
+    void FireAnim()
     {
         if (Input.GetMouseButton(0))
         {
