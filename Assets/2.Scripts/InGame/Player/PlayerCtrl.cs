@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
-
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerCtrl : MonoBehaviour
 {
+    private Rigidbody rigid;
     private Vector3 moveInput;
     private Vector3 lookForward;
     private Vector3 lookSide;
@@ -13,12 +16,12 @@ public class PlayerCtrl : MonoBehaviour
     private bool isRun;
     private float xAxis;
     private float zAxis;
+    private float moveAnimPercent;
 
     protected Camera mainCamera;
     protected Animator animator;
-    protected CharacterController charCtrl;
     protected bool isMove;
-    protected bool isDodge;
+    public bool isDodge = false;
     protected bool isInvincible;
 
     [HideInInspector]
@@ -26,19 +29,15 @@ public class PlayerCtrl : MonoBehaviour
     public float firingWalkSpeed = 3.0f;
     public float walkSpeed = 5.0f;
     public float runSpeed = 10.0f;
-    public float dodgeForce = 10.0f;
+    public float dodgeForce = 15.0f;
     public float rotationSpeed = 4.0f;
-    public float gravity = 20.0f;
     public GameObject Weapon;
     public LayerMask targetLayer;
     
-
-
     protected virtual void Awake() {
         animator = GetComponentInChildren<Animator>();
         Debug.Assert(animator);
-        charCtrl = GetComponent<CharacterController>();
-        Debug.Assert(charCtrl);
+        rigid = GetComponent<Rigidbody>();
         mainCamera = Camera.main;
     }
     protected virtual void Update()
@@ -47,10 +46,10 @@ public class PlayerCtrl : MonoBehaviour
         SpeedCheck();
         Rotation();
         MoveAnim();
-        Move();
+        MoveInput();
         Dodge();
+        Move();
     }
-
     void DirCheck()
     {
         lookForward = new Vector3(mainCamera.transform.forward.x,0,mainCamera.transform.forward.z).normalized;
@@ -58,21 +57,22 @@ public class PlayerCtrl : MonoBehaviour
         moveDir = (lookForward * moveInput.z) + (lookSide*moveInput.x);
     }
 
-    void Move()
+    void MoveInput()
     {
- 
         xAxis = Input.GetAxis("Horizontal");
 		zAxis = Input.GetAxis("Vertical");
-
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            isDodge = true;
+        }
         moveInput = new Vector3(xAxis,0,zAxis);
+        isMove = (moveInput.magnitude!=0)? true:false; 
+    }
 
-        isMove = (moveInput.magnitude!=0)? true:false;
-
-        moveDir.y -= gravity * Time.deltaTime;
-
-        if(isDodge)
-            return;
-        charCtrl.Move(moveDir*finalSpeed*Time.deltaTime);
+    void Move()
+    {
+        
+        rigid.MovePosition(rigid.position+moveDir*finalSpeed*Time.deltaTime);
     }
 
     void Rotation()
@@ -93,7 +93,11 @@ public class PlayerCtrl : MonoBehaviour
             isRun = false;
         }
 
-        if(isRun){
+        if(isDodge)
+        {
+            finalSpeed = 0f;
+        }
+        else if(isRun){
             finalSpeed = runSpeed;
         }
         else if(isFire){
@@ -106,8 +110,8 @@ public class PlayerCtrl : MonoBehaviour
 
     void MoveAnim()
     {
-        float percent = ((isRun) ? 1f : 0f) * moveInput.magnitude;
-        animator.SetFloat("Speed", percent, 0.1f, Time.deltaTime);
+        moveAnimPercent = ((isRun) ? 1f : 0f) * moveInput.magnitude;
+        animator.SetFloat("Speed", moveAnimPercent, 0.1f, Time.deltaTime);
         // 좌우 이동 값
         animator.SetFloat("MoveX", xAxis);
         // 전후 이동 값
@@ -115,32 +119,23 @@ public class PlayerCtrl : MonoBehaviour
         animator.SetBool("Move", isMove);
     }
 
-    IEnumerator DodgeStart()
-    {
-
-        if(isDodge)
-        {
-            isInvincible = true;
-            Vector3 dodgeDir = transform.forward;
-            charCtrl.Move(dodgeDir*dodgeForce*Time.deltaTime);
-        }
-
-        yield return new WaitForSeconds(1.0f);
-        isDodge = false;
-        isInvincible = false;
-    }
-
     void Dodge()
     {
-        if(isDodge)
-            return;
-
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetButtonDown("Jump")&&!!isDodge)
         {
+            Vector3 dodgePower = transform.forward*dodgeForce;
+            rigid.AddForce(dodgePower,ForceMode.VelocityChange);
             isDodge = true;
-            animator.SetTrigger("Dodge");
-            StartCoroutine(DodgeStart());
         }
+
+        Invoke("DodgeOut",1.0f);
     }
+
+    void DodgeOut()
+    {
+        //rigid.velocity = Vector3.zero;
+        isDodge = false;
+    }
+
 }
 
