@@ -12,15 +12,17 @@ public class PlayerCtrl : MonoBehaviour
     private Vector3 lookForward;
     private Vector3 lookSide;
     private Vector3 moveDir;
+    private Vector3 dodgeDeltaPos;
     private float finalSpeed;
     private bool isRun;
     private float xAxis;
     private float zAxis;
     private float moveAnimPercent;
+    private float dodgeTime = 1.0f;
 
     protected Camera mainCamera;
     protected Animator animator;
-    protected bool isMove;
+    public bool isMove;
     public bool isDodge = false;
     protected bool isInvincible;
 
@@ -32,7 +34,6 @@ public class PlayerCtrl : MonoBehaviour
     public float dodgeForce = 15.0f;
     public float rotationSpeed = 4.0f;
     public GameObject Weapon;
-    public LayerMask targetLayer;
     
     protected virtual void Awake() {
         animator = GetComponentInChildren<Animator>();
@@ -43,13 +44,21 @@ public class PlayerCtrl : MonoBehaviour
     protected virtual void Update()
     {
         DirCheck();
+        MoveInput();
         SpeedCheck();
         Rotation();
+        // if(Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     StartCoroutine(Dodge());
+        // }
+        if(Input.GetKeyDown(KeyCode.Space))StartCoroutine(Dodge());
         MoveAnim();
-        MoveInput();
-        Dodge();
+    }
+    
+    private void FixedUpdate() {
         Move();
     }
+    
     void DirCheck()
     {
         lookForward = new Vector3(mainCamera.transform.forward.x,0,mainCamera.transform.forward.z).normalized;
@@ -61,18 +70,15 @@ public class PlayerCtrl : MonoBehaviour
     {
         xAxis = Input.GetAxis("Horizontal");
 		zAxis = Input.GetAxis("Vertical");
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            isDodge = true;
-        }
         moveInput = new Vector3(xAxis,0,zAxis);
         isMove = (moveInput.magnitude!=0)? true:false; 
     }
 
     void Move()
     {
-        
-        rigid.MovePosition(rigid.position+moveDir*finalSpeed*Time.deltaTime);
+        if(isDodge)
+            return;
+        rigid.MovePosition(transform.position+moveDir*finalSpeed*Time.deltaTime);
     }
 
     void Rotation()
@@ -93,11 +99,7 @@ public class PlayerCtrl : MonoBehaviour
             isRun = false;
         }
 
-        if(isDodge)
-        {
-            finalSpeed = 0f;
-        }
-        else if(isRun){
+        if(isRun){
             finalSpeed = runSpeed;
         }
         else if(isFire){
@@ -119,23 +121,44 @@ public class PlayerCtrl : MonoBehaviour
         animator.SetBool("Move", isMove);
     }
 
-    void Dodge()
+    // IEnumerator Dodge()
+    // {
+    //     isDodge = true;
+    //     Vector3 pos = rigid.transform.position;
+    //     Vector3 targetPos = rigid.transform.position + (moveDir*3.5f);
+
+    //     float elapseTime = 0f;
+
+    //     while(elapseTime<dodgeTime)
+    //     {
+    //         float ratio = elapseTime/dodgeTime;
+    //         Vector3 curPos = Vector3.Lerp(pos,targetPos,ratio);
+    //         rigid.MovePosition(targetPos);
+    //         elapseTime += Time.deltaTime;
+    //         yield return new WaitForEndOfFrame();
+    //     }
+    //     isDodge =false;
+    // }
+
+    IEnumerator Dodge()
     {
-        if(Input.GetButtonDown("Jump")&&!!isDodge)
+        float elapseTime = 0f;
+        float dodgeTime = 1.0f;
+        Debug.Log("스페이스 누름");
+        animator.SetTrigger("Dodge");
+        while(elapseTime<dodgeTime)
         {
-            Vector3 dodgePower = transform.forward*dodgeForce;
-            rigid.AddForce(dodgePower,ForceMode.VelocityChange);
             isDodge = true;
+            rigid.MovePosition(transform.position+moveDir.normalized*dodgeForce*Time.deltaTime);
+            elapseTime += Time.deltaTime;
+            yield return null;
         }
-
-        Invoke("DodgeOut",1.0f);
-    }
-
-    void DodgeOut()
-    {
-        //rigid.velocity = Vector3.zero;
         isDodge = false;
     }
-
+    void DodgeOut()
+    {
+        animator.applyRootMotion = false;
+        isDodge = false;
+    }
 }
 

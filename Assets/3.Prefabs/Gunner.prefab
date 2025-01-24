@@ -65,7 +65,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5050734004711329845}
-  - {fileID: 4197237324192550111}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6746668556164547244
@@ -80,6 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 625bf9e589013f048b7cd2a8ac471d14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMove: 0
   isDodge: 0
   isFire: 0
   firingWalkSpeed: 3
@@ -88,9 +88,6 @@ MonoBehaviour:
   dodgeForce: 15
   rotationSpeed: 4
   Weapon: {fileID: 3979441570616521827}
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 64
   aimingPos: {fileID: 0}
   damage: 56.7
   fireRate: 0.05
@@ -168,12 +165,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5992627392827475364}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.2, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3654104362611864328}
+  m_Father: {fileID: 5050734004711329845}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8447917081767605792
 GameObject:
@@ -461,6 +458,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 59c4e6c49746a134a89ecc21777aa766, type: 3}
       insertIndex: -1
       addedObject: {fileID: 383827509737678827}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 59c4e6c49746a134a89ecc21777aa766, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4197237324192550111}
     - targetCorrespondingSourceObject: {fileID: 1852576806548013000, guid: 59c4e6c49746a134a89ecc21777aa766, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6836987710278872820}

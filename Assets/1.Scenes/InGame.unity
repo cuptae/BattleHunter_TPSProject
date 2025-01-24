@@ -1132,6 +1132,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1222695437567511119, guid: 6b4a85520a6c9a742b32b8b875399812, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1877944450256658566, guid: 6b4a85520a6c9a742b32b8b875399812, type: 3}
       propertyPath: m_Name
       value: Gunner
@@ -1184,6 +1188,14 @@ PrefabInstance:
       propertyPath: aimingPos
       value: 
       objectReference: {fileID: 1610683312}
+    - target: {fileID: 6746668556164547244, guid: 6b4a85520a6c9a742b32b8b875399812, type: 3}
+      propertyPath: dodgeForce
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7976035198930618412, guid: 6b4a85520a6c9a742b32b8b875399812, type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
     - target: {fileID: 8567390623925872947, guid: 6b4a85520a6c9a742b32b8b875399812, type: 3}
       propertyPath: m_Height
       value: 1.8093789

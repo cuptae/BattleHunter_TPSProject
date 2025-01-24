@@ -60,9 +60,8 @@ public class Gunner : PlayerCtrl
 
     void Fire()
     {
-         if(!isFire)
-             return;
-
+        if(isDodge)
+            return;
         ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
         Vector3 direction = ray.direction.normalized;
