@@ -1190,7 +1190,7 @@ PrefabInstance:
       objectReference: {fileID: 1610683312}
     - target: {fileID: 6746668556164547244, guid: 6b4a85520a6c9a742b32b8b875399812, type: 3}
       propertyPath: dodgeForce
-      value: 20
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 7976035198930618412, guid: 6b4a85520a6c9a742b32b8b875399812, type: 3}
       propertyPath: m_Constraints

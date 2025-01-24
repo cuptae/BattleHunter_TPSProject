@@ -53,6 +53,8 @@ public class PlayerCtrl : MonoBehaviour
         // }
         if(Input.GetKeyDown(KeyCode.Space))StartCoroutine(Dodge());
         MoveAnim();
+
+        Debug.DrawRay(transform.position, lookForward*10);
     }
     
     private void FixedUpdate() {
@@ -143,13 +145,15 @@ public class PlayerCtrl : MonoBehaviour
     IEnumerator Dodge()
     {
         float elapseTime = 0f;
-        float dodgeTime = 1.0f;
-        Debug.Log("스페이스 누름");
+        float dodgeTime = 0.7f;
+        Vector3 dodgeDir = isMove?moveDir:transform.forward;
+        Quaternion dodgeLook = isMove?Quaternion.LookRotation(moveDir):Quaternion.LookRotation(transform.forward);
         animator.SetTrigger("Dodge");
         while(elapseTime<dodgeTime)
         {
             isDodge = true;
-            rigid.MovePosition(transform.position+moveDir.normalized*dodgeForce*Time.deltaTime);
+            transform.rotation = dodgeLook;
+            rigid.MovePosition(transform.position+dodgeDir.normalized*dodgeForce*Time.deltaTime);
             elapseTime += Time.deltaTime;
             yield return null;
         }
