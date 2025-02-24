@@ -23,6 +23,10 @@ public class CameraCtrl : MonoBehaviour
 
     private float distanceVelocity;
 
+    void Awake()
+    {
+        
+    }
     // Start is called before the first frame update
     void Start()
     {

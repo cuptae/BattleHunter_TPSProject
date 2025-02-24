@@ -68,6 +68,7 @@ public class PlayerCtrl : MonoBehaviour
     {
         xAxis = Input.GetAxis("Horizontal");
 		zAxis = Input.GetAxis("Vertical");
+        Debug.LogFormat(xAxis+""+zAxis);
         moveInput = new Vector3(xAxis,0,zAxis);
         isMove = (moveInput.magnitude!=0)? true:false; 
     }
