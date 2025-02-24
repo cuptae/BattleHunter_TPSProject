@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.ShortcutManagement;
 using UnityEngine;
 
-public class ThirdPersonCamera : MonoBehaviour
+public class CameraCtrl : MonoBehaviour
 {
     private Vector3 clampAngle;
     private float rotX;

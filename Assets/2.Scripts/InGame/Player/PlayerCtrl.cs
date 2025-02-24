@@ -47,10 +47,6 @@ public class PlayerCtrl : MonoBehaviour
         MoveInput();
         SpeedCheck();
         Rotation();
-        // if(Input.GetKeyDown(KeyCode.Space))
-        // {
-        //     StartCoroutine(Dodge());
-        // }
         if(Input.GetKeyDown(KeyCode.Space))StartCoroutine(Dodge());
         MoveAnim();
 
