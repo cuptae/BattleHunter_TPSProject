@@ -21,11 +21,11 @@ public class LobbyManager : MonoBehaviour {
 		lobbyBtn[1].SetActive (false);  // 1
         lobbyBtn[2].SetActive (false);  // 1
 		TiName.SetActive(false); //1
-		UIOption.SetActive (true);       // 2
+		ChrChoice.SetActive (true);       // 2
 	}
 	//인벤 클로즈 
 	public void ChrClose(){
-		UIOption.SetActive (false);     // 1
+		ChrChoice.SetActive (false);     // 1
 		TiName.SetActive(true); //2
 		lobbyBtn[0].SetActive (true);  // 2
 		lobbyBtn[1].SetActive (true);  // 2
