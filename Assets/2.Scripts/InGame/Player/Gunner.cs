@@ -7,6 +7,7 @@ public class Gunner : PlayerCtrl
 {
     private Rig aimRig;
     private Ray ray;
+    MultiAimConstraint multiAimConstraint;
     private float nextFireTime = 0f;
 
     public Transform aimingPos;
@@ -17,6 +18,15 @@ public class Gunner : PlayerCtrl
     {
         base.Awake();
         aimRig = GetComponentInChildren<Rig>();
+        multiAimConstraint = GetComponentInChildren<MultiAimConstraint>();
+        aimingPos = GameObject.FindWithTag("AimingPos").transform;
+
+    }
+
+    void Start()
+    {
+        WeightedTransformArray sourceObjects = multiAimConstraint.data.sourceObjects;
+        sourceObjects.Add(new WeightedTransform(aimingPos,aimRig.weight));   
     }
 
 

@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.ShortcutManagement;
 using UnityEngine;
 
 public class CameraCtrl : MonoBehaviour
@@ -23,10 +20,6 @@ public class CameraCtrl : MonoBehaviour
 
     private float distanceVelocity;
 
-    void Awake()
-    {
-        
-    }
     // Start is called before the first frame update
     void Start()
     {

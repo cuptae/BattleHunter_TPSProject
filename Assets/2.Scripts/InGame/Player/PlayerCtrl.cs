@@ -1,9 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerCtrl : MonoBehaviour
 {
@@ -13,6 +9,7 @@ public class PlayerCtrl : MonoBehaviour
     private Vector3 lookSide;
     private Vector3 moveDir;
     private Vector3 dodgeDeltaPos;
+    private Vector3 dodgeDir;
     private float finalSpeed;
     private bool isRun;
     private float xAxis;
@@ -26,20 +23,37 @@ public class PlayerCtrl : MonoBehaviour
     public bool isDodge = false;
     protected bool isInvincible;
 
-    [HideInInspector]
     public bool isFire;
     public float firingWalkSpeed = 3.0f;
     public float walkSpeed = 5.0f;
     public float runSpeed = 10.0f;
-    public float dodgeForce = 15.0f;
+    public float dodgeForce;
     public float rotationSpeed = 4.0f;
+    
     public GameObject Weapon;
+    
+
+    PhotonView pv = null;
+    Vector3 curPos = Vector3.zero;
+    Quaternion curRot = Quaternion.identity;
+    public Transform camFollow;
     
     protected virtual void Awake() {
         animator = GetComponentInChildren<Animator>();
         Debug.Assert(animator);
         rigid = GetComponent<Rigidbody>();
+        pv = GetComponent<PhotonView>();
+        camFollow = transform.GetChild(0).Find("CameraFollow");
         mainCamera = Camera.main;
+
+        pv.ObservedComponents[0] = this;
+        pv.synchronization = ViewSynchronization.UnreliableOnChange;
+
+        if(pv.isMine)
+        {
+            Debug.Log("isMine");
+            mainCamera.GetComponent<CameraCtrl>().target = camFollow; 
+        }
     }
     protected virtual void Update()
     {
@@ -55,6 +69,10 @@ public class PlayerCtrl : MonoBehaviour
     
     private void FixedUpdate() {
         Move();
+        if (isDodge)
+        {
+            rigid.MovePosition(transform.position + dodgeDir.normalized * dodgeForce * Time.fixedDeltaTime);
+        }
     }
     
     void DirCheck()
@@ -68,7 +86,6 @@ public class PlayerCtrl : MonoBehaviour
     {
         xAxis = Input.GetAxis("Horizontal");
 		zAxis = Input.GetAxis("Vertical");
-        Debug.LogFormat(xAxis+""+zAxis);
         moveInput = new Vector3(xAxis,0,zAxis);
         isMove = (moveInput.magnitude!=0)? true:false; 
     }
@@ -85,8 +102,8 @@ public class PlayerCtrl : MonoBehaviour
         if(isDodge)
             return;
 
-        Quaternion rotation = Quaternion.LookRotation(lookForward);
-        transform.localRotation = Quaternion.Lerp(transform.localRotation,rotation,rotationSpeed*Time.deltaTime);
+        curRot = Quaternion.LookRotation(lookForward);
+        transform.localRotation = Quaternion.Lerp(transform.localRotation,curRot,rotationSpeed*Time.deltaTime);
     }
 
     void SpeedCheck()
@@ -120,45 +137,23 @@ public class PlayerCtrl : MonoBehaviour
         animator.SetBool("Move", isMove);
     }
 
-    // IEnumerator Dodge()
-    // {
-    //     isDodge = true;
-    //     Vector3 pos = rigid.transform.position;
-    //     Vector3 targetPos = rigid.transform.position + (moveDir*3.5f);
-
-    //     float elapseTime = 0f;
-
-    //     while(elapseTime<dodgeTime)
-    //     {
-    //         float ratio = elapseTime/dodgeTime;
-    //         Vector3 curPos = Vector3.Lerp(pos,targetPos,ratio);
-    //         rigid.MovePosition(targetPos);
-    //         elapseTime += Time.deltaTime;
-    //         yield return new WaitForEndOfFrame();
-    //     }
-    //     isDodge =false;
-    // }
-
     IEnumerator Dodge()
     {
+        if(isDodge)
+            yield break;
+
         float elapseTime = 0f;
         float dodgeTime = 0.7f;
-        Vector3 dodgeDir = isMove?moveDir:transform.forward;
+        dodgeDir = isMove?moveDir:transform.forward;
         Quaternion dodgeLook = isMove?Quaternion.LookRotation(moveDir):Quaternion.LookRotation(transform.forward);
         animator.SetTrigger("Dodge");
         while(elapseTime<dodgeTime)
         {
             isDodge = true;
             transform.rotation = dodgeLook;
-            rigid.MovePosition(transform.position+dodgeDir.normalized*dodgeForce*Time.deltaTime);
             elapseTime += Time.deltaTime;
             yield return null;
         }
-        isDodge = false;
-    }
-    void DodgeOut()
-    {
-        animator.applyRootMotion = false;
         isDodge = false;
     }
 }
