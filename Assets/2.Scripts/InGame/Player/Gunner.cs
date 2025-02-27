@@ -87,6 +87,20 @@ public class Gunner : PlayerCtrl
             }
         }
     }
+    protected override void  OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        base.OnPhotonSerializeView(stream,info);
+        if(stream.isWriting)
+        {
+            stream.SendNext(isFire);
+            stream.SendNext(animator.GetBool("Fire"));
+        }
+        else
+        {
+            isFire = (bool)stream.ReceiveNext();
+            animator.SetBool("Fire",(bool)stream.ReceiveNext());
+        }
+    }
 
 
 }

@@ -175,17 +175,28 @@ public class PlayerCtrl : MonoBehaviour
         isDodge = false;
     }
 
-    protected void  OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    protected virtual void  OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.isWriting)
         {
             stream.SendNext(tr.position);
             stream.SendNext(tr.rotation);
+            stream.SendNext(isMove);
+            stream.SendNext(animator.GetFloat("Speed"));
+            stream.SendNext(animator.GetFloat("MoveX"));
+            stream.SendNext(animator.GetFloat("MoveZ"));
+            stream.SendNext(animator.GetBool("Move"));
         }
         else
         {
             curPos = (Vector3)stream.ReceiveNext();
             curRot = (Quaternion)stream.ReceiveNext();
+            isMove = (bool)stream.ReceiveNext();
+            animator.SetFloat("Speed",(float)stream.ReceiveNext());
+            animator.SetFloat("MoveX",(float)stream.ReceiveNext());
+            animator.SetFloat("MoveZ",(float)stream.ReceiveNext());
+            animator.SetBool("Move",(bool)stream.ReceiveNext());
+             
         }
     }
 }
