@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Properties;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -34,11 +35,15 @@ public class Gunner : PlayerCtrl
     protected override void Update()
     {
         base.Update();
-        FireAnim();
-        if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
+        
+        if(pv.isMine)
         {
-            Fire();
-            nextFireTime = Time.time + fireRate; // 다음 발사 시간 설정
+            FireAnim();
+            if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
+            {
+                Fire();
+                nextFireTime = Time.time + fireRate; // 다음 발사 시간 설정
+            }
         }
     }
 
@@ -82,4 +87,6 @@ public class Gunner : PlayerCtrl
             }
         }
     }
+
+
 }

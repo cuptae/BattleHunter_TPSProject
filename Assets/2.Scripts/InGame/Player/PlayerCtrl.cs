@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerCtrl : MonoBehaviour
@@ -10,6 +11,7 @@ public class PlayerCtrl : MonoBehaviour
     private Vector3 moveDir;
     private Vector3 dodgeDeltaPos;
     private Vector3 dodgeDir;
+    protected Transform tr;
     private float finalSpeed;
     private bool isRun;
     private float xAxis;
@@ -33,15 +35,16 @@ public class PlayerCtrl : MonoBehaviour
     public GameObject Weapon;
     
 
-    PhotonView pv = null;
-    Vector3 curPos = Vector3.zero;
-    Quaternion curRot = Quaternion.identity;
+    protected PhotonView pv = null;
+    protected Vector3 curPos = Vector3.zero;
+     protected Quaternion curRot = Quaternion.identity;
     public Transform camFollow;
     
     protected virtual void Awake() {
         animator = GetComponentInChildren<Animator>();
         Debug.Assert(animator);
         rigid = GetComponent<Rigidbody>();
+        tr = GetComponent<Transform>();
         pv = GetComponent<PhotonView>();
         camFollow = transform.GetChild(0).Find("CameraFollow");
         mainCamera = Camera.main;
@@ -51,27 +54,42 @@ public class PlayerCtrl : MonoBehaviour
 
         if(pv.isMine)
         {
-            Debug.Log("isMine");
             mainCamera.GetComponent<CameraCtrl>().target = camFollow; 
+        }
+        else
+        {
+            rigid.isKinematic = true;
+            curPos = tr.position;
+            curRot = tr.rotation;
         }
     }
     protected virtual void Update()
     {
-        DirCheck();
-        MoveInput();
-        SpeedCheck();
-        Rotation();
-        if(Input.GetKeyDown(KeyCode.Space))StartCoroutine(Dodge());
-        MoveAnim();
+        if(pv.isMine)
+        {
+            DirCheck();
+            MoveInput();
+            SpeedCheck();
+            Rotation();
+            if(Input.GetKeyDown(KeyCode.Space))StartCoroutine(Dodge());
+            MoveAnim();
+        }
 
-        Debug.DrawRay(transform.position, lookForward*10);
     }
     
     private void FixedUpdate() {
-        Move();
-        if (isDodge)
+        if(pv.isMine)
         {
-            rigid.MovePosition(transform.position + dodgeDir.normalized * dodgeForce * Time.fixedDeltaTime);
+            if (isDodge)
+            {
+                rigid.MovePosition(transform.position + dodgeDir.normalized * dodgeForce * Time.fixedDeltaTime);
+            }
+            Move();
+        }
+        else
+        {
+            tr.position = Vector3.Lerp(tr.position,curPos,Time.deltaTime * runSpeed);
+            tr.rotation = Quaternion.Slerp(tr.rotation, curRot, Time.deltaTime * rotationSpeed);
         }
     }
     
@@ -155,6 +173,20 @@ public class PlayerCtrl : MonoBehaviour
             yield return null;
         }
         isDodge = false;
+    }
+
+    protected void  OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.isWriting)
+        {
+            stream.SendNext(tr.position);
+            stream.SendNext(tr.rotation);
+        }
+        else
+        {
+            curPos = (Vector3)stream.ReceiveNext();
+            curRot = (Quaternion)stream.ReceiveNext();
+        }
     }
 }
 
