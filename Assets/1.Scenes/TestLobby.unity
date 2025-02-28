@@ -382,6 +382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curCharacter: 3
+  pool: {fileID: 0}
 --- !u!4 &131029161
 Transform:
   m_ObjectHideFlags: 0

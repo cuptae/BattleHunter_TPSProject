@@ -5,8 +5,6 @@ using UnityEngine;
 public class EnemyCtrl : MonoBehaviour
 {
     protected int hp = 1000;
-    
-    public GameObject hitEffect;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,10 +17,8 @@ public class EnemyCtrl : MonoBehaviour
         
     }
 
-    public int GetDamage(float damage,Vector3 hitPos, Quaternion hitDir)
+    public void GetDamage(float damage)
     {
-        Instantiate(hitEffect, hitPos, hitDir);
         hp -= Mathf.FloorToInt(damage);
-        return hp;
     }
 }

@@ -83,10 +83,12 @@ public class Gunner : PlayerCtrl
             if(hitInfo.collider.tag == "Enemy")
             {
                 Quaternion hitDir = Quaternion.LookRotation(-direction);
-                Debug.Log($"{hitInfo.collider.name}'s HP : {hitInfo.collider.GetComponent<EnemyCtrl>().GetDamage(damage,hitInfo.point,hitDir)}");
+                hitInfo.collider.GetComponent<EnemyCtrl>().GetDamage(damage);
+                PoolManager.Instance.GetObject(0,hitInfo.point,hitDir);
             }
         }
     }
+
     protected override void  OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         base.OnPhotonSerializeView(stream,info);
