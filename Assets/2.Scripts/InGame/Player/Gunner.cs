@@ -6,6 +6,7 @@ using UnityEngine.Animations.Rigging;
 
 public class Gunner : PlayerCtrl
 {
+    public GameObject[] bulletEffect;
     private Rig aimRig;
     private Ray ray;
     MultiAimConstraint multiAimConstraint;
@@ -21,13 +22,17 @@ public class Gunner : PlayerCtrl
         aimRig = GetComponentInChildren<Rig>();
         multiAimConstraint = GetComponentInChildren<MultiAimConstraint>();
         aimingPos = GameObject.FindWithTag("AimingPos").transform;
-
     }
 
     void Start()
     {
         WeightedTransformArray sourceObjects = multiAimConstraint.data.sourceObjects;
-        sourceObjects.Add(new WeightedTransform(aimingPos,aimRig.weight));   
+        sourceObjects.Add(new WeightedTransform(aimingPos,aimRig.weight));
+
+        for (int i = 0; i < bulletEffect.Length; i++)
+        {
+            PoolManager.Instance.CreatePool(bulletEffect[i].name, bulletEffect[i], 10);
+        }
     }
 
 
@@ -84,7 +89,7 @@ public class Gunner : PlayerCtrl
             {
                 Quaternion hitDir = Quaternion.LookRotation(-direction);
                 hitInfo.collider.GetComponent<EnemyCtrl>().GetDamage(damage);
-                PoolManager.Instance.GetObject(0,hitInfo.point,hitDir);
+                StartCoroutine(BulletEffect(hitInfo.point,hitDir));
             }
         }
     }
@@ -102,6 +107,13 @@ public class Gunner : PlayerCtrl
             isFire = (bool)stream.ReceiveNext();
             animator.SetBool("Fire",(bool)stream.ReceiveNext());
         }
+    }
+
+    IEnumerator BulletEffect(Vector3 pos, Quaternion rot)
+    {
+        GameObject effect = PoolManager.Instance.GetObject(bulletEffect[0].name,pos, rot);
+        yield return new WaitForSeconds(0.3f);
+        PoolManager.Instance.ReturnObject(bulletEffect[0].name,effect);
     }
 
 

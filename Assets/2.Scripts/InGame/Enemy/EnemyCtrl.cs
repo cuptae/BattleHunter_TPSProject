@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum State
+{
+    ROAMING,
+    CHASE,
+    DIE,
+    ATTACK,
+}
 public class EnemyCtrl : MonoBehaviour
 {
     protected int hp = 1000;
@@ -10,7 +17,6 @@ public class EnemyCtrl : MonoBehaviour
     {
         
     }
-
     // Update is called once per frame
     void Update()
     {

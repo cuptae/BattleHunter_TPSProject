@@ -5,7 +5,11 @@ using UnityEngine;
 public class StageManager : MonoBehaviour
 {
     PhotonView pv;
-    Transform [] playerSpawnPos;
+    Transform[] playerSpawnPos;
+
+    Transform[] enemySpawnPos;
+
+    GameObject[] enemys;
 
     void Awake()
     {
@@ -33,6 +37,14 @@ public class StageManager : MonoBehaviour
                 Debug.Log("Hunter");
                 player = PhotonNetwork.Instantiate("Hunter",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
                 break;
+        }
+        yield return null;
+    }
+    IEnumerator InitEnemy()
+    {
+        for(int i = 1; i<enemySpawnPos.Length; i++)
+        {
+            PhotonNetwork.InstantiateSceneObject("Enemy", enemySpawnPos[i].localPosition, enemySpawnPos[i].localRotation, 0, null);
         }
         yield return null;
     }

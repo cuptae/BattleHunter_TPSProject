@@ -90,6 +90,10 @@ MonoBehaviour:
   rotationSpeed: 4
   Weapon: {fileID: 3979441570616521827}
   camFollow: {fileID: 0}
+  bulletEffect:
+  - {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
+  - {fileID: 1000012142692022, guid: a475880e7da0e9548aa05cb7933752cd, type: 3}
+  - {fileID: 1000010844420130, guid: 4edabb1c0dde62743b137378c7d22980, type: 3}
   aimingPos: {fileID: 0}
   damage: 56.7
   fireRate: 0.05
