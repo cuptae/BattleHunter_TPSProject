@@ -96,7 +96,7 @@ MonoBehaviour:
   - {fileID: 1000010844420130, guid: 4edabb1c0dde62743b137378c7d22980, type: 3}
   aimingPos: {fileID: 0}
   damage: 56.7
-  fireRate: 0.05
+  fireRate: 0.1
 --- !u!54 &7976035198930618412
 Rigidbody:
   m_ObjectHideFlags: 0

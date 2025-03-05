@@ -11,7 +11,7 @@ public enum State
 }
 public class EnemyCtrl : MonoBehaviour
 {
-    protected int hp = 1000;
+    public float hp = 1000;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +25,6 @@ public class EnemyCtrl : MonoBehaviour
 
     public void GetDamage(float damage)
     {
-        hp -= Mathf.FloorToInt(damage);
+        hp -= damage;
     }
 }
