@@ -85,20 +85,14 @@ public class Gunner : PlayerCtrl
         if (Physics.Raycast(ray, out RaycastHit hitInfo, 50.0f))
         {
             aimingPos.transform.position = hitInfo.point + Vector3.up * 0.5f;
-            // // 부모에서 EnemyCtrl을 찾도록 수정
-            // EnemyCtrl enemy = hitInfo.collider.GetComponentInParent<EnemyCtrl>();
+            // 부모에서 EnemyCtrl을 찾도록 수정
+            EnemyCtrl enemy = hitInfo.collider.GetComponentInParent<EnemyCtrl>();
 
-            // if (enemy != null) // 적 오브젝트를 찾았다면
-            // {
-            //     Quaternion hitDir = Quaternion.LookRotation(-direction);
-            //     enemy.GetDamage(damage); // 부모의 EnemyCtrl에서 데미지 처리
-            //     StartCoroutine(BulletEffect(hitInfo.point, hitDir));
-            // }
-            if(hitInfo.collider.tag == "Enemy")
+            if (enemy != null) // 적 오브젝트를 찾았다면
             {
                 Quaternion hitDir = Quaternion.LookRotation(-direction);
-                hitInfo.collider.GetComponentInParent<EnemyCtrl>().GetDamage(damage);
-                StartCoroutine(BulletEffect(hitInfo.point,hitDir));
+                enemy.GetDamage(damage); // 부모의 EnemyCtrl에서 데미지 처리
+                StartCoroutine(BulletEffect(hitInfo.point, hitDir));
             }
         }
     }
