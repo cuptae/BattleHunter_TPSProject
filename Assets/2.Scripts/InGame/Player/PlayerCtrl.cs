@@ -46,16 +46,16 @@ public class PlayerCtrl : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
         pv = GetComponent<PhotonView>();
-        mainCamera = Camera.main;
         camFollow = transform.GetChild(0).Find("CameraFollow");
+        mainCamera = Camera.main;
 
         pv.ObservedComponents[0] = this;
         pv.synchronization = ViewSynchronization.UnreliableOnChange;
 
         if(pv.isMine)
         {
-            //mainCamera.GetComponent<CameraCtrl>().target = camFollow;
-            mainCamera.GetComponent<CameraCtrlVer2>().target = camFollow; 
+            mainCamera.GetComponent<CameraCtrl>().target = camFollow;
+            //mainCamera.GetComponent<CameraCtrlVer2>().target = camFollow; 
         }
         else
         {

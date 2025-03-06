@@ -42,7 +42,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3654104362611864328}
   - component: {fileID: 6746668556164547244}
-  - component: {fileID: -5294960038126448646}
   - component: {fileID: 7976035198930618412}
   - component: {fileID: 8567390623925872947}
   - component: {fileID: 4078206957512220230}
@@ -88,7 +87,7 @@ MonoBehaviour:
   walkSpeed: 5
   runSpeed: 7
   dodgeForce: 10
-  rotationSpeed: 4
+  rotationSpeed: 10
   Weapon: {fileID: 3979441570616521827}
   camFollow: {fileID: 0}
   bulletEffect:
@@ -98,32 +97,6 @@ MonoBehaviour:
   aimingPos: {fileID: 0}
   damage: 56.7
   fireRate: 0.1
---- !u!114 &-5294960038126448646
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1877944450256658566}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb6d47010d8113340bb64434a438440f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isMove: 0
-  isDodge: 0
-  isFire: 0
-  firingWalkSpeed: 3
-  walkSpeed: 5
-  runSpeed: 10
-  dodgeForce: 0
-  rotationSpeed: 4
-  Weapon: {fileID: 0}
-  camFollow: {fileID: 0}
-  bulletEffect: []
-  aimingPos: {fileID: 0}
-  damage: 56.7
-  fireRate: 0.5
 --- !u!54 &7976035198930618412
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -148,7 +121,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!136 &8567390623925872947

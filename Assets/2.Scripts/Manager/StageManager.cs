@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
@@ -47,5 +48,14 @@ public class StageManager : MonoBehaviour
             PhotonNetwork.InstantiateSceneObject("Enemy", enemySpawnPos[i].localPosition, enemySpawnPos[i].localRotation, 0, null);
         }
         yield return null;
+    }
+
+    public void OnClickLobby()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+    void OnLeftRoom()
+    {
+        SceneManager.LoadScene("TestLobby");
     }
 }
