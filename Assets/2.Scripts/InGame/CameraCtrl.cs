@@ -20,6 +20,7 @@ public class CameraCtrl : MonoBehaviour
 
     private float distanceVelocity;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,9 +30,15 @@ public class CameraCtrl : MonoBehaviour
     }
     private void Update() {
         if(Input.GetKeyDown(KeyCode.Escape))
-            cusorVisible = true;
-        else if(Input.GetMouseButtonDown(0))
-            cusorVisible = false; 
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;
+        }
+        else if(Input.GetKeyDown(KeyCode.Escape)&&cusorVisible)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
     private void LateUpdate() {

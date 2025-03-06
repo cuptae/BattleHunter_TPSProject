@@ -54,7 +54,8 @@ public class PlayerCtrl : MonoBehaviour
 
         if(pv.isMine)
         {
-            mainCamera.GetComponent<CameraCtrl>().target = camFollow; 
+            mainCamera.GetComponent<CameraCtrl>().target = camFollow;
+            //mainCamera.GetComponent<CameraCtrlVer2>().target = camFollow; 
         }
         else
         {
@@ -71,7 +72,7 @@ public class PlayerCtrl : MonoBehaviour
             MoveInput();
             SpeedCheck();
             Rotation();
-            if(Input.GetKeyDown(KeyCode.Space))StartCoroutine(Dodge());
+            if(Input.GetKeyDown(KeyCode.LeftControl))StartCoroutine(Dodge());
             MoveAnim();
         }
 
@@ -104,7 +105,7 @@ public class PlayerCtrl : MonoBehaviour
     {
         xAxis = Input.GetAxis("Horizontal");
 		zAxis = Input.GetAxis("Vertical");
-        moveInput = new Vector3(xAxis,0,zAxis);
+        moveInput = new Vector3(xAxis,0,zAxis).normalized;
         isMove = (moveInput.magnitude!=0)? true:false; 
     }
 
