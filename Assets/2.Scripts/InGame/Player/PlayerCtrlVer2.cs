@@ -2,7 +2,7 @@ using System.Collections;
 using System.IO;
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerCtrl : MonoBehaviour
+public class PlayerCtrlVer2 : MonoBehaviour
 {
     private Rigidbody rigid;
     private Vector3 moveInput;
@@ -68,7 +68,7 @@ public class PlayerCtrl : MonoBehaviour
     {
         if(pv.isMine)
         {
-            DirCheck();
+            //DirCheck();
             MoveInput();
             SpeedCheck();
             Rotation();
@@ -105,7 +105,7 @@ public class PlayerCtrl : MonoBehaviour
     {
         xAxis = Input.GetAxis("Horizontal");
 		zAxis = Input.GetAxis("Vertical");
-        moveInput = new Vector3(xAxis,0,zAxis).normalized;
+        moveInput = new Vector3(xAxis,0,zAxis);
         isMove = (moveInput.magnitude!=0)? true:false; 
     }
 
@@ -118,11 +118,9 @@ public class PlayerCtrl : MonoBehaviour
 
     void Rotation()
     {
-        if(isDodge)
-            return;
-
-        curRot = Quaternion.LookRotation(lookForward);
-        transform.localRotation = Quaternion.Lerp(transform.localRotation,curRot,rotationSpeed*Time.deltaTime);
+        moveDir = new Vector3(moveInput.x,0,moveInput.z).normalized;
+        transform.forward = moveDir;
+        transform.localRotation = Quaternion.Slerp(transform.localRotation,curRot,rotationSpeed*Time.deltaTime);
     }
 
     void SpeedCheck()
