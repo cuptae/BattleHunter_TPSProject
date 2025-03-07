@@ -56,13 +56,13 @@ public class Gunner : PlayerCtrl
     {
         if (Input.GetMouseButton(0))
         {
-            isFire = true;
+            isAttack = true;
             SetRigWeight(1);
             animator.SetBool("Fire", true);
         }
         else
         {
-            isFire = false;
+            isAttack = false;
             SetRigWeight(0);
             animator.SetBool("Fire", false);
         }
@@ -102,12 +102,12 @@ public class Gunner : PlayerCtrl
         base.OnPhotonSerializeView(stream,info);
         if(stream.isWriting)
         {
-            stream.SendNext(isFire);
+            stream.SendNext(isAttack);
             stream.SendNext(animator.GetBool("Fire"));
         }
         else
         {
-            isFire = (bool)stream.ReceiveNext();
+            isAttack = (bool)stream.ReceiveNext();
             animator.SetBool("Fire",(bool)stream.ReceiveNext());
         }
     }

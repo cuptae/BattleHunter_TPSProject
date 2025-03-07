@@ -25,8 +25,8 @@ public class PlayerCtrl : MonoBehaviour
     public bool isDodge = false;
     protected bool isInvincible;
 
-    public bool isFire;
-    public float firingWalkSpeed = 3.0f;
+    public bool isAttack;
+    public float attackWalkSpeed = 3.0f;
     public float walkSpeed = 5.0f;
     public float runSpeed = 10.0f;
     public float dodgeForce;
@@ -72,7 +72,7 @@ public class PlayerCtrl : MonoBehaviour
             MoveInput();
             SpeedCheck();
             Rotation();
-            if(Input.GetKeyDown(KeyCode.LeftControl))StartCoroutine(Dodge());
+            if(Input.GetKeyDown(KeyCode.Space))StartCoroutine(Dodge());
             MoveAnim();
         }
 
@@ -127,7 +127,7 @@ public class PlayerCtrl : MonoBehaviour
 
     void SpeedCheck()
     {
-        if(Input.GetKey(KeyCode.LeftShift)&&!isFire){
+        if(Input.GetKey(KeyCode.LeftShift)&&!isAttack){
             isRun = true;
         }
         else{
@@ -137,8 +137,8 @@ public class PlayerCtrl : MonoBehaviour
         if(isRun){
             finalSpeed = runSpeed;
         }
-        else if(isFire){
-            finalSpeed = firingWalkSpeed;
+        else if(isAttack){
+            finalSpeed = attackWalkSpeed;
         }
         else{
             finalSpeed = walkSpeed;

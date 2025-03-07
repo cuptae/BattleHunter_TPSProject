@@ -85,7 +85,7 @@ MonoBehaviour:
   isFire: 0
   firingWalkSpeed: 3
   walkSpeed: 5
-  runSpeed: 7
+  runSpeed: 8
   dodgeForce: 10
   rotationSpeed: 10
   Weapon: {fileID: 3979441570616521827}

@@ -50,11 +50,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMove: 0
   isDodge: 0
-  isFire: 0
-  firingWalkSpeed: 3
-  walkSpeed: 5
-  runSpeed: 10
-  dodgeForce: 0
+  isAttack: 0
+  attackWalkSpeed: 1
+  walkSpeed: 4
+  runSpeed: 6
+  dodgeForce: 8
   rotationSpeed: 10
   Weapon: {fileID: 0}
   camFollow: {fileID: 0}

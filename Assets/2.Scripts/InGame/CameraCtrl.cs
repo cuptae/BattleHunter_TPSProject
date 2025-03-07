@@ -7,7 +7,7 @@ public class CameraCtrl : MonoBehaviour
     private float rotY;
     public float sensitivity = 10f;
     public float normalDist;
-    public float shootingDist;
+    public float attackDist;
 
     private float finalDist;
 
@@ -34,7 +34,7 @@ public class CameraCtrl : MonoBehaviour
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
         }
-        else if(Input.GetKeyDown(KeyCode.Escape)&&cusorVisible)
+        else if(Input.GetKeyDown(KeyCode.Escape)&&Cursor.visible)
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
@@ -49,7 +49,7 @@ public class CameraCtrl : MonoBehaviour
         }
 
         // 타겟 거리 설정
-        float targetDistance = target.GetComponentInParent<PlayerCtrl>().isFire ? shootingDist : normalDist;
+        float targetDistance = target.GetComponentInParent<PlayerCtrl>().isAttack ? attackDist : normalDist;
 
         // 부드럽게 거리 보간 (SmoothDamp 사용)
         //finalDist = Mathf.SmoothDamp(finalDist, targetDistance, ref distanceVelocity, 0.2f); // 0.2초 감속 시간
