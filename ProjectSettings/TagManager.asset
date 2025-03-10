@@ -9,6 +9,7 @@ TagManager:
   - RoomItem
   - CameraFollow
   - AimingPos
+  - EnemySpawnPoint
   layers:
   - Default
   - TransparentFX

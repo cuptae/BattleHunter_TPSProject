@@ -29,15 +29,16 @@ public class CameraCtrl : MonoBehaviour
         finalDist = normalDist;
     }
     private void Update() {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.lockState = CursorLockMode.None; // 마우스 해제
         }
-        else if(Input.GetKeyDown(KeyCode.Escape)&&Cursor.visible)
+        
+        if (Cursor.visible && Input.GetMouseButtonDown(0)) // 마우스 클릭 시 숨기기
         {
             Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.lockState = CursorLockMode.Locked; // 화면 중앙 고정
         }
     }
 
