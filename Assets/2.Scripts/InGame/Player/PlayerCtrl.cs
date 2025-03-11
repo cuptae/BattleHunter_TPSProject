@@ -1,6 +1,7 @@
 using System.Collections;
 using System.IO;
 using UnityEngine;
+using System.Linq;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerCtrl : MonoBehaviour
 {
@@ -11,13 +12,15 @@ public class PlayerCtrl : MonoBehaviour
     private Vector3 moveDir;
     private Vector3 dodgeDeltaPos;
     private Vector3 dodgeDir;
+    public Collider[] monsterCol;
+    private Collider col;
     protected Transform tr;
     private float finalSpeed;
     private bool isRun;
     private float xAxis;
     private float zAxis;
     private float moveAnimPercent;
-    private float dodgeTime = 1.0f;
+    private float dodgeTime = 0.7f;
 
     protected Camera mainCamera;
     protected Animator animator;
@@ -45,6 +48,7 @@ public class PlayerCtrl : MonoBehaviour
         Debug.Assert(animator);
         rigid = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
+        col = GetComponent<CapsuleCollider>(); 
         pv = GetComponent<PhotonView>();
         camFollow = transform.GetChild(0).Find("CameraFollow");
         mainCamera = Camera.main;
@@ -162,10 +166,18 @@ public class PlayerCtrl : MonoBehaviour
             yield break;
 
         float elapseTime = 0f;
-        float dodgeTime = 0.7f;
         dodgeDir = isMove?moveDir:transform.forward;
         Quaternion dodgeLook = isMove?Quaternion.LookRotation(moveDir):Quaternion.LookRotation(transform.forward);
         animator.SetTrigger("Dodge");
+
+        Collider[] monCols = Physics.OverlapSphere(tr.position,4.0f);
+
+        foreach (Collider monsterCol in monCols)
+        {
+            if(monsterCol.tag =="Enemy")
+                Physics.IgnoreCollision(col, monsterCol, true);
+        }
+
         while(elapseTime<dodgeTime)
         {
             isDodge = true;
@@ -174,6 +186,11 @@ public class PlayerCtrl : MonoBehaviour
             yield return null;
         }
         isDodge = false;
+
+        foreach (Collider monsterCollider in monCols)
+        {
+            Physics.IgnoreCollision(col, monsterCollider, false); // 충돌을 무시
+        }
     }
 
     protected virtual void  OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

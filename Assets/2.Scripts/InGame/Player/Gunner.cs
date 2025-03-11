@@ -6,7 +6,7 @@ using UnityEngine.Animations.Rigging;
 
 public class Gunner : PlayerCtrl
 {
-    public GameObject[] bulletEffect;
+    public GameObject bulletEffect;
     private Rig aimRig;
     private Ray ray;
     MultiAimConstraint multiAimConstraint;
@@ -29,10 +29,8 @@ public class Gunner : PlayerCtrl
         WeightedTransformArray sourceObjects = multiAimConstraint.data.sourceObjects;
         sourceObjects.Add(new WeightedTransform(aimingPos,aimRig.weight));
 
-        for (int i = 0; i < bulletEffect.Length; i++)
-        {
-            PoolManager.Instance.CreatePool(bulletEffect[i].name, bulletEffect[i], 10);
-        }
+        PoolManager.Instance.CreatePool(bulletEffect.name, bulletEffect, 10);
+        
     }
 
 
@@ -114,9 +112,9 @@ public class Gunner : PlayerCtrl
 
     IEnumerator BulletEffect(Vector3 pos, Quaternion rot)
     {
-        GameObject effect = PoolManager.Instance.GetObject(bulletEffect[0].name,pos, rot);
+        GameObject effect = PoolManager.Instance.GetObject(bulletEffect.name,pos, rot);
         yield return new WaitForSeconds(0.3f);
-        PoolManager.Instance.ReturnObject(bulletEffect[0].name,effect);
+        PoolManager.Instance.ReturnObject(bulletEffect.name,effect);
     }
 
 

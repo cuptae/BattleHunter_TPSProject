@@ -10,6 +10,11 @@ public class Spawner : MonoBehaviour
 
     public int maxEnemyCnt;
 
+    void Awake()
+    {
+        //spawnPos = GameObject.FindWithTag("SpawnPos")
+    }
+
     void Start()
     {
         if(PhotonNetwork.isMasterClient)
