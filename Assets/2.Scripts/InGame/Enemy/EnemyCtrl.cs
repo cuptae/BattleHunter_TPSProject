@@ -13,7 +13,7 @@ public enum State
 }
 public class EnemyCtrl : MonoBehaviour
 {
-    public float maxHp = 1000;
+    public float maxHp;
     public float curHp;
     public bool isDead = false;
 
@@ -28,14 +28,13 @@ public class EnemyCtrl : MonoBehaviour
     {
         pv = GetComponent<PhotonView>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+    }
+    void OnEnable()
+    {   
         curHp = maxHp;
+        ChangeState(new ChaseState());
     }
 
-
-    void Start()
-    {
-        ChangeState(new ChaseState());   
-    }
 
     // Update is called once per frame
     void Update()
@@ -65,13 +64,15 @@ public class EnemyCtrl : MonoBehaviour
         curHp -= damage;
         if(curHp<0)
         {
-            Die();
+            ChangeState(new DieState());
         }
     }
 
     public void Die()
     {
+        curHp = 0;
         isDead = true;
+        PoolManager.Instance.ReturnObject("Mutant",this.gameObject);
     }
 
 

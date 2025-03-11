@@ -170,7 +170,7 @@ public class PlayerCtrl : MonoBehaviour
         Quaternion dodgeLook = isMove?Quaternion.LookRotation(moveDir):Quaternion.LookRotation(transform.forward);
         animator.SetTrigger("Dodge");
 
-        Collider[] monCols = Physics.OverlapSphere(tr.position,4.0f);
+        Collider[] monCols = Physics.OverlapSphere(tr.position,7.0f);
 
         foreach (Collider monsterCol in monCols)
         {

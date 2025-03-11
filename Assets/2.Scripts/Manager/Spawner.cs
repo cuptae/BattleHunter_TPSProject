@@ -12,7 +12,7 @@ public class Spawner : MonoBehaviour
 
     void Awake()
     {
-        //spawnPos = GameObject.FindWithTag("SpawnPos")
+        spawnPos = GameObject.FindWithTag("EnemySpawnPoint").GetComponentsInChildren<Transform>();
     }
 
     void Start()
@@ -28,8 +28,14 @@ public class Spawner : MonoBehaviour
     {
         while(true)
         {
-            yield return new WaitForSeconds(3.0f);
-            PoolManager.Instance.GetObject("Mutant",spawnPos[1].position,spawnPos[1].rotation);
+            yield return new WaitForSeconds(3f);
+            
+            for(int i =0; i<5; i++)
+            {
+                int randPos = Random.Range(1,spawnPos.Length);
+                Debug.Log(randPos);
+                GameObject Mutant = PoolManager.Instance.GetObject("Mutant",spawnPos[randPos].position,spawnPos[randPos].rotation);
+            }
         }
     }
 }

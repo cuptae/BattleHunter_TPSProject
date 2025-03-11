@@ -93,7 +93,7 @@ MonoBehaviour:
   camFollow: {fileID: 0}
   bulletEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
   aimingPos: {fileID: 0}
-  damage: 56.7
+  damage: 100
   fireRate: 0.1
 --- !u!54 &7976035198930618412
 Rigidbody:

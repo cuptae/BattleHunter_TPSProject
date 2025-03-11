@@ -8,7 +8,7 @@ public class DieState : IEnemyState
     {
         enemy.isDead = true;
         enemy.navMeshAgent.isStopped = true;
-        enemy.gameObject.SetActive(false); // 적 삭제
+        enemy.Die();
     }
 
     public void UpdateState(EnemyCtrl enemy)

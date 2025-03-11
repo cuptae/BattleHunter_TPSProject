@@ -7,6 +7,7 @@ public class CameraCtrl : MonoBehaviour
     private float rotY;
     public float sensitivity = 10f;
     public float normalDist;
+    public float minDist;
     public float attackDist;
 
     private float finalDist;
