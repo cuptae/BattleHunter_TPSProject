@@ -12,7 +12,8 @@ public class Gunner : PlayerCtrl
     MultiAimConstraint multiAimConstraint;
     private float nextFireTime = 0f;
 
-    public Transform aimingPos;
+
+    private Transform aimingPos;
     public float damage = 56.7f;
     public float fireRate = 0.5f;
 
@@ -56,13 +57,13 @@ public class Gunner : PlayerCtrl
         {
             isAttack = true;
             SetRigWeight(1);
-            animator.SetBool("Fire", true);
+            animator.SetBool("Attack", true);
         }
         else
         {
             isAttack = false;
             SetRigWeight(0);
-            animator.SetBool("Fire", false);
+            animator.SetBool("Attack", false);
         }
     }
 
@@ -101,12 +102,12 @@ public class Gunner : PlayerCtrl
         if(stream.isWriting)
         {
             stream.SendNext(isAttack);
-            stream.SendNext(animator.GetBool("Fire"));
+            stream.SendNext(animator.GetBool("Attack"));
         }
         else
         {
             isAttack = (bool)stream.ReceiveNext();
-            animator.SetBool("Fire",(bool)stream.ReceiveNext());
+            animator.SetBool("Attack",(bool)stream.ReceiveNext());
         }
     }
 

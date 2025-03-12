@@ -12,7 +12,6 @@ public class PlayerCtrl : MonoBehaviour
     private Vector3 moveDir;
     private Vector3 dodgeDeltaPos;
     private Vector3 dodgeDir;
-    public Collider[] monsterCol;
     private Collider col;
     protected Transform tr;
     private float finalSpeed;
@@ -28,19 +27,24 @@ public class PlayerCtrl : MonoBehaviour
     public bool isDodge = false;
     protected bool isInvincible;
 
+    
     public bool isAttack;
+    public float attackRange;
     public float attackWalkSpeed = 3.0f;
     public float walkSpeed = 5.0f;
     public float runSpeed = 10.0f;
     public float dodgeForce;
     public float rotationSpeed = 4.0f;
+
     
-    public GameObject Weapon;
+    public GameObject weapon;
     
 
     protected PhotonView pv = null;
     protected Vector3 curPos = Vector3.zero;
      protected Quaternion curRot = Quaternion.identity;
+
+    [HideInInspector]
     public Transform camFollow;
     
     protected virtual void Awake() {
@@ -189,7 +193,7 @@ public class PlayerCtrl : MonoBehaviour
 
         foreach (Collider monsterCollider in monCols)
         {
-            Physics.IgnoreCollision(col, monsterCollider, false); // 충돌을 무시
+            Physics.IgnoreCollision(col, monsterCollider, false);
         }
     }
 

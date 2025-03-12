@@ -53,7 +53,6 @@ public class EnemyCtrl : MonoBehaviour
     {
         if(PhotonNetwork.isMasterClient)
         {
-            Debug.Log("Test");
             pv.RPC("TakeDamage",PhotonTargets.AllBuffered,damage);
         }
     }
@@ -62,7 +61,7 @@ public class EnemyCtrl : MonoBehaviour
     public void TakeDamage(float damage,PhotonMessageInfo info)
     {
         curHp -= damage;
-        if(curHp<0)
+        if(curHp<=0)
         {
             ChangeState(new DieState());
         }
@@ -70,7 +69,6 @@ public class EnemyCtrl : MonoBehaviour
 
     public void Die()
     {
-        curHp = 0;
         isDead = true;
         PoolManager.Instance.ReturnObject("Mutant",this.gameObject);
     }
