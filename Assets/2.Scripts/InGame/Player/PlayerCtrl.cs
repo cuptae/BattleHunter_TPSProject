@@ -2,18 +2,22 @@ using System.Collections;
 using System.IO;
 using UnityEngine;
 using System.Linq;
+using Unity.VisualScripting;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerCtrl : MonoBehaviour
 {
     private Rigidbody rigid;
+
     private Vector3 moveInput;
     private Vector3 lookForward;
     private Vector3 lookSide;
     private Vector3 moveDir;
-    private Vector3 dodgeDeltaPos;
     private Vector3 dodgeDir;
     private Collider col;
+
     protected Transform tr;
+    protected int enemyLayerMask;
+
     private float finalSpeed;
     private bool isRun;
     private float xAxis;
@@ -36,13 +40,14 @@ public class PlayerCtrl : MonoBehaviour
     public float dodgeForce;
     public float rotationSpeed = 4.0f;
 
+    public float moveForce;
     
     public GameObject weapon;
     
 
     protected PhotonView pv = null;
     protected Vector3 curPos = Vector3.zero;
-     protected Quaternion curRot = Quaternion.identity;
+    protected Quaternion curRot = Quaternion.identity;
 
     [HideInInspector]
     public Transform camFollow;
@@ -56,6 +61,7 @@ public class PlayerCtrl : MonoBehaviour
         pv = GetComponent<PhotonView>();
         camFollow = transform.GetChild(0).Find("CameraFollow");
         mainCamera = Camera.main;
+        enemyLayerMask = 1<<LayerMask.NameToLayer("ENEMY");
 
         pv.ObservedComponents[0] = this;
         pv.synchronization = ViewSynchronization.UnreliableOnChange;
@@ -63,7 +69,6 @@ public class PlayerCtrl : MonoBehaviour
         if(pv.isMine)
         {
             mainCamera.GetComponent<CameraCtrl>().target = camFollow;
-            //mainCamera.GetComponent<CameraCtrlVer2>().target = camFollow; 
         }
         else
         {
@@ -97,8 +102,8 @@ public class PlayerCtrl : MonoBehaviour
         }
         else
         {
-            tr.position = Vector3.Lerp(tr.position,curPos,Time.deltaTime * runSpeed);
-            tr.rotation = Quaternion.Slerp(tr.rotation, curRot, Time.deltaTime * rotationSpeed);
+            tr.position = Vector3.Lerp(tr.position,curPos,Time.fixedDeltaTime * runSpeed);
+            tr.rotation = Quaternion.Slerp(tr.rotation, curRot, Time.fixedDeltaTime * rotationSpeed);
         }
     }
     
@@ -111,17 +116,29 @@ public class PlayerCtrl : MonoBehaviour
 
     void MoveInput()
     {
-        xAxis = Input.GetAxis("Horizontal");
-		zAxis = Input.GetAxis("Vertical");
+        xAxis = Input.GetAxisRaw("Horizontal");
+		zAxis = Input.GetAxisRaw("Vertical");
         moveInput = new Vector3(xAxis,0,zAxis).normalized;
-        isMove = (moveInput.magnitude!=0)? true:false; 
+        isMove = moveInput.magnitude > 0;
     }
 
     void Move()
     {
         if(isDodge)
             return;
-        rigid.MovePosition(transform.position+moveDir*finalSpeed*Time.deltaTime);
+        //rigid.MovePosition(transform.position+moveDir*finalSpeed*Time.deltaTime);
+        if(isMove)
+        {
+            rigid.AddForce(moveDir*moveForce,ForceMode.Force);
+        }
+        else
+        {
+            rigid.velocity = Vector3.zero;
+        }
+        if (rigid.velocity.magnitude > finalSpeed)
+        {
+            rigid.velocity = rigid.velocity.normalized * finalSpeed;
+        }
     }
 
     void Rotation()
@@ -158,9 +175,9 @@ public class PlayerCtrl : MonoBehaviour
         moveAnimPercent = ((isRun) ? 1f : 0f) * moveInput.magnitude;
         animator.SetFloat("Speed", moveAnimPercent, 0.1f, Time.deltaTime);
         // 좌우 이동 값
-        animator.SetFloat("MoveX", xAxis);
+        animator.SetFloat("MoveX", Input.GetAxis("Horizontal"));
         // 전후 이동 값
-        animator.SetFloat("MoveZ", zAxis);
+        animator.SetFloat("MoveZ", Input.GetAxis("Vertical"));
         animator.SetBool("Move", isMove);
     }
 
@@ -174,12 +191,11 @@ public class PlayerCtrl : MonoBehaviour
         Quaternion dodgeLook = isMove?Quaternion.LookRotation(moveDir):Quaternion.LookRotation(transform.forward);
         animator.SetTrigger("Dodge");
 
-        Collider[] monCols = Physics.OverlapSphere(tr.position,7.0f);
+        Collider[] monCols = Physics.OverlapSphere(tr.position,7.0f,enemyLayerMask);
 
         foreach (Collider monsterCol in monCols)
         {
-            if(monsterCol.tag =="Enemy")
-                Physics.IgnoreCollision(col, monsterCol, true);
+            //Physics.IgnoreCollision(col, monsterCol, true);
         }
 
         while(elapseTime<dodgeTime)
@@ -192,8 +208,11 @@ public class PlayerCtrl : MonoBehaviour
         isDodge = false;
 
         foreach (Collider monsterCollider in monCols)
-        {
-            Physics.IgnoreCollision(col, monsterCollider, false);
+        {   if(monsterCollider != null)
+            {
+
+            }
+                //Physics.IgnoreCollision(col, monsterCollider, false);
         }
     }
 

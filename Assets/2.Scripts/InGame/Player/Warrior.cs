@@ -13,6 +13,7 @@ public class Warrior : PlayerCtrl
     private float comboDelay = 1.0f;
 
     private float attackDelay = 0.5f;
+    
 
     public float damage = 10.0f;
 
@@ -96,6 +97,7 @@ public class Warrior : PlayerCtrl
     {
         comboStep = 0;
         isAttack = false;
+        canCombo =true;
         animator.SetBool("Attack",isAttack);
         animator.SetInteger("Combo",comboStep);
     }
@@ -106,31 +108,15 @@ public class Warrior : PlayerCtrl
         Vector3 attackPos = transform.position+transform.forward*2f;
         Quaternion attackRot = transform.rotation;
 
-        int enemyLayer = 1 << LayerMask.NameToLayer("ENEMY"); // ENEMY 레이어의 bitmask
-        Collider[] monsterCollider = Physics.OverlapBox(attackPos, boxRange, attackRot, enemyLayer);
-
-        for (int i = 0; i < monsterCollider.Length; i++)
-        {
-            Debug.Log(monsterCollider[i].transform.root.name); // ENEMY 레이어에 속한 오브젝트의 이름만 출력
-        }
+        Collider[] monsterCollider = Physics.OverlapBox(attackPos, boxRange, attackRot, enemyLayerMask);
         foreach(Collider col in monsterCollider)
         {
+            Debug.Log(col.name);
             if(col != null)
             {
-                EnemyCtrl enemy = col.transform.GetComponentInParent<EnemyCtrl>();
+                EnemyCtrl enemy = col.transform.GetComponent<EnemyCtrl>();
                 if(enemy != null)
-                {
                     enemy.GetDamage(damage);
-                }
-                Debug.Log("워리어 스윙"+enemy.curHp);
-            }
-            else if(!col)
-            {
-                Debug.LogError("헛스윙!");
-            }
-            else
-            {
-                Debug.LogError("에러를 못찾겠수다");
             }
         }
     }
