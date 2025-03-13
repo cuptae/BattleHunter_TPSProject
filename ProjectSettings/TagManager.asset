@@ -10,6 +10,7 @@ TagManager:
   - CameraFollow
   - AimingPos
   - EnemySpawnPoint
+  - OpeningDoor
   layers:
   - Default
   - TransparentFX

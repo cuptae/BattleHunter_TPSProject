@@ -5,27 +5,45 @@ using UnityEngine;
 public class AutoDoor : MonoBehaviour
 {
     public bool isOpen = false;
-    public Animation anim;
+    public Animator anim;  // Animation -> Animator로 변경
+
+    public boxcube[] cubes;  // 큐브들을 배열로 참조
 
     private void Awake() {
-        anim = GetComponent<Animation>();
+        anim = GetComponent<Animator>();  // Animator 컴포넌트를 가져옴
     }
 
-    private void OnTriggerEnter(Collider other) {
-        if(other.gameObject.tag == "Player"&& !isOpen)
-        {
-            Debug.Log("GateOpen");
-            anim.Play("Open");
-            isOpen = true;
-        }
+    private void Start() {
+        isOpen = false;  // 게임 시작 시 문을 닫혀 있도록 설정
     }
-    private void OnTriggerExit(Collider other) {
-        if(other.gameObject.tag == "Player" && isOpen)
-        {
-            Debug.Log("GateClose");
-            anim.Play("Close");
-            isOpen = false;
+
+    private void Update() {
+        // 모든 큐브가 완료되었는지 확인
+        bool allCubesCompleted = true;
+
+        foreach (boxcube cube in cubes) {
+            if (!cube.isCompleted) {
+                allCubesCompleted = false;
+                break;  // 하나라도 완료되지 않으면 종료
+            }
+        }
+
+        if (allCubesCompleted && !isOpen) {
+            OpenDoor();
+        } else if (!allCubesCompleted && isOpen) {
+            CloseDoor();
         }
     }
 
+    private void OpenDoor() {
+        Debug.Log("GateOpen");
+        anim.SetTrigger("Open");  // Animator에서 트리거를 이용해 애니메이션 실행
+        isOpen = true;
+    }
+
+    private void CloseDoor() {
+        Debug.Log("GateClose");
+        anim.SetTrigger("Close");  // Animator에서 트리거를 이용해 애니메이션 실행
+        isOpen = false;
+    }
 }
