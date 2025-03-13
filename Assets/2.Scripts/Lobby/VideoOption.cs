@@ -15,7 +15,6 @@ public class VideoOption : MonoBehaviour
     {
         InitUI();
     }
-
     void InitUI(){
         for(int i=0; i<Screen.resolutions.Length; i++){
             if(Screen.resolutions[i].refreshRate==60){
