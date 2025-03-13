@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
-
 public class Gunner : PlayerCtrl
 {
     public GameObject bulletEffect;
@@ -25,15 +24,14 @@ public class Gunner : PlayerCtrl
         aimingPos = GameObject.FindWithTag("AimingPos").transform;
     }
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         WeightedTransformArray sourceObjects = multiAimConstraint.data.sourceObjects;
         sourceObjects.Add(new WeightedTransform(aimingPos,aimRig.weight));
-
         PoolManager.Instance.CreatePool(bulletEffect.name, bulletEffect, 10);
         
     }
-
 
     // Update is called once per frame
     protected override void Update()
@@ -45,7 +43,7 @@ public class Gunner : PlayerCtrl
             FireAnim();
             if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
             {
-                Fire();
+                Attack();
                 nextFireTime = Time.time + fireRate; // 다음 발사 시간 설정
             }
         }
@@ -72,7 +70,7 @@ public class Gunner : PlayerCtrl
         aimRig.weight = weight;
     }
 
-    void Fire()
+    protected override void Attack()
     {
         if(isDodge)
             return;

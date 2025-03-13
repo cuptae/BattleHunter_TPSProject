@@ -57,9 +57,12 @@ MonoBehaviour:
   runSpeed: 6
   dodgeForce: 8
   rotationSpeed: 10
+  moveForce: 30
   weapon: {fileID: 3925380910596222840}
   camFollow: {fileID: 0}
+  comboStep: 0
   damage: 10
+  canCombo: 1
 --- !u!54 &2901180250492766515
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -85,7 +88,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &-7435260689610941161
 MonoBehaviour:
@@ -121,7 +124,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5591246469999563224}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 5c15a3255a5bd5a408d462ddf417945c, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

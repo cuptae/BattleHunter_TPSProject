@@ -13,6 +13,8 @@ public enum State
 }
 public class EnemyCtrl : MonoBehaviour
 {
+    private Rigidbody rigid;
+
     public float maxHp;
     public float curHp;
     public bool isDead = false;
@@ -26,8 +28,10 @@ public class EnemyCtrl : MonoBehaviour
 
     void Awake()
     {
+        rigid = GetComponent<Rigidbody>();
         pv = GetComponent<PhotonView>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+
     }
     void OnEnable()
     {   
@@ -65,12 +69,6 @@ public class EnemyCtrl : MonoBehaviour
         {
             ChangeState(new DieState());
         }
-    }
-
-    public void Die()
-    {
-        isDead = true;
-        PoolManager.Instance.ReturnObject("Mutant",this.gameObject);
     }
 
 

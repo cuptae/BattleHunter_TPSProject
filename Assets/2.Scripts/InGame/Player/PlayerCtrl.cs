@@ -3,35 +3,41 @@ using System.IO;
 using UnityEngine;
 using System.Linq;
 using Unity.VisualScripting;
-[RequireComponent(typeof(Rigidbody))]
-public class PlayerCtrl : MonoBehaviour
+
+public enum STATE
 {
-    private Rigidbody rigid;
+    IDLE,
+    MOVE,
+    ATTACK,
+    WALKATTACK,
+    DODGE,
+    DEAD,
+}
+[RequireComponent(typeof(Rigidbody))]
+public abstract class PlayerCtrl : MonoBehaviour
+{
+    public Animator animator{get; protected set;}
+    public Rigidbody rigid{get; protected set;}
+    public Vector3 moveDir{get; protected set;}
 
     private Vector3 moveInput;
     private Vector3 lookForward;
     private Vector3 lookSide;
-    private Vector3 moveDir;
     private Vector3 dodgeDir;
     private Collider col;
 
-    protected Transform tr;
     protected int enemyLayerMask;
 
-    private float finalSpeed;
-    private bool isRun;
+    public float finalSpeed{get; private set;}
     private float xAxis;
     private float zAxis;
     private float moveAnimPercent;
-    private float dodgeTime = 0.7f;
+    public float dodgeTime = 0.7f;
 
     protected Camera mainCamera;
-    protected Animator animator;
     public bool isMove;
     public bool isDodge = false;
-    protected bool isInvincible;
 
-    
     public bool isAttack;
     public float attackRange;
     public float attackWalkSpeed = 3.0f;
@@ -39,22 +45,24 @@ public class PlayerCtrl : MonoBehaviour
     public float runSpeed = 10.0f;
     public float dodgeForce;
     public float rotationSpeed = 4.0f;
-
     public float moveForce;
+
     
     public GameObject weapon;
-    
+    public STATE curState; 
+    public PlayerStateMachine stateMachine; 
 
+    //Photon
     protected PhotonView pv = null;
     protected Vector3 curPos = Vector3.zero;
     protected Quaternion curRot = Quaternion.identity;
 
+    protected Transform tr;
     [HideInInspector]
     public Transform camFollow;
     
     protected virtual void Awake() {
         animator = GetComponentInChildren<Animator>();
-        Debug.Assert(animator);
         rigid = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
         col = GetComponent<CapsuleCollider>(); 
@@ -62,7 +70,7 @@ public class PlayerCtrl : MonoBehaviour
         camFollow = transform.GetChild(0).Find("CameraFollow");
         mainCamera = Camera.main;
         enemyLayerMask = 1<<LayerMask.NameToLayer("ENEMY");
-
+        stateMachine =new PlayerStateMachine();
         pv.ObservedComponents[0] = this;
         pv.synchronization = ViewSynchronization.UnreliableOnChange;
 
@@ -77,28 +85,37 @@ public class PlayerCtrl : MonoBehaviour
             curRot = tr.rotation;
         }
     }
+    protected virtual void Start() {
+        if(stateMachine != null)
+        {
+            stateMachine.Initialize(new IdleState(this));
+            Debug.Log("Input stateMachine");
+        }
+        else
+            Debug.Log("stateMachine is null");
+    }
     protected virtual void Update()
     {
         if(pv.isMine)
         {
             DirCheck();
             MoveInput();
-            SpeedCheck();
             Rotation();
-            if(Input.GetKeyDown(KeyCode.Space))StartCoroutine(Dodge());
-            MoveAnim();
+            RunInput();
+            DodgeInput();
+            stateMachine.Update();
         }
-
     }
-    
+
     private void FixedUpdate() {
         if(pv.isMine)
         {
             if (isDodge)
             {
                 rigid.MovePosition(transform.position + dodgeDir.normalized * dodgeForce * Time.fixedDeltaTime);
+                //rigid.AddForce(dodgeDir * dodgeForce,ForceMode.Impulse);
             }
-            Move();
+            stateMachine.FixedUpdate();
         }
         else
         {
@@ -122,82 +139,32 @@ public class PlayerCtrl : MonoBehaviour
         isMove = moveInput.magnitude > 0;
     }
 
-    void Move()
+    public void Rotation()
     {
-        if(isDodge)
-            return;
-        //rigid.MovePosition(transform.position+moveDir*finalSpeed*Time.deltaTime);
-        if(isMove)
-        {
-            rigid.AddForce(moveDir*moveForce,ForceMode.Force);
-        }
-        else
-        {
-            rigid.velocity = Vector3.zero;
-        }
-        if (rigid.velocity.magnitude > finalSpeed)
-        {
-            rigid.velocity = rigid.velocity.normalized * finalSpeed;
-        }
-    }
-
-    void Rotation()
-    {
-        if(isDodge)
+        if(DodgeInput())
             return;
 
         curRot = Quaternion.LookRotation(lookForward);
         transform.localRotation = Quaternion.Lerp(transform.localRotation,curRot,rotationSpeed*Time.deltaTime);
     }
+    
+    public bool RunInput(){return Input.GetKey(KeyCode.LeftShift);}
+    public bool DodgeInput(){return Input.GetKeyDown(KeyCode.Space);}
 
-    void SpeedCheck()
-    {
-        if(Input.GetKey(KeyCode.LeftShift)&&!isAttack){
-            isRun = true;
-        }
-        else{
-            isRun = false;
-        }
-
-        if(isRun){
-            finalSpeed = runSpeed;
-        }
-        else if(isAttack){
-            finalSpeed = attackWalkSpeed;
-        }
-        else{
-            finalSpeed = walkSpeed;
-        }
-    }
-
-    void MoveAnim()
-    {
-        moveAnimPercent = ((isRun) ? 1f : 0f) * moveInput.magnitude;
-        animator.SetFloat("Speed", moveAnimPercent, 0.1f, Time.deltaTime);
-        // 좌우 이동 값
-        animator.SetFloat("MoveX", Input.GetAxis("Horizontal"));
-        // 전후 이동 값
-        animator.SetFloat("MoveZ", Input.GetAxis("Vertical"));
-        animator.SetBool("Move", isMove);
-    }
 
     IEnumerator Dodge()
     {
-        if(isDodge)
+        if(DodgeInput())
             yield break;
 
         float elapseTime = 0f;
         dodgeDir = isMove?moveDir:transform.forward;
+        if (dodgeDir == Vector3.zero)
+        {
+            dodgeDir = transform.forward;  // 기본 방향 설정
+        }
         Quaternion dodgeLook = isMove?Quaternion.LookRotation(moveDir):Quaternion.LookRotation(transform.forward);
         animator.SetTrigger("Dodge");
-
-        Collider[] monCols = Physics.OverlapSphere(tr.position,7.0f,enemyLayerMask);
-
-        foreach (Collider monsterCol in monCols)
-        {
-            //Physics.IgnoreCollision(col, monsterCol, true);
-        }
-
         while(elapseTime<dodgeTime)
         {
             isDodge = true;
@@ -206,15 +173,14 @@ public class PlayerCtrl : MonoBehaviour
             yield return null;
         }
         isDodge = false;
-
-        foreach (Collider monsterCollider in monCols)
-        {   if(monsterCollider != null)
-            {
-
-            }
-                //Physics.IgnoreCollision(col, monsterCollider, false);
-        }
     }
+
+    public void ChangeState(PlayerState newState)
+    {
+        stateMachine.ChangeState(newState);
+    }
+
+    protected abstract void Attack();
 
     protected virtual void  OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -242,3 +208,47 @@ public class PlayerCtrl : MonoBehaviour
     }
 }
 
+
+#region Move()
+    // public void Move()
+    // {
+    //     if(isDodge)
+    //         return;
+
+    //     //rigid.MovePosition(transform.position+moveDir*finalSpeed*Time.deltaTime);
+
+    //     if(isMove)
+    //     {
+    //         rigid.AddForce(moveDir*moveForce,ForceMode.Force);
+    //     }
+    //     else
+    //     {
+    //         rigid.velocity = Vector3.zero;
+    //     }
+    //     if (rigid.velocity.magnitude > finalSpeed)
+    //     {
+    //         rigid.velocity = rigid.velocity.normalized * finalSpeed;
+    //     }
+    // }
+#endregion
+#region  SpeedCheck()
+    // void SpeedCheck()
+    // {
+    //     if(Input.GetKey(KeyCode.LeftShift)&&!isAttack){
+    //         isRun = true;
+    //     }
+    //     else{
+    //         isRun = false;
+    //     }
+
+    //     // if(isRun){
+    //     //     finalSpeed = runSpeed;
+    //     // }
+    //     // else if(isAttack){
+    //     //     finalSpeed = attackWalkSpeed;
+    //     // }
+    //     // else{
+    //     //     finalSpeed = walkSpeed;
+    //     // }
+    // }
+    #endregion

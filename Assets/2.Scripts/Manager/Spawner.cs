@@ -9,6 +9,7 @@ public class Spawner : MonoBehaviour
     public GameObject[] enemyPrefabs;
 
     public int maxEnemyCnt;
+    public int oneceSpawnCnt;
 
     void Awake()
     {
@@ -30,7 +31,7 @@ public class Spawner : MonoBehaviour
         {
             yield return new WaitForSeconds(3f);
             
-            for(int i =0; i<5; i++)
+            for(int i =0; i<oneceSpawnCnt; i++)
             {
                 int randPos = Random.Range(1,spawnPos.Length);
                 Debug.Log(randPos);

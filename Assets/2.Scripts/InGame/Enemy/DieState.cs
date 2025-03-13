@@ -8,7 +8,7 @@ public class DieState : IEnemyState
     {
         enemy.isDead = true;
         enemy.navMeshAgent.isStopped = true;
-        enemy.Die();
+        PoolManager.Instance.ReturnObject("Mutant",enemy.gameObject);
     }
 
     public void UpdateState(EnemyCtrl enemy)

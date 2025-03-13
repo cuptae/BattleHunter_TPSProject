@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 625bf9e589013f048b7cd2a8ac471d14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dodgeTime: 0.7
   isMove: 0
   isDodge: 0
   isAttack: 0
@@ -59,6 +60,7 @@ MonoBehaviour:
   rotationSpeed: 4
   moveForce: 30
   weapon: {fileID: 3897433851248381228}
+  curState: 4
   camFollow: {fileID: 0}
   bulletEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
   damage: 56.7
@@ -97,7 +99,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1877944450256658566}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 5c15a3255a5bd5a408d462ddf417945c, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

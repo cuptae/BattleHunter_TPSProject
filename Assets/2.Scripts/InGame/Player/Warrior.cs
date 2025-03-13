@@ -24,8 +24,9 @@ public class Warrior : PlayerCtrl
         base.Awake();
     }
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         canCombo = true;
     }
     protected override void Update()
@@ -35,7 +36,8 @@ public class Warrior : PlayerCtrl
         base.Update();
         if(Input.GetMouseButtonDown(0))
         {
-            HandleCombo();
+            if(canCombo)
+                HandleCombo();
         }
 
         if (Time.time - lastClickTime > comboDelay)
@@ -54,8 +56,6 @@ public class Warrior : PlayerCtrl
     }
     private void HandleCombo()
     {
-        if(!canCombo) return;
-
         lastClickTime = Time.time;
         StartCoroutine(CanCombo());
         animator.SetBool("Attack",true);
@@ -97,12 +97,11 @@ public class Warrior : PlayerCtrl
     {
         comboStep = 0;
         isAttack = false;
-        canCombo =true;
         animator.SetBool("Attack",isAttack);
         animator.SetInteger("Combo",comboStep);
     }
 
-    public void Attack()
+    protected override void Attack()
     {
         Vector3 boxRange = new Vector3(3f,3f,2f);
         Vector3 attackPos = transform.position+transform.forward*2f;

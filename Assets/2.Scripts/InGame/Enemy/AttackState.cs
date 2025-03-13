@@ -10,6 +10,7 @@ public class AttackState : IEnemyState
     public void EnterState(EnemyCtrl enemy)
     {
         lastAttackTime = Time.time;
+        enemy.navMeshAgent.isStopped = true;
     }
 
     public void UpdateState(EnemyCtrl enemy)
@@ -18,18 +19,22 @@ public class AttackState : IEnemyState
         if (player != null)
         {
             // 플레이어가 범위 밖이면 다시 추격
-            if (Vector3.Distance(enemy.transform.position, player.transform.position) > 2.0f)
+            if (Vector3.Distance(enemy.transform.position, player.transform.position) > 3.0f)
             {
+                enemy.navMeshAgent.isStopped = false;
                 enemy.ChangeState(new ChaseState());
                 return;
             }
-
-            // 공격
-            if (Time.time - lastAttackTime >= attackCooldown)
+            else
             {
-                Debug.Log("Enemy attacks!");
-                lastAttackTime = Time.time;
+                // 공격
+                if (Time.time - lastAttackTime >= attackCooldown)
+                {
+                    Debug.Log("Enemy attacks!");
+                    lastAttackTime = Time.time;
+                }
             }
+
         }
     }
 
