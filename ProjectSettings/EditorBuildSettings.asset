@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1.Scenes/TestLobby.unity
     guid: acc2ed2750833fd499f1c5c4dc41e9e8
+  - enabled: 0
+    path: Assets/Abandoned_PostApocalyptic_City_Pack/Scenes/TestIngame.unity
+    guid: 7e66700b7cf6db64296febca0b4c574a
   - enabled: 1
     path: Assets/1.Scenes/TestIngame.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab

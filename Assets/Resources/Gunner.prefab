@@ -34,6 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3015107516823688062}
+  - {fileID: 4197237324192550111}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6746668556164547244
@@ -63,7 +64,7 @@ MonoBehaviour:
   curState: 4
   camFollow: {fileID: 0}
   bulletEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
-  damage: 56.7
+  damage: 30
   fireRate: 0.1
 --- !u!54 &7976035198930618412
 Rigidbody:
@@ -203,7 +204,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3015107516823688062}
+  m_Father: {fileID: 3654104362611864328}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8447917081767605792
 GameObject:
@@ -684,9 +685,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8694017505111132838, guid: 713912b46b0763b49a839f8b18f51cb5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 383827509737678827}
-    - targetCorrespondingSourceObject: {fileID: 8694017505111132838, guid: 713912b46b0763b49a839f8b18f51cb5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4197237324192550111}
     - targetCorrespondingSourceObject: {fileID: 2685130160409489248, guid: 713912b46b0763b49a839f8b18f51cb5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 490697319879211273}

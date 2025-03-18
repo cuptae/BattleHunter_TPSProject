@@ -36,7 +36,7 @@ public class StageManager : MonoBehaviour
                 break;
             case Character.HUNTER:
                 Debug.Log("Hunter");
-                player = PhotonNetwork.Instantiate("Hunter",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
+                player = PhotonNetwork.Instantiate("Hacker",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
                 break;
         }
         yield return null;

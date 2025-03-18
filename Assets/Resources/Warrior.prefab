@@ -34,6 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3925380910595732246}
+  - {fileID: 4831247729308262927}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &538887600388975648
@@ -48,6 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6aea9312f00d59408bbc100d40c48f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dodgeTime: 0.7
   isMove: 0
   isDodge: 0
   isAttack: 0
@@ -59,9 +61,10 @@ MonoBehaviour:
   rotationSpeed: 10
   moveForce: 30
   weapon: {fileID: 3925380910596222840}
+  curState: 0
   camFollow: {fileID: 0}
   comboStep: 0
-  damage: 10
+  damage: 75
   canCombo: 1
 --- !u!54 &2901180250492766515
 Rigidbody:
@@ -165,11 +168,11 @@ Transform:
   m_GameObject: {fileID: 7486320688380899094}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.15384616, y: 0, z: 0}
-  m_LocalScale: {x: 0.7692308, y: 0.7692308, z: 0.7692308}
+  m_LocalPosition: {x: 0.2, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3925380910595732246}
+  m_Father: {fileID: 1499059113483769136}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3925380910596123042
 PrefabInstance:
@@ -245,10 +248,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 400052, guid: 35a2848266d1ff244a2d940af484a62b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4831247729308262927}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35a2848266d1ff244a2d940af484a62b, type: 3}
 --- !u!4 &3925380910595732246 stripped

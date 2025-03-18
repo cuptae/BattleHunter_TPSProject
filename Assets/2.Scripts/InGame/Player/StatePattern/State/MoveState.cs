@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.ReorderableList.Element_Adder_Menu;
 using UnityEngine;
 
 public class MoveState : PlayerState
@@ -34,14 +33,14 @@ public class MoveState : PlayerState
         {
             player.ChangeState(new IdleState(player));
         }
-        if (player.DodgeInput())
-        {
-            player.ChangeState(new DodgeState(player));
-        }
+        // if (player.DodgeInput())
+        // {
+        //     player.ChangeState(new DodgeState(player));
+        // }
     }
     public override void FixedUpdateState()
     {
-        //rigid.MovePosition(transform.position+moveDir*finalSpeed*Time.deltaTime);
+        //player.rigid.MovePosition(player.transform.position+player.moveDir*finalSpeed*Time.deltaTime);
 
         if(player.isMove)
         {
