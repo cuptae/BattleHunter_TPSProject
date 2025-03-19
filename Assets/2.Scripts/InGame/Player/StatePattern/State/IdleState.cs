@@ -14,6 +14,10 @@ public class IdleState : PlayerState
         {
             player.ChangeState(new MoveState(player));
         }
+        if(player.DodgeInput())
+        {
+            player.ChangeState(new DodgeState(player));
+        }
     }
 
     public override void FixedUpdateState()

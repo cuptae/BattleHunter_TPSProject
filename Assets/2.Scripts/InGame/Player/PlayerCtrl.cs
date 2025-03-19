@@ -19,8 +19,6 @@ public abstract class PlayerCtrl : MonoBehaviour
     public Animator animator{get; protected set;}
     [HideInInspector]
     public Rigidbody rigid{get; protected set;}
-    [HideInInspector]
-    public Vector3 moveDir{get; protected set;}
 
     public Movetype movetype;
     private Vector3 moveInput;
@@ -39,7 +37,7 @@ public abstract class PlayerCtrl : MonoBehaviour
     private float zAxis;
     public float dodgeTime = 0.7f;
 
-    protected Camera mainCamera;
+    public Camera mainCamera;
     public bool isMove;
     public bool isDodge = false;
 
@@ -56,8 +54,8 @@ public abstract class PlayerCtrl : MonoBehaviour
     public GameObject weapon;
     public STATE curState; 
     private PlayerStateMachine stateMachine;
-
     public Vector3 groundNormal;
+
 
     //Photon
     protected PhotonView pv = null;
@@ -98,22 +96,18 @@ public abstract class PlayerCtrl : MonoBehaviour
         if(stateMachine != null)
         {
             stateMachine.Initialize(new IdleState(this));
-            Debug.Log("Input stateMachine");
         }
-        else
-            Debug.Log("stateMachine is null");
     }
     protected virtual void Update()
     {
         if(pv.isMine)
         {
-            DirCheck();
+            //MoveDir();
+            //Rotation();
             MoveInput();
-            Rotation();
             RunInput();
             IsSlope();
             MoveAnim();
-            //if(Input.GetKeyDown(KeyCode.Space)){StartCoroutine(Dodge());}
             stateMachine.Update();
         }
     }
@@ -121,10 +115,6 @@ public abstract class PlayerCtrl : MonoBehaviour
     private void FixedUpdate() {
         if(pv.isMine)
         {
-            if (isDodge)
-            {
-                rigid.MovePosition(transform.position + dodgeDir.normalized * dodgeForce * Time.fixedDeltaTime);
-            }
             stateMachine.FixedUpdate();
         }
         else
@@ -133,20 +123,21 @@ public abstract class PlayerCtrl : MonoBehaviour
             tr.rotation = Quaternion.Slerp(tr.rotation, curRot, Time.fixedDeltaTime * rotationSpeed);
         }
     }
-    
-    void DirCheck()
-    {
-        lookForward = new Vector3(mainCamera.transform.forward.x,0,mainCamera.transform.forward.z).normalized;
-        lookSide = new Vector3(mainCamera.transform.right.x,0,mainCamera.transform.right.z).normalized;
-        moveDir = (lookForward * moveInput.z) + (lookSide*moveInput.x);
-    }
-
     void MoveInput()
     {
         xAxis = Input.GetAxisRaw("Horizontal");
 		zAxis = Input.GetAxisRaw("Vertical");
         moveInput = new Vector3(xAxis,0,zAxis).normalized;
         isMove = moveInput.magnitude > 0;
+    }
+    public bool RunInput(){return Input.GetKey(KeyCode.LeftShift);}
+    public bool DodgeInput(){return Input.GetKeyDown(KeyCode.Space);}
+    
+    public Vector3 MoveDir()
+    {
+        lookForward = new Vector3(mainCamera.transform.forward.x,0,mainCamera.transform.forward.z).normalized;
+        lookSide = new Vector3(mainCamera.transform.right.x,0,mainCamera.transform.right.z).normalized;
+        return (lookForward * moveInput.z) + (lookSide*moveInput.x);
     }
 
     public void Rotation()
@@ -155,9 +146,6 @@ public abstract class PlayerCtrl : MonoBehaviour
         transform.localRotation = Quaternion.Lerp(transform.localRotation,curRot,rotationSpeed*Time.deltaTime);
     }
     
-    public bool RunInput(){return Input.GetKey(KeyCode.LeftShift);}
-    public bool DodgeInput(){return Input.GetKeyDown(KeyCode.Space);}
-
     public bool IsSlope()
     {
         Ray ray = new Ray(transform.position,Vector3.down);
@@ -169,7 +157,6 @@ public abstract class PlayerCtrl : MonoBehaviour
         }
         return false;
     }
-
 
     public void ChangeState(PlayerState newState)
     {
