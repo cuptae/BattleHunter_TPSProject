@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 625bf9e589013f048b7cd2a8ac471d14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movetype: 0
   dodgeTime: 0.7
   isMove: 0
   isDodge: 0
@@ -62,6 +63,7 @@ MonoBehaviour:
   moveForce: 30
   weapon: {fileID: 3897433851248381228}
   curState: 4
+  groundNormal: {x: 0, y: 0, z: 0}
   camFollow: {fileID: 0}
   bulletEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
   damage: 30

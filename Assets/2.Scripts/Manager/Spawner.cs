@@ -34,7 +34,6 @@ public class Spawner : MonoBehaviour
             for(int i =0; i<oneceSpawnCnt; i++)
             {
                 int randPos = Random.Range(1,spawnPos.Length);
-                Debug.Log(randPos);
                 GameObject Mutant = PoolManager.Instance.GetObject("Mutant",spawnPos[randPos].position,spawnPos[randPos].rotation);
             }
         }

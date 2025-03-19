@@ -18,7 +18,6 @@ public class CameraCtrl : MonoBehaviour
 
     public Transform target;
     public Vector3 dirOffSet;
-
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -93,8 +92,6 @@ public class CameraCtrl : MonoBehaviour
 
     // 장애물 감지
     RaycastHit hit;
-    bool isObstacle = Physics.Linecast(targetPosition, desiredPosition, out hit);
-
     // 원래 카메라 위치 (초록색)
     Gizmos.color = Color.green;
     Gizmos.DrawSphere(desiredPosition, 0.1f);
@@ -103,7 +100,7 @@ public class CameraCtrl : MonoBehaviour
     Gizmos.color = Color.yellow;
     Gizmos.DrawLine(targetPosition, desiredPosition);
 
-    if (isObstacle)
+    if (Physics.Linecast(targetPosition, desiredPosition, out hit))
     {
         // 충돌한 지점 (빨간색)
         Gizmos.color = Color.red;

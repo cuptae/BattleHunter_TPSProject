@@ -111,7 +111,7 @@ public class PhotonLobby : MonoBehaviour
     {
         PhotonNetwork.isMessageQueueRunning = false;
 
-        AsyncOperation ao = SceneManager.LoadSceneAsync("TestIngame");
+        AsyncOperation ao = SceneManager.LoadSceneAsync("Ingame");
 
         yield return ao;
     }

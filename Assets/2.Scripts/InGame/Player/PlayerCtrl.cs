@@ -3,7 +3,6 @@ using System.IO;
 using UnityEngine;
 using System.Linq;
 using Unity.VisualScripting;
-
 public enum STATE
 {
     IDLE,
@@ -16,22 +15,28 @@ public enum STATE
 [RequireComponent(typeof(Rigidbody))]
 public abstract class PlayerCtrl : MonoBehaviour
 {
+    [HideInInspector]
     public Animator animator{get; protected set;}
+    [HideInInspector]
     public Rigidbody rigid{get; protected set;}
+    [HideInInspector]
     public Vector3 moveDir{get; protected set;}
 
+    public Movetype movetype;
     private Vector3 moveInput;
     private Vector3 lookForward;
     private Vector3 lookSide;
     private Vector3 dodgeDir;
     private Collider col;
 
+    private RaycastHit slopeHit;
+
     protected int enemyLayerMask;
+    private  int groundLayer;
 
     public float finalSpeed{get; private set;}
     private float xAxis;
     private float zAxis;
-    private float moveAnimPercent;
     public float dodgeTime = 0.7f;
 
     protected Camera mainCamera;
@@ -50,13 +55,14 @@ public abstract class PlayerCtrl : MonoBehaviour
     
     public GameObject weapon;
     public STATE curState; 
-    public PlayerStateMachine stateMachine; 
+    private PlayerStateMachine stateMachine;
+
+    public Vector3 groundNormal;
 
     //Photon
     protected PhotonView pv = null;
     protected Vector3 curPos = Vector3.zero;
     protected Quaternion curRot = Quaternion.identity;
-
     protected Transform tr;
     [HideInInspector]
     public Transform camFollow;
@@ -69,10 +75,13 @@ public abstract class PlayerCtrl : MonoBehaviour
         pv = GetComponent<PhotonView>();
         camFollow = transform.Find("CameraFollow");
         mainCamera = Camera.main;
-        enemyLayerMask = 1<<LayerMask.NameToLayer("ENEMY");
+
         stateMachine =new PlayerStateMachine();
         pv.ObservedComponents[0] = this;
         pv.synchronization = ViewSynchronization.UnreliableOnChange;
+
+        enemyLayerMask = 1<<LayerMask.NameToLayer("ENEMY");
+        groundLayer = 1<<LayerMask.NameToLayer("GROUND");
 
         if(pv.isMine)
         {
@@ -102,8 +111,9 @@ public abstract class PlayerCtrl : MonoBehaviour
             MoveInput();
             Rotation();
             RunInput();
-            //DodgeInput();
-            if(Input.GetKeyDown(KeyCode.Space)){StartCoroutine(Dodge());}
+            IsSlope();
+            MoveAnim();
+            //if(Input.GetKeyDown(KeyCode.Space)){StartCoroutine(Dodge());}
             stateMachine.Update();
         }
     }
@@ -114,7 +124,6 @@ public abstract class PlayerCtrl : MonoBehaviour
             if (isDodge)
             {
                 rigid.MovePosition(transform.position + dodgeDir.normalized * dodgeForce * Time.fixedDeltaTime);
-                //rigid.AddForce(dodgeDir * dodgeForce,ForceMode.Impulse);
             }
             stateMachine.FixedUpdate();
         }
@@ -142,9 +151,6 @@ public abstract class PlayerCtrl : MonoBehaviour
 
     public void Rotation()
     {
-        if(DodgeInput())
-            return;
-
         curRot = Quaternion.LookRotation(lookForward);
         transform.localRotation = Quaternion.Lerp(transform.localRotation,curRot,rotationSpeed*Time.deltaTime);
     }
@@ -152,48 +158,32 @@ public abstract class PlayerCtrl : MonoBehaviour
     public bool RunInput(){return Input.GetKey(KeyCode.LeftShift);}
     public bool DodgeInput(){return Input.GetKeyDown(KeyCode.Space);}
 
-
-    IEnumerator Dodge()
+    public bool IsSlope()
     {
-        if (isDodge)
-            yield break;
-
-        float elapseTime = 0f;
-        dodgeDir = isMove ? moveDir : transform.forward;
-        if (dodgeDir == Vector3.zero)
+        Ray ray = new Ray(transform.position,Vector3.down);
+        if(Physics.Raycast(ray,out slopeHit,2.0f,groundLayer))
         {
-            dodgeDir = transform.forward;  // 기본 방향 설정
+            groundNormal = slopeHit.normal;
+            float groundAngle = Vector3.Angle(Vector3.up,groundNormal);
+            return groundAngle != 0f;
         }
-        Quaternion dodgeLook = isMove ? Quaternion.LookRotation(moveDir) : Quaternion.LookRotation(transform.forward);
-        animator.SetTrigger("Dodge");
-
-        // 회피 시 주변 몬스터와의 충돌을 무시
-        Collider[] monCols = Physics.OverlapSphere(tr.position, 7.0f, enemyLayerMask);
-        foreach (Collider monsterCol in monCols)
-        {
-            Physics.IgnoreCollision(col, monsterCol, true); // 적과의 충돌을 무시
-        }
-
-        while (elapseTime < dodgeTime)
-        {
-            isDodge = true;
-            transform.rotation = dodgeLook;
-            elapseTime += Time.deltaTime;
-            yield return null;
-        }
-
-        isDodge = false;
-
-        // 회피 종료 후 적과의 충돌을 다시 활성화
-        foreach (Collider monsterCollider in monCols)
-        {
-            Physics.IgnoreCollision(col, monsterCollider, false); // 충돌을 다시 활성화
-        }
+        return false;
     }
+
 
     public void ChangeState(PlayerState newState)
     {
         stateMachine.ChangeState(newState);
+    }
+
+    void MoveAnim()
+    {
+        float moveAnimPercent = RunInput() ? 1f : 0f;
+        animator.SetFloat("Speed", moveAnimPercent, 0.1f, Time.deltaTime);
+        // 좌우 이동 값
+        animator.SetFloat("MoveX", Input.GetAxis("Horizontal"));
+        // 전후 이동 값
+        animator.SetFloat("MoveZ", Input.GetAxis("Vertical"));
     }
 
     protected abstract void Attack();
@@ -223,48 +213,3 @@ public abstract class PlayerCtrl : MonoBehaviour
         }
     }
 }
-
-
-#region Move()
-    // public void Move()
-    // {
-    //     if(isDodge)
-    //         return;
-
-    //     //rigid.MovePosition(transform.position+moveDir*finalSpeed*Time.deltaTime);
-
-    //     if(isMove)
-    //     {
-    //         rigid.AddForce(moveDir*moveForce,ForceMode.Force);
-    //     }
-    //     else
-    //     {
-    //         rigid.velocity = Vector3.zero;
-    //     }
-    //     if (rigid.velocity.magnitude > finalSpeed)
-    //     {
-    //         rigid.velocity = rigid.velocity.normalized * finalSpeed;
-    //     }
-    // }
-#endregion
-#region  SpeedCheck()
-    // void SpeedCheck()
-    // {
-    //     if(Input.GetKey(KeyCode.LeftShift)&&!isAttack){
-    //         isRun = true;
-    //     }
-    //     else{
-    //         isRun = false;
-    //     }
-
-    //     // if(isRun){
-    //     //     finalSpeed = runSpeed;
-    //     // }
-    //     // else if(isAttack){
-    //     //     finalSpeed = attackWalkSpeed;
-    //     // }
-    //     // else{
-    //     //     finalSpeed = walkSpeed;
-    //     // }
-    // }
-    #endregion
