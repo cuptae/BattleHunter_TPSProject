@@ -72,8 +72,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7259450394693634562}
-  - component: {fileID: 7621017222107906122}
   - component: {fileID: 1095192583758836900}
+  - component: {fileID: 7621017222107906122}
   - component: {fileID: 4833555371326546781}
   - component: {fileID: 4835307614292104733}
   m_Layer: 0
@@ -100,6 +100,38 @@ Transform:
   - {fileID: 4464966741227592457}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1095192583758836900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 500740715899982824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c7d4be40b273ec418779279677dffc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movetype: 0
+  dodgeTime: 0.7
+  mainCamera: {fileID: 0}
+  isMove: 0
+  isDodge: 0
+  isAttack: 0
+  attackRange: 0
+  attackWalkSpeed: 3
+  walkSpeed: 5
+  runSpeed: 7
+  dodgeForce: 10
+  rotationSpeed: 4
+  moveForce: 30
+  weapon: {fileID: 0}
+  curState: 4
+  groundNormal: {x: 0, y: 0, z: 0}
+  camFollow: {fileID: 0}
+  bulletEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
+  damage: 20
+  fireRate: 0.05
 --- !u!54 &7621017222107906122
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -127,35 +159,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &1095192583758836900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 500740715899982824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c7d4be40b273ec418779279677dffc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dodgeTime: 0.7
-  isMove: 0
-  isDodge: 0
-  isAttack: 0
-  attackRange: 0
-  attackWalkSpeed: 3
-  walkSpeed: 5
-  runSpeed: 10
-  dodgeForce: 0
-  rotationSpeed: 4
-  moveForce: 30
-  weapon: {fileID: 0}
-  curState: 4
-  camFollow: {fileID: 0}
-  bulletEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
-  damage: 56.7
-  fireRate: 0.05
 --- !u!114 &4833555371326546781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,7 +205,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.23180023
+  m_Radius: 0.36261266
   m_Height: 1.9566923
   m_Direction: 1
   m_Center: {x: 0, y: 0.99001724, z: 0}
