@@ -7,7 +7,7 @@ public class AutoDoor : MonoBehaviour
     public bool isOpen = false;
     public Animator anim;  // Animation -> Animator로 변경
 
-    public boxcube[] cubes;  // 큐브들을 배열로 참조
+    public BoxCube[] cubes;  // 큐브들을 배열로 참조
 
     private void Awake() {
         anim = GetComponent<Animator>();  // Animator 컴포넌트를 가져옴
@@ -21,7 +21,7 @@ public class AutoDoor : MonoBehaviour
         // 모든 큐브가 완료되었는지 확인
         bool allCubesCompleted = true;
 
-        foreach (boxcube cube in cubes) {
+        foreach (BoxCube cube in cubes) {
             if (!cube.isCompleted) {
                 allCubesCompleted = false;
                 break;  // 하나라도 완료되지 않으면 종료
