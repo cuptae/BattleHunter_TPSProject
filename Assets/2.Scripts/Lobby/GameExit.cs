@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class GameExit : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void ExitGame()
     {
-        
-    }
+        Debug.Log("게임 종료");
+        Application.Quit(); // 어플리케이션에서 실행 중인 경우 종료
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // 유니티 에디터에서 실행 중이라면 강제 종료
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 }
