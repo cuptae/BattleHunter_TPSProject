@@ -5,6 +5,8 @@ using UnityEngine;
 public class DodgeState : PlayerState
 {
     public DodgeState(PlayerCtrl player) : base (player){}
+    private float dodgeForce = 7f;
+
 
     public override void EnterState()
     {
@@ -33,10 +35,10 @@ public class DodgeState : PlayerState
             player.transform.rotation = Quaternion.LookRotation(dodgeDir);
 
         if(!player.IsSlope())
-            player.rigid.AddForce(dodgeDir*player.dodgeForce,ForceMode.Impulse);
+            player.rigid.AddForce(dodgeDir*dodgeForce,ForceMode.Impulse);
         else
-            player.rigid.AddForce(Vector3.ProjectOnPlane(dodgeDir,player.groundNormal).normalized*player.dodgeForce,ForceMode.Impulse);
-        yield return new WaitForSeconds(player.dodgeTime);
+            player.rigid.AddForce(Vector3.ProjectOnPlane(dodgeDir,player.groundNormal).normalized*dodgeForce,ForceMode.Impulse);
+        yield return new WaitForSeconds(player.characterData.dodgeTime);
         player.ChangeState(new IdleState(player));
     }
 }

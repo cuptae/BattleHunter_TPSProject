@@ -113,18 +113,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movetype: 0
-  dodgeTime: 0.7
   mainCamera: {fileID: 0}
   isMove: 0
   isDodge: 0
   isAttack: 0
-  attackRange: 0
-  attackWalkSpeed: 3
-  walkSpeed: 5
-  runSpeed: 7
-  dodgeForce: 10
-  rotationSpeed: 4
-  moveForce: 30
   weapon: {fileID: 0}
   curState: 4
   groundNormal: {x: 0, y: 0, z: 0}

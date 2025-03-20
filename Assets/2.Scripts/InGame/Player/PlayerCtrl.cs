@@ -19,41 +19,25 @@ public abstract class PlayerCtrl : MonoBehaviour
     public Animator animator{get; protected set;}
     [HideInInspector]
     public Rigidbody rigid{get; protected set;}
-
+    private PlayerStateMachine stateMachine;
     public Movetype movetype;
     private Vector3 moveInput;
     private Vector3 lookForward;
     private Vector3 lookSide;
-    private Vector3 dodgeDir;
-    private Collider col;
-
     private RaycastHit slopeHit;
 
     protected int enemyLayerMask;
     private  int groundLayer;
-
-    public float finalSpeed{get; private set;}
     private float xAxis;
     private float zAxis;
-    public float dodgeTime = 0.7f;
 
-    public Camera mainCamera;
+    protected Camera mainCamera;
     public bool isMove;
     public bool isDodge = false;
-
     public bool isAttack;
-    public float attackRange;
-    public float attackWalkSpeed = 3.0f;
-    public float walkSpeed = 5.0f;
-    public float runSpeed = 10.0f;
-    public float dodgeForce;
-    public float rotationSpeed = 4.0f;
-    public float moveForce;
+    public CharacterData characterData{get; protected set;}
 
-    
-    public GameObject weapon;
     public STATE curState; 
-    private PlayerStateMachine stateMachine;
     public Vector3 groundNormal;
 
 
@@ -63,24 +47,25 @@ public abstract class PlayerCtrl : MonoBehaviour
     protected Quaternion curRot = Quaternion.identity;
     protected Transform tr;
     [HideInInspector]
-    public Transform camFollow;
+    private Transform camFollow;
+    public GameObject weapon;
     
     protected virtual void Awake() {
         animator = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
-        col = GetComponent<CapsuleCollider>(); 
-        pv = GetComponent<PhotonView>();
+        characterData = new CharacterData();
         camFollow = transform.Find("CameraFollow");
         mainCamera = Camera.main;
 
         stateMachine =new PlayerStateMachine();
-        pv.ObservedComponents[0] = this;
-        pv.synchronization = ViewSynchronization.UnreliableOnChange;
 
         enemyLayerMask = 1<<LayerMask.NameToLayer("ENEMY");
         groundLayer = 1<<LayerMask.NameToLayer("GROUND");
 
+        pv = GetComponent<PhotonView>();
+        pv.ObservedComponents[0] = this;
+        pv.synchronization = ViewSynchronization.UnreliableOnChange;
         if(pv.isMine)
         {
             mainCamera.GetComponent<CameraCtrl>().target = camFollow;
@@ -102,8 +87,6 @@ public abstract class PlayerCtrl : MonoBehaviour
     {
         if(pv.isMine)
         {
-            //MoveDir();
-            //Rotation();
             MoveInput();
             RunInput();
             IsSlope();
@@ -119,8 +102,8 @@ public abstract class PlayerCtrl : MonoBehaviour
         }
         else
         {
-            tr.position = Vector3.Lerp(tr.position,curPos,Time.fixedDeltaTime * runSpeed);
-            tr.rotation = Quaternion.Slerp(tr.rotation, curRot, Time.fixedDeltaTime * rotationSpeed);
+            tr.position = Vector3.Lerp(tr.position,curPos,Time.fixedDeltaTime * characterData.runSpeed);
+            tr.rotation = Quaternion.Slerp(tr.rotation, curRot, Time.fixedDeltaTime * characterData.rotationSpeed);
         }
     }
     void MoveInput()
@@ -143,7 +126,7 @@ public abstract class PlayerCtrl : MonoBehaviour
     public void Rotation()
     {
         curRot = Quaternion.LookRotation(lookForward);
-        transform.localRotation = Quaternion.Lerp(transform.localRotation,curRot,rotationSpeed*Time.deltaTime);
+        transform.localRotation = Quaternion.Lerp(transform.localRotation,curRot,characterData.rotationSpeed*Time.deltaTime);
     }
     
     public bool IsSlope()
@@ -196,7 +179,6 @@ public abstract class PlayerCtrl : MonoBehaviour
             animator.SetFloat("MoveX",(float)stream.ReceiveNext());
             animator.SetFloat("MoveZ",(float)stream.ReceiveNext());
             animator.SetBool("Move",(bool)stream.ReceiveNext());
-             
         }
     }
 }

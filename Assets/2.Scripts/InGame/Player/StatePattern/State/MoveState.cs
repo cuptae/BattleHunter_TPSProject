@@ -9,8 +9,9 @@ public enum Movetype
 }
 public class MoveState : PlayerState
 {
-    private float finalSpeed;
+    private float curSpeed;
     private float moveAnimPercent;
+    private float moveForce = 30f;
     public MoveState(PlayerCtrl player) : base(player) {}
     public override void EnterState()
     {
@@ -45,36 +46,36 @@ public class MoveState : PlayerState
             if(player.isMove)
             {
                 if(!player.IsSlope())
-                    player.rigid.AddForce(player.MoveDir()*player.moveForce,ForceMode.Force);
+                    player.rigid.AddForce(player.MoveDir()*moveForce,ForceMode.Force);
                 else
-                    player.rigid.AddForce(Vector3.ProjectOnPlane(player.MoveDir(),player.groundNormal).normalized*player.moveForce,ForceMode.Force);
+                    player.rigid.AddForce(Vector3.ProjectOnPlane(player.MoveDir(),player.groundNormal).normalized*moveForce,ForceMode.Force);
             }
             else
             {
                 player.rigid.velocity = Vector3.zero;
             }
-            if (player.rigid.velocity.magnitude > finalSpeed)
+            if (player.rigid.velocity.magnitude > curSpeed)
             {
-                player.rigid.velocity = player.rigid.velocity.normalized * finalSpeed;
+                player.rigid.velocity = player.rigid.velocity.normalized * curSpeed;
             }
         }
         else
         {
-            player.rigid.MovePosition(player.transform.position+player.MoveDir()*finalSpeed*Time.deltaTime);
+            player.rigid.MovePosition(player.transform.position+player.MoveDir()*curSpeed*Time.deltaTime);
         }
     }
     void SpeedCheck()
     {
         if(player.isAttack){
-            finalSpeed = player.attackWalkSpeed;
+            curSpeed = player.characterData.attackWalkSpeed;
         }
         else if(player.RunInput())
         {
-            finalSpeed = player.runSpeed;
+            curSpeed = player.characterData.runSpeed;
             player.animator.SetFloat("Speed", 1, 0f, Time.deltaTime);
         }
         else{
-            finalSpeed = player.walkSpeed;
+            curSpeed = player.characterData.walkSpeed;
         }
     }
     void MoveAnim()

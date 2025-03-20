@@ -11,8 +11,7 @@ public class PoolManager : MonoSingleton<PoolManager>
 
     public void CreatePool(string key, GameObject prefab, int size)        
     {
-        //GameObject pa = new GameObject(key);
-        //pa.transform.parent = transform;
+        GameObject pa = new GameObject(key);
         //만약 풀에 해당 key 값이 없다면
         if(!pool.ContainsKey(key))
         {
@@ -22,7 +21,7 @@ public class PoolManager : MonoSingleton<PoolManager>
             //전해진 size만큼 for문
             for(int i = 0; i< size; i++)
             {
-                GameObject go = Instantiate(prefab);//프리팹 생성
+                GameObject go = Instantiate(prefab,pa.transform);//프리팹 생성
                 go.SetActive(false);//비활성
                 pool[key].Enqueue(go);//큐에 넣는다
             }
@@ -31,8 +30,7 @@ public class PoolManager : MonoSingleton<PoolManager>
 
     public void CreatePhotonPool(string key, GameObject prefab, int size)
     {
-        //GameObject pa = new GameObject(key);
-        //pa.transform.parent = transform;
+        GameObject pa = new GameObject(key);
         //만약 풀에 해당 key 값이 없다면
         if(!pool.ContainsKey(key))
         {
@@ -43,7 +41,7 @@ public class PoolManager : MonoSingleton<PoolManager>
             for(int i = 0; i< size; i++)
             {
                 GameObject go = PhotonNetwork.Instantiate(prefab.name,transform.position,transform.rotation,0);//프리팹 생성
-                //go.transform.parent = pa.transform;
+                go.transform.parent = pa.transform;
                 go.SetActive(false);//비활성
                 pool[key].Enqueue(go);//큐에 넣는다
             }
