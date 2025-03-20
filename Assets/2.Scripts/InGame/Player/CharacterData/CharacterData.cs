@@ -14,3 +14,8 @@ public class CharacterData
     public float rotationSpeed;
     public float damage;
 }
+[System.Serializable]
+public class CharacterDataList
+{
+    public List<CharacterData> characterDataList;
+}

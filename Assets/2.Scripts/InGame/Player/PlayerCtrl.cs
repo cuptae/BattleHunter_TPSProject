@@ -20,7 +20,6 @@ public abstract class PlayerCtrl : MonoBehaviour
     [HideInInspector]
     public Rigidbody rigid{get; protected set;}
     private PlayerStateMachine stateMachine;
-    public Movetype movetype;
     private Vector3 moveInput;
     private Vector3 lookForward;
     private Vector3 lookSide;
@@ -35,10 +34,11 @@ public abstract class PlayerCtrl : MonoBehaviour
     public bool isMove;
     public bool isDodge = false;
     public bool isAttack;
-    public CharacterData characterData{get; protected set;}
+    public CharacterData characterData;
 
     public STATE curState; 
     public Vector3 groundNormal;
+    public Movetype movetype;
 
 
     //Photon
@@ -49,7 +49,7 @@ public abstract class PlayerCtrl : MonoBehaviour
     [HideInInspector]
     private Transform camFollow;
     public GameObject weapon;
-    
+
     protected virtual void Awake() {
         animator = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();
@@ -180,5 +180,10 @@ public abstract class PlayerCtrl : MonoBehaviour
             animator.SetFloat("MoveZ",(float)stream.ReceiveNext());
             animator.SetBool("Move",(bool)stream.ReceiveNext());
         }
+    }
+
+    public void SetData(CharacterData data)
+    {
+        characterData = data;
     }
 }
