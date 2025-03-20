@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class AutoDoor : MonoBehaviour
     public Animator anim;  // Animation -> Animator로 변경
 
     public BoxCube[] cubes;  // 큐브들을 배열로 참조
+
 
     private void Awake() {
         anim = GetComponent<Animator>();  // Animator 컴포넌트를 가져옴
@@ -21,8 +23,10 @@ public class AutoDoor : MonoBehaviour
         // 모든 큐브가 완료되었는지 확인
         bool allCubesCompleted = true;
 
-        foreach (BoxCube cube in cubes) {
-            if (!cube.isCompleted) {
+        foreach (BoxCube cube in cubes) 
+        {
+            if (!cube.isCompleted)
+            {
                 allCubesCompleted = false;
                 break;  // 하나라도 완료되지 않으면 종료
             }
@@ -46,4 +50,14 @@ public class AutoDoor : MonoBehaviour
         anim.SetTrigger("Close");  // Animator에서 트리거를 이용해 애니메이션 실행
         isOpen = false;
     }
+
+        public void CheckDoorStatus()
+    {
+       MiniGameManager miniGame = FindObjectOfType<MiniGameManager>();
+       if (miniGame.score >= miniGame.maxScore)
+       {
+           OpenDoor();
+       }
+    }
+
 }
