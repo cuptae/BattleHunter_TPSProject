@@ -75,7 +75,7 @@ public class Warrior : PlayerCtrl
             comboStep+=1;
             canCombo = false; 
         }
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(characterData.attackRate);
         if(comboStep<3)
         {
             canCombo = true;

@@ -27,8 +27,6 @@ public abstract class PlayerCtrl : MonoBehaviour
 
     protected int enemyLayerMask;
     private  int groundLayer;
-    private float xAxis;
-    private float zAxis;
 
     protected Camera mainCamera;
     public bool isMove;
@@ -49,6 +47,8 @@ public abstract class PlayerCtrl : MonoBehaviour
     [HideInInspector]
     private Transform camFollow;
     public GameObject weapon;
+
+    private int curHp;
 
     protected virtual void Awake() {
         animator = GetComponentInChildren<Animator>();
@@ -108,8 +108,8 @@ public abstract class PlayerCtrl : MonoBehaviour
     }
     void MoveInput()
     {
-        xAxis = Input.GetAxisRaw("Horizontal");
-		zAxis = Input.GetAxisRaw("Vertical");
+        float xAxis = Input.GetAxisRaw("Horizontal");
+		float zAxis = Input.GetAxisRaw("Vertical");
         moveInput = new Vector3(xAxis,0,zAxis).normalized;
         isMove = moveInput.magnitude > 0;
     }
@@ -157,13 +157,30 @@ public abstract class PlayerCtrl : MonoBehaviour
     }
 
     protected abstract void Attack();
+    public void GetDamage(int damage)
+    {
+        if(PhotonNetwork.isMasterClient)
+        {
+            pv.RPC("TakeDamage",PhotonTargets.AllBuffered,damage);
+        }
+    }
 
+    [PunRPC]
+    private void TakeDamage(int damage,PhotonMessageInfo info)
+    {
+        curHp -= damage;
+        if(curHp<=0)
+        {
+            ChangeState(new PlayerDieState(this));
+        }
+    }
     protected virtual void  OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.isWriting)
         {
             stream.SendNext(tr.position);
             stream.SendNext(tr.rotation);
+            stream.SendNext(curHp);
             stream.SendNext(isMove);
             stream.SendNext(animator.GetFloat("Speed"));
             stream.SendNext(animator.GetFloat("MoveX"));
@@ -174,6 +191,7 @@ public abstract class PlayerCtrl : MonoBehaviour
         {
             curPos = (Vector3)stream.ReceiveNext();
             curRot = (Quaternion)stream.ReceiveNext();
+            curHp = (int)stream.ReceiveNext();
             isMove = (bool)stream.ReceiveNext();
             animator.SetFloat("Speed",(float)stream.ReceiveNext());
             animator.SetFloat("MoveX",(float)stream.ReceiveNext());

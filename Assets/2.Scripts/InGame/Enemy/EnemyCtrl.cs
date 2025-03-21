@@ -15,8 +15,8 @@ public class EnemyCtrl : MonoBehaviour
 {
     private Rigidbody rigid;
 
-    public float maxHp;
-    public float curHp;
+    public int maxHp;
+    public int curHp;
     public bool isDead = false;
 
     private PhotonView pv;
@@ -53,7 +53,7 @@ public class EnemyCtrl : MonoBehaviour
         curState.EnterState(this); // 새로운 상태 진입
     }
 
-    public void GetDamage(float damage)
+    public void GetDamage(int damage)
     {
         if(PhotonNetwork.isMasterClient)
         {
@@ -62,7 +62,7 @@ public class EnemyCtrl : MonoBehaviour
     }
 
     [PunRPC]
-    public void TakeDamage(float damage,PhotonMessageInfo info)
+    public void TakeDamage(int damage,PhotonMessageInfo info)
     {
         curHp -= damage;
         if(curHp<=0)
@@ -81,7 +81,7 @@ public class EnemyCtrl : MonoBehaviour
         }
         else
         {
-            curHp = (float)stream.ReceiveNext(); 
+            curHp = (int)stream.ReceiveNext(); 
         }
     }
 }

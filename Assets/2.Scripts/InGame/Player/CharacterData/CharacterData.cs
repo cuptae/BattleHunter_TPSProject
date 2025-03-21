@@ -12,7 +12,7 @@ public class CharacterData
     public float walkSpeed;
     public float runSpeed;
     public float rotationSpeed;
-    public float damage;
+    public int damage;
 }
 [System.Serializable]
 public class CharacterDataList

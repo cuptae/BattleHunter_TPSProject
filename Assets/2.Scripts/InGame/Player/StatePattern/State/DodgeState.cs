@@ -5,7 +5,7 @@ using UnityEngine;
 public class DodgeState : PlayerState
 {
     public DodgeState(PlayerCtrl player) : base (player){}
-    private float dodgeForce = 7f;
+    private float dodgeForce = 15f;
 
 
     public override void EnterState()
