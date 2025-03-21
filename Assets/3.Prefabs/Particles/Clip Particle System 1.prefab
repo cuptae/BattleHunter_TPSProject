@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2012003411043079332}
   - component: {fileID: 6786215779323505134}
   m_Layer: 0
-  m_Name: Bullet Case Particle System
+  m_Name: Clip Particle System 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4879,7 +4879,7 @@ ParticleSystemRenderer:
   m_VertexStreams: 00010304
   m_UseCustomTrailVertexStreams: 0
   m_TrailVertexStreams: 00010304
-  m_Mesh: {fileID: 1985688775922735085, guid: 845a646869bbb9449b4bb2c5973d6dc7, type: 3}
+  m_Mesh: {fileID: -4684380829729525434, guid: e00b27b8d9c47264ab84203ddf941b2c, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
