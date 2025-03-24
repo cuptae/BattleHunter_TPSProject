@@ -4667,6 +4667,7 @@ GameObject:
   - component: {fileID: 4805910786385284548}
   - component: {fileID: 3280760862750014513}
   - component: {fileID: 856906981321223241}
+  - component: {fileID: -7626265514758367234}
   m_Layer: 0
   m_Name: Dron
   m_TagString: Enemy
@@ -4809,13 +4810,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dcf3f88497fa734ea8073da121bc92d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 1
-  curHp: 1
+  maxHp: 100
+  curHp: 0
   isDead: 0
   navMeshAgent: {fileID: 0}
   speed: 30
   floatSpeed: 2
   damage: 10
+--- !u!114 &-7626265514758367234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4986215645380303712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 3
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 1175548960120851173}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &5070591975070196542
 GameObject:
   m_ObjectHideFlags: 0

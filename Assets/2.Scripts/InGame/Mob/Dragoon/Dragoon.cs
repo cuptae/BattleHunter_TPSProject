@@ -1,19 +1,27 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Dragoon : MonoBehaviour
+public class Dragoon : EnemyCtrl
 {
-    public float stopDistance = 5f; // 최대 접근 거리
-    public float retreatSpeed = 3f; // 후퇴 속도
-    public float bufferDistance = 1f; // 후퇴를 시작하는 여유 거리
-    public float rotationSpeed = 5f; // 회전 속도
+    public float stopDistance = 5f;
+    public float retreatSpeed = 3f;
+    public float bufferDistance = 1f;
+    public float rotationSpeed = 5f;
+
+    public float attackRange = 6f; // 공격 사거리
+    public float fireInterval = 3f; // 발사 간격
+    
+    public GameObject firePoint; // 투사체 생성 위치
 
     private NavMeshAgent agent;
-    private Transform targetPlayer; // 가장 가까운 플레이어
-
+    private Transform targetPlayer;
+    private float fireTimer;
+    public DragoonProjectile projectile; // 프리팹이 아닌, 씬에 배치된 단일 투사체
+    
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        fireTimer = fireInterval;
     }
 
     void Update()
@@ -24,27 +32,55 @@ public class Dragoon : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, targetPlayer.position);
 
-        // 항상 플레이어를 바라보게 회전 (부드러운 회전 적용)
+        // 회전
         Vector3 direction = (targetPlayer.position - transform.position).normalized;
-        direction.y = 0; // Y축 회전 제거 (바닥만 보지 않게)
+        direction.y = 0;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
 
+        // 이동
         if (distance > stopDistance)
         {
-            // 플레이어에게 다가가기
             agent.SetDestination(targetPlayer.position);
         }
-        else if (distance < stopDistance - bufferDistance) // 너무 가까우면 후퇴
+        else if (distance < stopDistance - bufferDistance)
         {
-            // 후퇴 방향: 몬스터 -> 플레이어 방향의 반대
             Vector3 retreatDirection = -direction;
             agent.Move(retreatDirection * retreatSpeed * Time.deltaTime);
         }
         else
         {
-            agent.ResetPath(); // 적절한 거리에서 정지
+            agent.ResetPath();
         }
+
+        // 공격
+        if (distance <= attackRange)
+        {
+            fireTimer -= Time.deltaTime;
+            if (fireTimer <= 0f)
+            {
+                FireProjectile();
+                fireTimer = fireInterval;
+            }
+        }
+        else
+        {
+            fireTimer = fireInterval; // 사거리 벗어나면 타이머 리셋
+        }
+    }
+
+
+    void FireProjectile()
+    {
+        if (projectile != null && targetPlayer != null)
+        {
+            projectile.transform.position = firePoint.transform.position; // firePoint에서 시작
+            projectile.Launch(targetPlayer);
+        }
+
+        //반동: 드라군 뒤로 0.5f 이동
+        Vector3 backDirection = -transform.forward;
+        transform.position += backDirection * 0.5f;
     }
 
     Transform FindClosestPlayer()

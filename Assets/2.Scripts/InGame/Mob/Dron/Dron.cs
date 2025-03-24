@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Dron : MonoBehaviour
+public class Dron : EnemyCtrl
 {
     public float speed = 30f; // 이동 속도
     public float floatSpeed = 2f; // 멈춰있는 동안 위로 이동하는 속도

@@ -4260,6 +4260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curCharacter: 3
+  jsonPath: D:/Project/Assets/2.Scripts/InGame/Player/CharacterData/Characterdata.json
 --- !u!4 &2083063859
 Transform:
   m_ObjectHideFlags: 0
