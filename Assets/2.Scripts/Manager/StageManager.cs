@@ -10,8 +10,6 @@ public class StageManager : MonoBehaviour
 
     Transform[] enemySpawnPos;
 
-    GameObject[] enemys;
-
     void Awake()
     {
         pv = GetComponent<PhotonView>();
@@ -29,28 +27,20 @@ public class StageManager : MonoBehaviour
             case Character.GUNNER:
                 Debug.Log("Gunner");
                 player = PhotonNetwork.Instantiate("Gunner",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
-                player.GetComponent<PlayerCtrl>().SetData(GameManager.Instance.GetCharacterDataByName("Gunner"));
+                //player.GetComponent<PlayerCtrl>().SetData(GameManager.Instance.GetCharacterDataByName("Gunner"));
                 break;
             case Character.WARRIOR:
                 Debug.Log("Warrior");
                 player = PhotonNetwork.Instantiate("Warrior",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
-                player.GetComponent<PlayerCtrl>().SetData(GameManager.Instance.GetCharacterDataByName("Warrior"));
+                //player.GetComponent<PlayerCtrl>().SetData(GameManager.Instance.GetCharacterDataByName("Warrior"));
                 break;
             case Character.HUNTER:
                 Debug.Log("Hunter");
                 player = PhotonNetwork.Instantiate("Hacker",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
-                player.GetComponent<PlayerCtrl>().SetData(GameManager.Instance.GetCharacterDataByName("Hacker"));
+                //player.GetComponent<PlayerCtrl>().SetData(GameManager.Instance.GetCharacterDataByName("Hacker"));
                 break;
         }
         
-        yield return null;
-    }
-    IEnumerator InitEnemy()
-    {
-        for(int i = 1; i<enemySpawnPos.Length; i++)
-        {
-            PhotonNetwork.InstantiateSceneObject("Enemy", enemySpawnPos[i].localPosition, enemySpawnPos[i].localRotation, 0, null);
-        }
         yield return null;
     }
 

@@ -19,25 +19,27 @@ public abstract class PlayerCtrl : MonoBehaviour
     public Animator animator{get; protected set;}
     [HideInInspector]
     public Rigidbody rigid{get; protected set;}
+
+
     private PlayerStateMachine stateMachine;
+    public STATE curState; 
+    public Movetype movetype;
     private Vector3 moveInput;
     private Vector3 lookForward;
     private Vector3 lookSide;
+    public Vector3 groundNormal;
     private RaycastHit slopeHit;
+    public bool isMove;
+    public bool isDodge = false;
+    public bool isAttack;
 
     protected int enemyLayerMask;
     private  int groundLayer;
 
-    protected Camera mainCamera;
-    public bool isMove;
-    public bool isDodge = false;
-    public bool isAttack;
+
     public CharacterData characterData;
 
-    public STATE curState; 
-    public Vector3 groundNormal;
-    public Movetype movetype;
-
+    protected Camera mainCamera;
 
     //Photon
     protected PhotonView pv = null;

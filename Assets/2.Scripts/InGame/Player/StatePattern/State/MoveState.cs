@@ -48,7 +48,10 @@ public class MoveState : PlayerState
                 if(!player.IsSlope())
                     player.rigid.AddForce(player.MoveDir()*moveForce,ForceMode.Force);
                 else
+                {
+                    //player.rigid.AddForce(player.MoveDir()*moveForce,ForceMode.Force);
                     player.rigid.AddForce(Vector3.ProjectOnPlane(player.MoveDir(),player.groundNormal).normalized*moveForce,ForceMode.Force);
+                }
             }
             else
             {

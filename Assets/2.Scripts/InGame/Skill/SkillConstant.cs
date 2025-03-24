@@ -11,7 +11,7 @@ namespace SKILLCONSTANT
     public enum SkillType
     {
         RANGE,
-        VERTICAL,
+        LINEAR,
         PROJECTILE,
         BUFF,
     }

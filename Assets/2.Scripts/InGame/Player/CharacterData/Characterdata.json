@@ -10,7 +10,7 @@
       "walkSpeed": 3.5,
       "runSpeed": 6.0,
       "rotationSpeed": 50.0,
-      "damage": 25
+      "damage": 80
     },
     {
       "characterName": "Gunner",
@@ -22,7 +22,7 @@
       "walkSpeed": 4.5,
       "runSpeed": 7.0,
       "rotationSpeed": 50.0,
-      "damage": 18
+      "damage": 50
     },
     {
       "characterName": "Hacker",
@@ -34,7 +34,7 @@
       "walkSpeed": 4.5,
       "runSpeed": 6.5,
       "rotationSpeed": 50.0,
-      "damage": 10
+      "damage": 30
     }
   ]
 }
