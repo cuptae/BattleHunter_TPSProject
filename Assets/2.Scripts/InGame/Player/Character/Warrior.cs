@@ -17,6 +17,7 @@ public class Warrior : PlayerCtrl
     protected override void Awake()
     {
         base.Awake();
+        characterStat.GetCharacterDataByName("Warrior");
     }
     // Start is called before the first frame update
     protected override void Start()
@@ -75,7 +76,7 @@ public class Warrior : PlayerCtrl
             comboStep+=1;
             canCombo = false; 
         }
-        yield return new WaitForSeconds(characterData.attackRate);
+        yield return new WaitForSeconds(characterStat.AttackRate);
         if(comboStep<3)
         {
             canCombo = true;
@@ -110,7 +111,7 @@ public class Warrior : PlayerCtrl
             {
                 EnemyCtrl enemy = col.transform.GetComponent<EnemyCtrl>();
                 if(enemy != null)
-                    enemy.GetDamage(characterData.damage);
+                    enemy.GetDamage(characterStat.Damage);
             }
         }
     }

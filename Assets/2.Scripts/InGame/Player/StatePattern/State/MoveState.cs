@@ -70,15 +70,15 @@ public class MoveState : PlayerState
     void SpeedCheck()
     {
         if(player.isAttack){
-            curSpeed = player.characterData.attackWalkSpeed;
+            curSpeed = player.characterStat.AttackWalkSpeed;
         }
         else if(player.RunInput())
         {
-            curSpeed = player.characterData.runSpeed;
+            curSpeed = player.characterStat.RunSpeed;
             player.animator.SetFloat("Speed", 1, 0f, Time.deltaTime);
         }
         else{
-            curSpeed = player.characterData.walkSpeed;
+            curSpeed = player.characterStat.WalkSpeed;
         }
     }
     void MoveAnim()

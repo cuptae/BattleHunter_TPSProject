@@ -65,6 +65,7 @@ public class EnemyCtrl : MonoBehaviour
     public void TakeDamage(int damage,PhotonMessageInfo info)
     {
         curHp -= damage;
+        Debug.Log(damage);
         if(curHp<=0)
         {
             ChangeState(new DieState());

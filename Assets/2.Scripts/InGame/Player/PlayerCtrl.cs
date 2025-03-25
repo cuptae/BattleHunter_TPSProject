@@ -37,7 +37,8 @@ public abstract class PlayerCtrl : MonoBehaviour
     private  int groundLayer;
 
 
-    public CharacterData characterData;
+    //public CharacterData characterData;
+    public CharacterStat characterStat;
 
     protected Camera mainCamera;
 
@@ -56,7 +57,8 @@ public abstract class PlayerCtrl : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
-        characterData = new CharacterData();
+        //characterData = new CharacterData();
+        characterStat = new CharacterStat();
         camFollow = transform.Find("CameraFollow");
         mainCamera = Camera.main;
 
@@ -104,8 +106,8 @@ public abstract class PlayerCtrl : MonoBehaviour
         }
         else
         {
-            tr.position = Vector3.Lerp(tr.position,curPos,Time.fixedDeltaTime * characterData.runSpeed);
-            tr.rotation = Quaternion.Slerp(tr.rotation, curRot, Time.fixedDeltaTime * characterData.rotationSpeed);
+            tr.position = Vector3.Lerp(tr.position,curPos,Time.fixedDeltaTime * characterStat.RunSpeed);
+            tr.rotation = Quaternion.Slerp(tr.rotation, curRot, Time.fixedDeltaTime * characterStat.RotationSpeed);
         }
     }
     void MoveInput()
@@ -128,7 +130,7 @@ public abstract class PlayerCtrl : MonoBehaviour
     public void Rotation()
     {
         curRot = Quaternion.LookRotation(lookForward);
-        transform.localRotation = Quaternion.Lerp(transform.localRotation,curRot,characterData.rotationSpeed*Time.deltaTime);
+        transform.localRotation = Quaternion.Lerp(transform.localRotation,curRot,characterStat.RotationSpeed*Time.deltaTime);
     }
     
     public bool IsSlope()
@@ -200,10 +202,5 @@ public abstract class PlayerCtrl : MonoBehaviour
             animator.SetFloat("MoveZ",(float)stream.ReceiveNext());
             animator.SetBool("Move",(bool)stream.ReceiveNext());
         }
-    }
-
-    public void SetData(CharacterData data)
-    {
-        characterData = data;
     }
 }

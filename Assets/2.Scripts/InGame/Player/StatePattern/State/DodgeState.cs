@@ -38,7 +38,7 @@ public class DodgeState : PlayerState
             player.rigid.AddForce(dodgeDir*dodgeForce,ForceMode.Impulse);
         else
             player.rigid.AddForce(Vector3.ProjectOnPlane(dodgeDir,player.groundNormal).normalized*dodgeForce,ForceMode.Impulse);
-        yield return new WaitForSeconds(player.characterData.dodgeTime);
+        yield return new WaitForSeconds(player.characterStat.DodgeTime);
         player.ChangeState(new IdleState(player));
     }
 }

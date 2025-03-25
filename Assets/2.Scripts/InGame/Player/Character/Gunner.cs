@@ -18,6 +18,7 @@ public class Gunner : PlayerCtrl
         aimRig = GetComponentInChildren<Rig>();
         multiAimConstraint = GetComponentInChildren<MultiAimConstraint>();
         aimingPos = GameObject.FindWithTag("AimingPos").transform;
+        characterStat.GetCharacterDataByName("Gunner");
     }
 
     protected override void Start()
@@ -39,7 +40,7 @@ public class Gunner : PlayerCtrl
             if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
             {
                 Attack();
-                nextFireTime = Time.time + characterData.attackRate; // 다음 발사 시간 설정
+                nextFireTime = Time.time + characterStat.AttackRate; // 다음 발사 시간 설정
             }
         }
     }
@@ -83,7 +84,7 @@ public class Gunner : PlayerCtrl
             if (enemy != null) // 적 오브젝트를 찾았다면
             {
                 Quaternion hitDir = Quaternion.LookRotation(-direction);
-                enemy.GetDamage(characterData.damage); // 부모의 EnemyCtrl에서 데미지 처리
+                enemy.GetDamage(characterStat.Damage); // 부모의 EnemyCtrl에서 데미지 처리
                 StartCoroutine(BulletEffect(hitInfo.point, hitDir));
             }
         }
@@ -110,6 +111,4 @@ public class Gunner : PlayerCtrl
         yield return new WaitForSeconds(0.3f);
         PoolManager.Instance.ReturnObject(bulletEffect.name,effect);
     }
-
-
 }

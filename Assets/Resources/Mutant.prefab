@@ -632,7 +632,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fceb9a3b0c83f43b42d6a94bb9f639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 300
+  maxHp: 10000
   curHp: 300
   isDead: 0
   navMeshAgent: {fileID: 0}

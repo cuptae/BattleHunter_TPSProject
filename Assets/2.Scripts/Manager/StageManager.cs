@@ -27,17 +27,14 @@ public class StageManager : MonoBehaviour
             case Character.GUNNER:
                 Debug.Log("Gunner");
                 player = PhotonNetwork.Instantiate("Gunner",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
-                //player.GetComponent<PlayerCtrl>().SetData(GameManager.Instance.GetCharacterDataByName("Gunner"));
                 break;
             case Character.WARRIOR:
                 Debug.Log("Warrior");
                 player = PhotonNetwork.Instantiate("Warrior",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
-                //player.GetComponent<PlayerCtrl>().SetData(GameManager.Instance.GetCharacterDataByName("Warrior"));
                 break;
             case Character.HUNTER:
                 Debug.Log("Hunter");
                 player = PhotonNetwork.Instantiate("Hacker",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
-                //player.GetComponent<PlayerCtrl>().SetData(GameManager.Instance.GetCharacterDataByName("Hacker"));
                 break;
         }
         
