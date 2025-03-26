@@ -2,16 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActiveSkill : MonoBehaviour
+public class ActiveSkill : ISkill
 {
-    // Start is called before the first frame update
-    void Start()
+    List<Dictionary<string, object>> skillTable =  new List<Dictionary<string,object>>();
+    public IEnumerator Activation()
     {
-        
+        yield return null;
     }
+    public IEnumerator SkillActivation()
+    {
+        yield return null;
+    }
+    public void SkillLevelUp()
+    {
 
-    // Update is called once per frame
-    void Update()
+    }
+    public void SetSkillData(int skillId)
     {
         
     }

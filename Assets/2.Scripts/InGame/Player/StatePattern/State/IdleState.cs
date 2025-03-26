@@ -10,6 +10,7 @@ public class IdleState : PlayerState
 
     public override void UpdateState()
     {
+        player.Rotation();
         if (player.isMove)
         {
             player.ChangeState(new MoveState(player));

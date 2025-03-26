@@ -122,13 +122,13 @@ public abstract class PlayerCtrl : MonoBehaviour
     
     public Vector3 MoveDir()
     {
-        lookForward = new Vector3(mainCamera.transform.forward.x,0,mainCamera.transform.forward.z).normalized;
         lookSide = new Vector3(mainCamera.transform.right.x,0,mainCamera.transform.right.z).normalized;
         return (lookForward * moveInput.z) + (lookSide*moveInput.x);
     }
 
     public void Rotation()
     {
+        lookForward = new Vector3(mainCamera.transform.forward.x,0,mainCamera.transform.forward.z).normalized;
         curRot = Quaternion.LookRotation(lookForward);
         transform.localRotation = Quaternion.Lerp(transform.localRotation,curRot,characterStat.RotationSpeed*Time.deltaTime);
     }

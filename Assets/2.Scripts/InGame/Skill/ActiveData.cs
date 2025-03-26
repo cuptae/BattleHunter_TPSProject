@@ -1,6 +1,7 @@
 
+using System;
 using System.Collections.Generic;
-
+using UnityEngine;
 public class ActiveData
 {
     public int skillId{get; private set;}
@@ -14,6 +15,4 @@ public class ActiveData
     public bool isPenetrate{get; private set;}
     public List<string> skillEffectParam{get; private set;}
     public List<string> skillType{get; private set;}
-
-
 }
