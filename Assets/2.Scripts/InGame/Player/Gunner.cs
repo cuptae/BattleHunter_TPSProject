@@ -95,6 +95,7 @@ public class Gunner : PlayerCtrl
                 StartCoroutine(BulletEffect(hitInfo.point, hitDir));
             }
         }
+        SoundManager.Instance.PlaySFX(SFXCategory.PLAYER, PLAYER.ATTACK, tr.position);
     }
 
     protected override void  OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -118,6 +119,4 @@ public class Gunner : PlayerCtrl
         yield return new WaitForSeconds(0.3f);
         PoolManager.Instance.ReturnObject(bulletEffect[0].name,effect);
     }
-
-
 }

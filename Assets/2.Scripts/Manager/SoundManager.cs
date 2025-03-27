@@ -1,6 +1,7 @@
-using System.Collections; 
-using System.Collections.Generic; 
-using UnityEngine; 
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 public enum BGMType
 {
@@ -9,13 +10,14 @@ public enum BGMType
     BossStage
 }
 
-public enum SFXType
+public enum PLAYER
 {
     STEP,
     RUN,
     JUMP,
-    SHOOT,
-    SKILL
+    ATTACK,
+    SKILL,
+    DIE
 }
 
 public enum UIType
@@ -36,19 +38,21 @@ public enum SFXCategory
 
 public class SoundManager : MonoSingleton<SoundManager>
 {
-    
     private AudioSource bgmSource;
-
-    private Dictionary<SFXCategory, Dictionary<SFXType, AudioClip>> sfxClips = new Dictionary<SFXCategory, Dictionary<SFXType, AudioClip>>();
-
-    private List<AudioSource> sfxSources = new List<AudioSource>();
-
+    private List<AudioSource> sfxSources = new List<AudioSource>(); 
+    private List<AudioSource> uiSources = new List<AudioSource>(); 
+    private Dictionary<SFXCategory, Dictionary<PLAYER, AudioClip>> sfxClips = new Dictionary<SFXCategory, Dictionary<PLAYER, AudioClip>>();
     private Dictionary<BGMType, AudioClip> bgmClips = new Dictionary<BGMType, AudioClip>();
-
 
     private float bgmVolume = 1.0f;
     private float sfxVolume = 1.0f;
-    private bool isMuted = false;
+    private float uiVolume = 1.0f;
+    // 사운드 뮤트 유무 
+    private bool isBGMMuted = false;
+    private bool isSFXMuted = false;
+    private bool isUIMuted = false;
+
+    public BGMType? CurrentBGM { get; private set; } = null;
 
     protected override void Awake()
     {
@@ -56,12 +60,7 @@ public class SoundManager : MonoSingleton<SoundManager>
         bgmSource = gameObject.AddComponent<AudioSource>();
         bgmSource.loop = true;
         LoadBGM();
-
-        for (int i = 0; i < 10; i++)
-        {
-            AudioSource sfxSource = gameObject.AddComponent<AudioSource>();
-            sfxSources.Add(sfxSource);
-        }
+        LoadSFX();
     }
 
     void LoadBGM()
@@ -70,142 +69,187 @@ public class SoundManager : MonoSingleton<SoundManager>
         bgmClips[BGMType.MazeStage] = Resources.Load<AudioClip>("Sounds/BGM/MazeStage");
         bgmClips[BGMType.BossStage] = Resources.Load<AudioClip>("Sounds/BGM/BossStage");
     }
-    
 
-    // 🎵배경음악 볼륨 조정
+    void LoadSFX()
+{
+    // 플레이어 효과음 등록
+    sfxClips[SFXCategory.PLAYER] = new Dictionary<PLAYER, AudioClip>();
+    sfxClips[SFXCategory.PLAYER][PLAYER.STEP] = Resources.Load<AudioClip>("Sounds/SFX/Player/Step");
+    sfxClips[SFXCategory.PLAYER][PLAYER.RUN] = Resources.Load<AudioClip>("Sounds/SFX/Player/Run");
+    sfxClips[SFXCategory.PLAYER][PLAYER.JUMP] = Resources.Load<AudioClip>("Sounds/SFX/Player/Jump");
+    sfxClips[SFXCategory.PLAYER][PLAYER.ATTACK] = Resources.Load<AudioClip>("Sounds/SFX/Player/Shoot");
+    sfxClips[SFXCategory.PLAYER][PLAYER.SKILL] = Resources.Load<AudioClip>("Sounds/SFX/Player/Skill");
+    sfxClips[SFXCategory.PLAYER][PLAYER.DIE] = Resources.Load<AudioClip>("Sounds/SFX/Player/PlayerDie");
+
+    // 몹 효과음 등록
+    sfxClips[SFXCategory.MOBS] = new Dictionary<PLAYER, AudioClip>();
+    sfxClips[SFXCategory.MOBS][PLAYER.STEP] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/Step");
+    sfxClips[SFXCategory.MOBS][PLAYER.JUMP] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/Jump");
+    sfxClips[SFXCategory.MOBS][PLAYER.DIE] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/MobDie");
+}
+
+    // ✅ 🎵 BGM 재생 (페이드 인/아웃 적용)
+    public void PlayBGM(BGMType type, float fadeDuration = 1.0f)
+    {
+        if (CurrentBGM == type) return; 
+
+        if (bgmClips.TryGetValue(type, out AudioClip clip))
+        {
+            StartCoroutine(FadeBGM(clip, fadeDuration));
+            CurrentBGM = type;
+        }
+    }
+
+    private IEnumerator FadeBGM(AudioClip newClip, float duration)
+    {
+        float startVolume = bgmSource.volume;
+
+        for (float t = 0; t < duration; t += Time.deltaTime)
+        {
+            bgmSource.volume = Mathf.Lerp(startVolume, 0, t / duration);
+            yield return null;
+        }
+
+        bgmSource.volume = 0;
+        bgmSource.clip = newClip;
+        bgmSource.Play();
+
+        for (float t = 0; t < duration; t += Time.deltaTime)
+        {
+            bgmSource.volume = Mathf.Lerp(0, bgmVolume, t / duration);
+            yield return null;
+        }
+
+        bgmSource.volume = bgmVolume;
+    }
+
     public float BGMVolume
     {
-        get { return bgmVolume; }
+        get => bgmVolume;
         set
         {
-            bgmVolume = Mathf.Clamp01(value);  // 0~1 범위 제한
-            bgmSource.volume = isMuted ? 0 : bgmVolume;
+            bgmVolume = value;
+            if (!isBGMMuted) // 음소거 상태가 아닐 때만 적용
+            {
+                // 🔹 BGM 볼륨 반영
+                AudioSource bgmSource = GetComponent<AudioSource>();
+                if (bgmSource != null)
+                    bgmSource.volume = bgmVolume;
+            }
         }
     }
 
-    public BGMType? CurrentBGM { get; private set; } = null;
-    
-    public void PlayBGM(BGMType type)
-    {
-    if (bgmClips.TryGetValue(type, out AudioClip clip))
-    {
-        if (CurrentBGM == type) return; // 같은 음악이면 재생하지 않음
-
-        bgmSource.clip = clip;
-        bgmSource.volume = isMuted ? 0 : bgmVolume;
-        bgmSource.Play();
-        CurrentBGM = type;
-    }
-    }
-
-    // 🔊효과음 볼륨 조정
     public float SFXVolume
     {
-        get { return sfxVolume; }
-        set
-        {
-            sfxVolume = Mathf.Clamp01(value);
-            foreach (var source in sfxSources)
-            {
-                source.volume = isMuted ? 0 : sfxVolume;
-            }
-        }
+        get => sfxVolume;
+        set => sfxVolume = value;
     }
 
-    // 🔇전체 사운드 뮤트
-    public bool IsMuted
+    public float UIVolume
     {
-        get { return isMuted; }
+        get => uiVolume;
+        set => uiVolume = value;
+    }
+
+    // 🔹 BGM 음소거 기능 추가
+    public bool IsBGMMuted
+    {
+        get => isBGMMuted;
         set
         {
-            isMuted = value;
-            bgmSource.volume = isMuted ? 0 : bgmVolume;
-            foreach (var source in sfxSources)
-            {
-                source.volume = isMuted ? 0 : sfxVolume;
-            }
+            isBGMMuted = value;
+            AudioSource bgmSource = GetComponent<AudioSource>();
+            if (bgmSource != null)
+                bgmSource.mute = isBGMMuted; // 음소거 적용
         }
     }
 
-    public void PlaySFXDynamic(SFXCategory category, SFXType type, Vector3 position)
+    // 🔹 SFX 음소거 기능 추가
+    public bool IsSFXMuted
+    {
+        get => isSFXMuted;
+        set => isSFXMuted = value;
+    }
+
+    // 🔹 UI 음소거 기능 추가
+    public bool IsUIMuted
+    {
+        get => isUIMuted;
+        set => isUIMuted = value;
+    }
+
+    // ✅ 🔊 SFX 재생 (같은 효과음 중복 방지)
+    public void PlaySFX(SFXCategory category, PLAYER type, Vector3 position)
 {
-    if (sfxClips.TryGetValue(category, out var typeDict) && typeDict.TryGetValue(type, out AudioClip clip))
-    {
-        GameObject sfxObject = new GameObject($"SFX_{category}_{type}");
-        AudioSource sfxSource = sfxObject.AddComponent<AudioSource>();
-        sfxSource.spatialBlend = 1.0f;  // 3D 사운드 적용
-        sfxSource.transform.position = position;
-        sfxSource.clip = clip;
-        sfxSource.Play();
+    Debug.Log($"▶️ PlaySFX 호출됨: {category} - {type}, isSFXMuted: {isSFXMuted}");
 
-        Destroy(sfxObject, clip.length + 0.1f);
+    if (isSFXMuted)
+    {
+        Debug.LogWarning("🔇 SFX가 음소거 상태임! 소리 재생 안됨.");
+        return;
+    }
+
+    if (sfxClips.TryGetValue(category, out var typeDict))
+    {
+        if (typeDict.TryGetValue(type, out AudioClip clip))
+        {
+            Debug.Log($"🔊 [SFX] {type} 효과음 찾음: {clip.name}");
+            
+            AudioSource sfxSource = GetPooledSFXSource();
+            sfxSource.transform.position = position;
+            sfxSource.spatialBlend = 1.0f;
+            sfxSource.clip = clip;
+            sfxSource.volume = sfxVolume;
+            sfxSource.Play();
+            Debug.Log($"🎵 [SFX] {type} 사운드 재생 완료!");
+        }
+        else
+        {
+            Debug.LogError($"⚠️ SFX Not Found: {category} - {type}");
+        }
+    }
+    else
+    {
+        Debug.LogError($"⚠️ SFX Category Not Found: {category}");
     }
 }
+
+
+
+    // ✅ 🔊 3D 공간에서 SFX 재생 (객체 풀링 활용)
+    public void PlaySFXDynamic(SFXCategory category, PLAYER type, Vector3 position)
+    {
+        if (sfxClips.TryGetValue(category, out var typeDict) && typeDict.TryGetValue(type, out AudioClip clip))
+        {
+            AudioSource sfxSource = GetPooledSFXSource();
+            sfxSource.transform.position = position;
+            sfxSource.spatialBlend = 1.0f; // 3D 사운드 적용
+            sfxSource.clip = clip;
+            sfxSource.Play();
+        }
+    }
+
+    // ✅ 🎵 객체 풀링을 활용하여 오디오 소스를 재사용
+    private AudioSource GetPooledSFXSource()
+{
+    foreach (var source in sfxSources)
+    {
+        if (!source.isPlaying)
+        {
+            Debug.Log("♻️ 기존 AudioSource 재사용");
+            return source;
+        }
+    }
+
+    AudioSource newSource = gameObject.AddComponent<AudioSource>();
+    newSource.playOnAwake = false;
+    newSource.spatialBlend = 1.0f; // 3D 사운드 적용
+    newSource.volume = sfxVolume;
+    sfxSources.Add(newSource);
+    
+    Debug.Log("🆕 새로운 AudioSource 추가됨");
+    return newSource;
 }
 
-// {
-//     public AudioSource bgmSource;
-//     private List<AudioSource> sfxSources = new List<AudioSource>();
-//     private Dictionary<string, AudioClip> sfxClips = new Dictionary<string, AudioClip>();
-//     private int maxSFXSources = 10;
 
-//     protected override void Awake()
-//     {
-//         base.Awake();
-//         bgmSource = gameObject.AddComponent<AudioSource>();
-//         bgmSource.loop = true;
-
-//         for (int i = 0; i < maxSFXSources; i++)
-//         {
-//             AudioSource sfxSource = gameObject.AddComponent<AudioSource>();
-//             sfxSources.Add(sfxSource);
-//         }
-
-//         LoadSFX();
-//     }
-
-//     void LoadSFX()
-//     {
-//         AudioClip[] clips = Resources.LoadAll<AudioClip>("Sounds/SFX");
-//         foreach (var clip in clips)
-//         {
-//             sfxClips[clip.name] = clip;
-//         }
-//     }
-
-//     public void PlayBGM(AudioClip clip)
-//     {
-//         bgmSource.clip = clip;
-//         bgmSource.Play();
-//     }
-
-//     public void PlaySFX(string clipName)
-//     {
-//         if (sfxClips.TryGetValue(clipName, out AudioClip clip))
-//         {
-//             foreach (AudioSource sfxSource in sfxSources)
-//             {
-//                 if (!sfxSource.isPlaying)
-//                 {
-//                     sfxSource.clip = clip;
-//                     sfxSource.Play();
-//                     return;
-//                 }
-//             }
-//         }
-//     }
-
-//     public void PlaySFXDynamic(string clipName, Vector3 position)
-//     {
-//         if (sfxClips.TryGetValue(clipName, out AudioClip clip))
-//         {
-//             GameObject sfxObject = new GameObject("SFX_" + clipName);
-//             AudioSource sfxSource = sfxObject.AddComponent<AudioSource>();
-
-//             sfxSource.clip = clip;
-//             sfxSource.Play();
-            
-//             Destroy(sfxObject, clip.length + 0.1f);
-//         }
-//     }
-// }
+}
