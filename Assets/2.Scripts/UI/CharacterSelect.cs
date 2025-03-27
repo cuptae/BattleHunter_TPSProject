@@ -29,7 +29,7 @@ public class CharacterSelect : MonoBehaviour
         }
         else if (hunterToggle.isOn)
         {
-            GameManager.Instance.curCharacter = Character.HUNTER;
+            GameManager.Instance.curCharacter = Character.HACKER;
         }
         else
         {

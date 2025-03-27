@@ -27,6 +27,10 @@ public class Gunner : PlayerCtrl
         WeightedTransformArray sourceObjects = multiAimConstraint.data.sourceObjects;
         sourceObjects.Add(new WeightedTransform(aimingPos,aimRig.weight));
         PoolManager.Instance.CreatePool(bulletEffect.name, bulletEffect, 10);
+        StartCoroutine(activeSkills[0].Activation());
+        StartCoroutine(activeSkills[1].Activation());
+        StartCoroutine(activeSkills[2].Activation());
+
     }
 
     // Update is called once per frame

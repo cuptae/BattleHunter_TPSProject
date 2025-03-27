@@ -3,6 +3,7 @@ using System.IO;
 using UnityEngine;
 using System.Linq;
 using Unity.VisualScripting;
+using System.Collections.Generic;
 public enum STATE
 {
     IDLE,
@@ -52,6 +53,8 @@ public abstract class PlayerCtrl : MonoBehaviour
     public GameObject weapon;
 
     private int curHp;
+
+    public List<ActiveSkill> activeSkills;
 
     protected virtual void Awake() {
         animator = GetComponentInChildren<Animator>();
@@ -161,6 +164,23 @@ public abstract class PlayerCtrl : MonoBehaviour
     }
 
     protected abstract void Attack();
+
+    public void SkillInput()
+    {
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            
+        }
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+
+        }
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+
+        }
+    }
+
     public void GetDamage(int damage)
     {
         if(PhotonNetwork.isMasterClient)
@@ -203,4 +223,5 @@ public abstract class PlayerCtrl : MonoBehaviour
             animator.SetBool("Move",(bool)stream.ReceiveNext());
         }
     }
+
 }

@@ -1,24 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class ActiveSkill : ISkill
+public abstract class ActiveSkill : ISkill
 {
-    List<Dictionary<string, object>> skillTable =  new List<Dictionary<string,object>>();
-    public IEnumerator Activation()
+    ActiveData activeData;
+    public ActiveSkill(ActiveData activeData)
     {
-        yield return null;
+        this.activeData = activeData;
     }
-    public IEnumerator SkillActivation()
-    {
-        yield return null;
-    }
-    public void SkillLevelUp()
-    {
-
-    }
-    public void SetSkillData(int skillId)
-    {
-        
-    }
+    public abstract IEnumerator Activation();
 }

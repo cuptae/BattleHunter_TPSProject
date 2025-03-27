@@ -25,15 +25,13 @@ public class StageManager : MonoBehaviour
         switch(character)
         {
             case Character.GUNNER:
-                Debug.Log("Gunner");
                 player = PhotonNetwork.Instantiate("Gunner",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
+                player.GetComponent<PlayerCtrl>().activeSkills = SkillManager.Instance.SkillAdd();
                 break;
             case Character.WARRIOR:
-                Debug.Log("Warrior");
                 player = PhotonNetwork.Instantiate("Warrior",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
                 break;
-            case Character.HUNTER:
-                Debug.Log("Hunter");
+            case Character.HACKER:
                 player = PhotonNetwork.Instantiate("Hacker",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
                 break;
         }

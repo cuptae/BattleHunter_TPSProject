@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using SKILLCONSTANT;
 using UnityEngine;
 public class ActiveData
 {
@@ -13,6 +14,18 @@ public class ActiveData
     public bool isCharge{get; private set;}
     public int projectileCount{get; private set;}
     public bool isPenetrate{get; private set;}
-    public List<string> skillEffectParam{get; private set;}
-    public List<string> skillType{get; private set;}
+    public SkillEffect skillEffectParam{get; private set;}
+    public SkillType skillType{get; private set;}
+
+public void SetSkillId(int skillId) { this.skillId = skillId; }
+public void SetSkillName(string skillName) { this.skillName = skillName; }
+public void SetSkillDesc(string skillDesc) { this.skillDesc = skillDesc; }
+public void SetSkillIcon(string skillIcon) { this.skillIcon = skillIcon; }
+public void SetCooltime(float cooltime) { this.cooltime = cooltime; }
+public void SetAttackRange(float attackRange) { this.attackRange = attackRange; }
+public void SetIsCharge(bool isCharge) { this.isCharge = isCharge; }
+public void SetProjectileCount(int projectileCount) { this.projectileCount = projectileCount; }
+public void SetIsPenetrate(bool isPenetrate) { this.isPenetrate = isPenetrate; }
+public void SetSkillEffectParam(SkillEffect skillEffectParam) { this.skillEffectParam = skillEffectParam; }
+public void SetSkillType(SkillType skillType) { this.skillType = skillType; }
 }
