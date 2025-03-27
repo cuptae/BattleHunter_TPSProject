@@ -111,6 +111,8 @@ public class PhotonLobby : MonoBehaviour
     {
         PhotonNetwork.isMessageQueueRunning = false;
 
+        SceneManager.LoadScene("ShareUI");
+
         AsyncOperation ao = SceneManager.LoadSceneAsync("TestIngame");
 
         yield return ao;

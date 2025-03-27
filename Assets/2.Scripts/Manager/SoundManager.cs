@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum SFXCategory
+{
+    PLAYER,
+    MOBS,
+    BOSS,
+    OBJECT
+}
+
 public enum BGMType
 {
     MainMenu,
@@ -20,6 +28,16 @@ public enum PLAYER
     DIE
 }
 
+public enum BOSS
+{
+    STEP,
+    RUN,
+    JUMP,
+    ATTACK,
+    SKILL,
+    DIE
+}
+
 public enum UIType
 {
     SELECTCHAR,
@@ -27,21 +45,16 @@ public enum UIType
     PUSHBTN
 }
 
-public enum SFXCategory
-{
-    PLAYER,
-    MOBS,
-    BOSS,
-    OBJECT,
-    UI
-}
+
 
 public class SoundManager : MonoSingleton<SoundManager>
 {
     private AudioSource bgmSource;
     private List<AudioSource> sfxSources = new List<AudioSource>(); 
     private List<AudioSource> uiSources = new List<AudioSource>(); 
-    private Dictionary<SFXCategory, Dictionary<PLAYER, AudioClip>> sfxClips = new Dictionary<SFXCategory, Dictionary<PLAYER, AudioClip>>();
+    private Dictionary<SFXCategory, Dictionary<PLAYER, AudioClip>> 
+    sfxClips = new Dictionary<SFXCategory, Dictionary<PLAYER, AudioClip>>();
+    private Dictionary<UIType, AudioClip> uiClips = new Dictionary<UIType, AudioClip>();
     private Dictionary<BGMType, AudioClip> bgmClips = new Dictionary<BGMType, AudioClip>();
 
     private float bgmVolume = 1.0f;
@@ -86,6 +99,10 @@ public class SoundManager : MonoSingleton<SoundManager>
     sfxClips[SFXCategory.MOBS][PLAYER.STEP] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/Step");
     sfxClips[SFXCategory.MOBS][PLAYER.JUMP] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/Jump");
     sfxClips[SFXCategory.MOBS][PLAYER.DIE] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/MobDie");
+
+    uiClips[UIType.SELECTCHAR] = Resources.Load<AudioClip>("Sounds/UI/SelectCharacter");
+    uiClips[UIType.CROSSBTN] = Resources.Load<AudioClip>("Sounds/UI/CrossButton");
+    uiClips[UIType.PUSHBTN] = Resources.Load<AudioClip>("Sounds/UI/PushButton");
 }
 
     // ✅ 🎵 BGM 재생 (페이드 인/아웃 적용)
@@ -193,8 +210,6 @@ public class SoundManager : MonoSingleton<SoundManager>
     {
         if (typeDict.TryGetValue(type, out AudioClip clip))
         {
-            Debug.Log($"🔊 [SFX] {type} 효과음 찾음: {clip.name}");
-            
             AudioSource sfxSource = GetPooledSFXSource();
             sfxSource.transform.position = position;
             sfxSource.spatialBlend = 1.0f;

@@ -54,8 +54,11 @@ public class StageManager : MonoBehaviour
     {
         PhotonNetwork.LeaveRoom();
     }
+
     void OnLeftRoom()
     {
-        SceneManager.LoadScene("TestLobby");
+        SceneManager.LoadScene("Lobby");
     }
+
+    
 }
