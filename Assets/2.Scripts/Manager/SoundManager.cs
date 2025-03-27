@@ -230,20 +230,6 @@ public class SoundManager : MonoSingleton<SoundManager>
 }
 
 
-
-    // ✅ 🔊 3D 공간에서 SFX 재생 (객체 풀링 활용)
-    public void PlaySFXDynamic(SFXCategory category, PLAYER type, Vector3 position)
-    {
-        if (sfxClips.TryGetValue(category, out var typeDict) && typeDict.TryGetValue(type, out AudioClip clip))
-        {
-            AudioSource sfxSource = GetPooledSFXSource();
-            sfxSource.transform.position = position;
-            sfxSource.spatialBlend = 1.0f; // 3D 사운드 적용
-            sfxSource.clip = clip;
-            sfxSource.Play();
-        }
-    }
-
     // ✅ 🎵 객체 풀링을 활용하여 오디오 소스를 재사용
     private AudioSource GetPooledSFXSource()
 {
