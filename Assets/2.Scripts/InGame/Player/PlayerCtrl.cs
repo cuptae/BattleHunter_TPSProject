@@ -37,10 +37,7 @@ public abstract class PlayerCtrl : MonoBehaviour
     protected int enemyLayerMask;
     private  int groundLayer;
 
-
-    //public CharacterData characterData;
     public CharacterStat characterStat;
-
     protected Camera mainCamera;
 
     //Photon
@@ -51,7 +48,6 @@ public abstract class PlayerCtrl : MonoBehaviour
     [HideInInspector]
     private Transform camFollow;
     public GameObject weapon;
-
     private int curHp;
 
     public List<ActiveSkill> activeSkills;
@@ -165,21 +161,9 @@ public abstract class PlayerCtrl : MonoBehaviour
 
     protected abstract void Attack();
 
-    public void SkillInput()
-    {
-        if(Input.GetKeyDown(KeyCode.Q))
-        {
-            
-        }
-        if(Input.GetKeyDown(KeyCode.E))
-        {
-
-        }
-        if(Input.GetKeyDown(KeyCode.R))
-        {
-
-        }
-    }
+    public bool QSkillInput(){return Input.GetKeyDown(KeyCode.Q);}
+    public bool ESkillInput(){return Input.GetKeyDown(KeyCode.E);}
+    public bool RSkillInput(){return Input.GetKeyDown(KeyCode.R);}
 
     public void GetDamage(int damage)
     {

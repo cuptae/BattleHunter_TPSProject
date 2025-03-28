@@ -19,6 +19,18 @@ public class IdleState : PlayerState
         {
             player.ChangeState(new DodgeState(player));
         }
+        if(player.QSkillInput())
+        {
+            player.ChangeState(new SkillState(player,player.activeSkills[0]));
+        }
+        if(player.ESkillInput())
+        {
+            player.ChangeState(new SkillState(player,player.activeSkills[1]));
+        }
+        if(player.RSkillInput())
+        {
+            player.ChangeState(new SkillState(player,player.activeSkills[2]));
+        }
     }
 
     public override void FixedUpdateState()

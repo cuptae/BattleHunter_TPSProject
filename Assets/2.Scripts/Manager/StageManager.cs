@@ -26,13 +26,16 @@ public class StageManager : MonoBehaviour
         {
             case Character.GUNNER:
                 player = PhotonNetwork.Instantiate("Gunner",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
+                SkillManager.Instance.player = player.GetComponent<PlayerCtrl>();
                 player.GetComponent<PlayerCtrl>().activeSkills = SkillManager.Instance.SkillAdd();
                 break;
             case Character.WARRIOR:
                 player = PhotonNetwork.Instantiate("Warrior",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
+                SkillManager.Instance.player = player.GetComponent<PlayerCtrl>();
                 break;
             case Character.HACKER:
                 player = PhotonNetwork.Instantiate("Hacker",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
+                SkillManager.Instance.player = player.GetComponent<PlayerCtrl>();
                 break;
         }
         

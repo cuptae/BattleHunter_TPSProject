@@ -19,7 +19,7 @@ public class SkillManager : MonoSingleton<SkillManager>
     IEnumerator Start()
     {
         yield return StartCoroutine(TableDownload());
-            // skillId가 10101인 스킬 데이터 찾기
+        // skillId가 10101인 스킬 데이터 찾기
 
         
         // if (skillData != null)
@@ -35,9 +35,9 @@ public class SkillManager : MonoSingleton<SkillManager>
         switch(GameManager.Instance.curCharacter)
         {
             case Character.GUNNER:
-            activeSkills.Add(new ShockWave(SetSkillData(20101)));
-            activeSkills.Add(new GrenadeLauncher(SetSkillData(20201)));
-            activeSkills.Add(new PhotonLance(SetSkillData(20301)));
+            activeSkills.Add(new ShockWave(SetSkillData(20101),player));
+            activeSkills.Add(new GrenadeLauncher(SetSkillData(20201),player));
+            activeSkills.Add(new PhotonLance(SetSkillData(20301),player));
             break;
             case Character.HACKER:
             break;
