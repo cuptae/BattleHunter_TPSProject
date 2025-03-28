@@ -84,7 +84,7 @@ public class SoundManager : MonoSingleton<SoundManager>
     }
 
     void LoadSFX()
-{
+    {
     // 플레이어 효과음 등록
     sfxClips[SFXCategory.PLAYER] = new Dictionary<PLAYER, AudioClip>();
     sfxClips[SFXCategory.PLAYER][PLAYER.STEP] = Resources.Load<AudioClip>("Sounds/SFX/Player/Step");
@@ -103,7 +103,7 @@ public class SoundManager : MonoSingleton<SoundManager>
     uiClips[UIType.SELECTCHAR] = Resources.Load<AudioClip>("Sounds/UI/SelectCharacter");
     uiClips[UIType.CROSSBTN] = Resources.Load<AudioClip>("Sounds/UI/CrossButton");
     uiClips[UIType.PUSHBTN] = Resources.Load<AudioClip>("Sounds/UI/PushButton");
-}
+    }
 
     // ✅ 🎵 BGM 재생 (페이드 인/아웃 적용)
     public void PlayBGM(BGMType type, float fadeDuration = 1.0f)
@@ -197,7 +197,7 @@ public class SoundManager : MonoSingleton<SoundManager>
 
     // ✅ 🔊 SFX 재생 (같은 효과음 중복 방지)
     public void PlaySFX(SFXCategory category, PLAYER type, Vector3 position)
-{
+    {
     Debug.Log($"▶️ PlaySFX 호출됨: {category} - {type}, isSFXMuted: {isSFXMuted}");
 
     if (isSFXMuted)
@@ -227,12 +227,38 @@ public class SoundManager : MonoSingleton<SoundManager>
     {
         Debug.LogError($"⚠️ SFX Category Not Found: {category}");
     }
+    }
+
+    // 🎵 UI 사운드 재생
+public void PlayUISound(UIType type)
+{
+    Debug.Log($"▶️ PlayUISound 호출됨: {type}, isUIMuted: {isUIMuted}");
+
+    if (isUIMuted)
+    {
+        Debug.LogWarning("🔇 UI 사운드가 음소거 상태임! 재생 안됨.");
+        return;
+    }
+
+    if (uiClips.TryGetValue(type, out AudioClip clip))
+    {
+        AudioSource uiSource = GetPooledUISource();
+        uiSource.clip = clip;
+        uiSource.volume = uiVolume;
+        uiSource.Play();
+
+        Debug.Log($"🎵 [UI] {type} 사운드 재생 완료!");
+    }
+    else
+    {
+        Debug.LogError($"⚠️ UI 사운드 클립이 없음: {type}");
+    }
 }
 
 
     // ✅ 🎵 객체 풀링을 활용하여 오디오 소스를 재사용
     private AudioSource GetPooledSFXSource()
-{
+    {
     foreach (var source in sfxSources)
     {
         if (!source.isPlaying)
@@ -249,6 +275,27 @@ public class SoundManager : MonoSingleton<SoundManager>
     sfxSources.Add(newSource);
     
     Debug.Log("🆕 새로운 AudioSource 추가됨");
+    return newSource;
+    }
+
+    // 🎵 UI 사운드 전용 AudioSource 풀링
+private AudioSource GetPooledUISource()
+{
+    foreach (var source in uiSources)
+    {
+        if (!source.isPlaying)
+        {
+            Debug.Log("♻️ 기존 UI AudioSource 재사용");
+            return source;
+        }
+    }
+
+    AudioSource newSource = gameObject.AddComponent<AudioSource>();
+    newSource.playOnAwake = false;
+    newSource.volume = uiVolume;
+    uiSources.Add(newSource);
+
+    Debug.Log("🆕 새로운 UI AudioSource 추가됨");
     return newSource;
 }
 

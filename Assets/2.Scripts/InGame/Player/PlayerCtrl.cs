@@ -114,6 +114,11 @@ public class PlayerCtrl : MonoBehaviour
         if(isDodge)
             return;
         rigid.MovePosition(transform.position+moveDir*finalSpeed*Time.deltaTime);
+
+        if(isRun) //달리기 상태일때 달리기 소리가 나옴
+        SoundManager.Instance.PlaySFX(SFXCategory.PLAYER, PLAYER.RUN, tr.position);
+        else //달리기 상태가 아니면 걷기 소리가 나옴
+        SoundManager.Instance.PlaySFX(SFXCategory.PLAYER, PLAYER.STEP, tr.position);
     }
 
     void Rotation()
