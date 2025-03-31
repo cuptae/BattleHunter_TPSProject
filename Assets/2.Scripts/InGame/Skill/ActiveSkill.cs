@@ -10,6 +10,7 @@ public abstract class ActiveSkill : ISkill
     protected ActiveData activeData;
     protected PlayerCtrl player;
     protected System.Action onSkillEnd;
+    protected bool isActivate;
     Collider[] monsterCols;
     public ActiveSkill(ActiveData activeData,PlayerCtrl player)
     {
@@ -47,7 +48,22 @@ public abstract class ActiveSkill : ISkill
             case SKILLCONSTANT.SkillEffect.KNUCKBACK:
                 
             break;
+
+            case SKILLCONSTANT.SkillEffect.STUN:
+
+            break;
+
+            case SKILLCONSTANT.SkillEffect.SLOW:
+
+            break;
+
+
         }
+    }
+
+    protected void CoolDown()
+    {
+        
     }
     
 
