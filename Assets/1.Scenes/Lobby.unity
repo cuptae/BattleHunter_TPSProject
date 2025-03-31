@@ -4181,6 +4181,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2083063859}
   - component: {fileID: 2083063858}
+  - component: {fileID: 2083063860}
+  - component: {fileID: 2083063861}
   m_Layer: 0
   m_Name: GameManger
   m_TagString: Untagged
@@ -4216,6 +4218,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2083063860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2083063857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc409a23e59edf643a80c4bf07463196, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiOption: {fileID: 3405540429753532155}
+  titleName: {fileID: 498570196}
+  bgmVolumeSlider: {fileID: 4826449074509150021}
+  sfxVolumeSlider: {fileID: 9184294212847317518}
+  uiVolumeSlider: {fileID: 5335439930121085776}
+  BGMMUTE: {fileID: 5845452373037747715}
+  SFXMUTE: {fileID: 4814793413357062108}
+  UIMUTE: {fileID: 3814395312708506118}
+--- !u!114 &2083063861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2083063857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afa073b582f77d74ea6ab4357a4f61df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2091783635
 GameObject:
   m_ObjectHideFlags: 0
@@ -5388,7 +5422,7 @@ GameObject:
   - component: {fileID: 7936051747015258573}
   - component: {fileID: 5335439930121085776}
   m_Layer: 0
-  m_Name: Slider
+  m_Name: UISlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5455,7 +5489,7 @@ GameObject:
   - component: {fileID: 579752632003701230}
   - component: {fileID: 4826449074509150021}
   m_Layer: 0
-  m_Name: Slider
+  m_Name: BGMSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6744,7 +6778,7 @@ GameObject:
   - component: {fileID: 6376809570381229323}
   - component: {fileID: 9184294212847317518}
   m_Layer: 0
-  m_Name: Slider
+  m_Name: SFXSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7019,7 +7053,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6, y: 34}
+  m_AnchoredPosition: {x: 6, y: -42}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3895245133773722174
@@ -7651,7 +7685,7 @@ GameObject:
   - component: {fileID: 4814793413357062108}
   - component: {fileID: 7614561280729254248}
   m_Layer: 0
-  m_Name: Sound
+  m_Name: SFXSound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8906,7 +8940,7 @@ GameObject:
   - component: {fileID: 5845452373037747715}
   - component: {fileID: 2502693473755341522}
   m_Layer: 0
-  m_Name: Sound
+  m_Name: BGMSound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9800,7 +9834,7 @@ GameObject:
   - component: {fileID: 3814395312708506118}
   - component: {fileID: 742224669466942187}
   m_Layer: 0
-  m_Name: Sound
+  m_Name: UISound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10524,14 +10558,14 @@ RectTransform:
   m_GameObject: {fileID: 636297943112838890}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 30, y: 20, z: 20}
+  m_LocalScale: {x: 30, y: 30, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8090548136553627608}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 96.83}
+  m_AnchoredPosition: {x: 0, y: 58.02}
   m_SizeDelta: {x: 13.950001, y: 9.261197}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8744121876402193623

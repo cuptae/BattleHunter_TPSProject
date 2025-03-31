@@ -88,6 +88,7 @@ public class Gunner : PlayerCtrl
                 StartCoroutine(BulletEffect(hitInfo.point, hitDir));
             }
         }
+        SoundManager.Instance.PlaySFX(SFXCategory.PLAYER, PLAYER.ATTACK, tr.position);
     }
 
     protected override void  OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
