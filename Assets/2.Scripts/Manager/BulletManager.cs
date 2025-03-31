@@ -22,7 +22,7 @@ public class BulletManager : MonoBehaviour
     {
         destroyTime -= Time.deltaTime;
 
-        if(destroyTime =< 0)
+        if(destroyTime <= 0)
         {
             DestroyBullet();
         }
