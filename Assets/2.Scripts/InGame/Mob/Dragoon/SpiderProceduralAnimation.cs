@@ -133,4 +133,40 @@ public class SpiderProceduralAnimation : MonoBehaviour
             Gizmos.DrawWireSphere(transform.TransformPoint(defaultLegPositions[i]), stepSize);
         }
     }
+
+    void OnEnable()
+    {
+        if (legTargets == null || legTargets.Length == 0)
+            return;
+
+        if (defaultLegPositions == null || defaultLegPositions.Length != legTargets.Length)
+        {
+            nbLegs = legTargets.Length;
+            defaultLegPositions = new Vector3[nbLegs];
+            lastLegPositions = new Vector3[nbLegs];
+            legMoving = new bool[nbLegs];
+
+            for (int i = 0; i < nbLegs; ++i)
+            {
+                defaultLegPositions[i] = legTargets[i].localPosition;
+            }
+        }
+
+        for (int i = 0; i < nbLegs; ++i)
+        {
+            // 다리를 원래 위치로 복구
+            legTargets[i].localPosition = defaultLegPositions[i];
+            lastLegPositions[i] = legTargets[i].position;
+            legMoving[i] = false;
+        }
+
+        lastBodyPos = transform.position;
+        velocity = Vector3.zero;
+        lastVelocity = Vector3.zero;
+    }
+
+    void OnDisable()
+    {
+        StopAllCoroutines(); // 움직이던 다리 멈춤
+    }
 }

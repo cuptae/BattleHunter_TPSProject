@@ -3,7 +3,6 @@ using System.IO;
 using UnityEngine;
 using System.Linq;
 using Unity.VisualScripting;
-using System.Collections.Generic;
 public enum STATE
 {
     IDLE,
@@ -20,25 +19,25 @@ public abstract class PlayerCtrl : MonoBehaviour
     public Animator animator{get; protected set;}
     [HideInInspector]
     public Rigidbody rigid{get; protected set;}
-
-
     private PlayerStateMachine stateMachine;
-    public STATE curState; 
-    public Movetype movetype;
     private Vector3 moveInput;
     private Vector3 lookForward;
     private Vector3 lookSide;
-    public Vector3 groundNormal;
     private RaycastHit slopeHit;
-    public bool isMove;
-    public bool isDodge = false;
-    public bool isAttack;
 
     protected int enemyLayerMask;
     private  int groundLayer;
 
-    public CharacterStat characterStat;
     protected Camera mainCamera;
+    public bool isMove;
+    public bool isDodge = false;
+    public bool isAttack;
+    public CharacterData characterData;
+
+    public STATE curState; 
+    public Vector3 groundNormal;
+    public Movetype movetype;
+
 
     //Photon
     protected PhotonView pv = null;
@@ -48,16 +47,14 @@ public abstract class PlayerCtrl : MonoBehaviour
     [HideInInspector]
     private Transform camFollow;
     public GameObject weapon;
-    private int curHp;
 
-    public List<ActiveSkill> activeSkills;
+    public int curHp;
 
     protected virtual void Awake() {
         animator = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
-        //characterData = new CharacterData();
-        characterStat = new CharacterStat();
+        characterData = new CharacterData();
         camFollow = transform.Find("CameraFollow");
         mainCamera = Camera.main;
 
@@ -85,6 +82,7 @@ public abstract class PlayerCtrl : MonoBehaviour
         {
             stateMachine.Initialize(new IdleState(this));
         }
+        curHp = characterData.maxHp;
     }
     protected virtual void Update()
     {
@@ -105,8 +103,8 @@ public abstract class PlayerCtrl : MonoBehaviour
         }
         else
         {
-            tr.position = Vector3.Lerp(tr.position,curPos,Time.fixedDeltaTime * characterStat.RunSpeed);
-            tr.rotation = Quaternion.Slerp(tr.rotation, curRot, Time.fixedDeltaTime * characterStat.RotationSpeed);
+            tr.position = Vector3.Lerp(tr.position,curPos,Time.fixedDeltaTime * characterData.runSpeed);
+            tr.rotation = Quaternion.Slerp(tr.rotation, curRot, Time.fixedDeltaTime * characterData.rotationSpeed);
         }
     }
     void MoveInput()
@@ -121,15 +119,15 @@ public abstract class PlayerCtrl : MonoBehaviour
     
     public Vector3 MoveDir()
     {
+        lookForward = new Vector3(mainCamera.transform.forward.x,0,mainCamera.transform.forward.z).normalized;
         lookSide = new Vector3(mainCamera.transform.right.x,0,mainCamera.transform.right.z).normalized;
         return (lookForward * moveInput.z) + (lookSide*moveInput.x);
     }
 
     public void Rotation()
     {
-        lookForward = new Vector3(mainCamera.transform.forward.x,0,mainCamera.transform.forward.z).normalized;
         curRot = Quaternion.LookRotation(lookForward);
-        transform.localRotation = Quaternion.Lerp(transform.localRotation,curRot,characterStat.RotationSpeed*Time.deltaTime);
+        transform.localRotation = Quaternion.Lerp(transform.localRotation,curRot,characterData.rotationSpeed*Time.deltaTime);
     }
     
     public bool IsSlope()
@@ -160,11 +158,6 @@ public abstract class PlayerCtrl : MonoBehaviour
     }
 
     protected abstract void Attack();
-
-    public bool QSkillInput(){return Input.GetKeyDown(KeyCode.Q);}
-    public bool ESkillInput(){return Input.GetKeyDown(KeyCode.E);}
-    public bool RSkillInput(){return Input.GetKeyDown(KeyCode.R);}
-
     public void GetDamage(int damage)
     {
         if(PhotonNetwork.isMasterClient)
@@ -174,7 +167,7 @@ public abstract class PlayerCtrl : MonoBehaviour
     }
 
     [PunRPC]
-    private void TakeDamage(int damage,PhotonMessageInfo info)
+    public void TakeDamage(int damage,PhotonMessageInfo info)
     {
         curHp -= damage;
         if(curHp<=0)
@@ -208,4 +201,8 @@ public abstract class PlayerCtrl : MonoBehaviour
         }
     }
 
+    public void SetData(CharacterData data)
+    {
+        characterData = data;
+    }
 }

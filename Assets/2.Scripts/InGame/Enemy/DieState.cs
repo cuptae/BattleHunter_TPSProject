@@ -1,14 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DieState : IEnemyState
 {
+    //public void EnterState(EnemyCtrl enemy)
+    //{
+    //    enemy.isDead = true;
+    //    enemy.navMeshAgent.isStopped = true;
+    //    PoolManager.Instance.ReturnObject("Mutant", enemy.gameObject);
+    //}
     public void EnterState(EnemyCtrl enemy)
     {
         enemy.isDead = true;
-        enemy.navMeshAgent.isStopped = true;
-        PoolManager.Instance.ReturnObject("Mutant",enemy.gameObject);
+
+        var agent = enemy.GetComponent<NavMeshAgent>();
+        if (agent != null && agent.enabled && agent.isOnNavMesh)
+        {
+            agent.isStopped = true;
+            agent.ResetPath(); // 필요 시
+        }
+
+        PoolManager.Instance.ReturnObject("Mutant", enemy.gameObject);
     }
 
     public void UpdateState(EnemyCtrl enemy)
