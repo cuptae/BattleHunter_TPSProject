@@ -20,6 +20,7 @@ public class Hacker : PlayerCtrl
         multiAimConstraint = GetComponentInChildren<MultiAimConstraint>();
         aimingPos = GameObject.FindWithTag("AimingPos").transform;
         characterStat.GetCharacterDataByName("Hacker");
+        curHp = characterStat.MaxHp;
     }
 
     protected override void Start()

@@ -7,6 +7,7 @@ namespace SKILLCONSTANT
         KNUCKBACK,
         AMORBREAK,
         SPAWN,
+        NONE
     }
     public enum SkillType
     {
@@ -14,5 +15,6 @@ namespace SKILLCONSTANT
         LINEAR,
         PROJECTILE,
         BUFF,
+        NONE
     }
 }

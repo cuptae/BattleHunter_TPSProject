@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using SKILLCONSTANT;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -35,9 +37,9 @@ public class SkillManager : MonoSingleton<SkillManager>
         switch(GameManager.Instance.curCharacter)
         {
             case Character.GUNNER:
-            activeSkills.Add(new ShockWave(SetSkillData(20101),player));
-            activeSkills.Add(new GrenadeLauncher(SetSkillData(20201),player));
-            activeSkills.Add(new PhotonLance(SetSkillData(20301),player));
+            activeSkills.Add(new ShockWave(GetSkillData(20101),player));
+            activeSkills.Add(new GrenadeLauncher(GetSkillData(20201),player));
+            activeSkills.Add(new PhotonLance(GetSkillData(20301),player));
             break;
             case Character.HACKER:
             break;
@@ -46,14 +48,7 @@ public class SkillManager : MonoSingleton<SkillManager>
         }
         return activeSkills;
     }
-    public ActiveData SetSkillData(int skillId)
-    {
-        Dictionary<string, object> skillData = GetSkillData(skillId);
-        ActiveData  activeData = new ActiveData();
-        activeData.SetSkillId((int)skillData["skillId"]);
 
-        return activeData;
-    }
 
     IEnumerator TableDownload()
     {
@@ -72,20 +67,44 @@ public class SkillManager : MonoSingleton<SkillManager>
         Debug.Log("Skill table loaded successfully!");
     }
 
-    public Dictionary<string, object> GetSkillData(int skillId)
+    public ActiveData GetSkillData(int skillId)
     {
-        return skillTable.Find(skill =>
+        var skillDict = skillTable.Find(skill =>
         {
-            if (skill["skillId"] is int id)
+            if (skill.TryGetValue("skillId", out object value))
             {
-                return id == skillId;
-            }
-            else if (skill["skillId"] is string idStr && int.TryParse(idStr, out int parsedId))
-            {
-                return parsedId == skillId;
+                if (value is int id)
+                {
+                    return id == skillId;
+                }
+                if (value is string idStr && int.TryParse(idStr, out int parsedId))
+                {
+                    return parsedId == skillId;
+                }
             }
             return false;
         });
-    }
 
+        if (skillDict == null)
+        {
+            Debug.LogWarning($"Skill ID {skillId} not found.");
+            return null;
+        }
+
+        ActiveData data = new ActiveData();
+        data.SetSkillId(skillId);
+        data.SetSkillName(skillDict["name"] as string);
+        data.SetSkillDesc(skillDict["desc"] as string);
+        data.SetSkillIcon(skillDict["icon"] as string);
+        data.SetSkillDamage(Convert.ToInt32(skillDict["damage"]));
+        data.SetCooltime(Convert.ToSingle(skillDict["coolTime"]));
+        data.SetAttackRange(Convert.ToSingle(skillDict["attackRange"]));
+        data.SetAttackDistance(Convert.ToSingle(skillDict["attackDistance"]));
+        data.SetIsCharge(Convert.ToBoolean(skillDict["isCharge"]));
+        data.SetProjectileCount(Convert.ToInt32(skillDict["projectileCount"]));
+        data.SetSkillEffectParam(Enum.TryParse(skillDict["skillEffectParam"].ToString(), out SkillEffect effect) ? effect : SkillEffect.NONE);
+        data.SetSkillType(Enum.TryParse(skillDict["skillType"].ToString(), out SkillType type) ? type : SkillType.NONE);
+
+        return data;
+    }
 }

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4879538022186875725}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_HipRearRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5033489949587889098}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: target (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 521934779872045252}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: target (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1258082895992894971}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_LegFrontLeft1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5282158048427110833}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_LegFrontRight2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,7 +167,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8531402461967506124}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -198,7 +198,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2291687488859614132}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_TurretWeaponRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,7 +230,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4727710024962152405}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_LegRearRight1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +262,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6928208317798686704}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_HipFrontLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -296,7 +296,7 @@ GameObject:
   - component: {fileID: 4947065952511615764}
   - component: {fileID: 4479173277133532235}
   - component: {fileID: 6789870756872865130}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_QuadroidEyeHori
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -378,7 +378,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2508755458706803328}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_EyeVerti
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -410,7 +410,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3757844274307948071}
   - component: {fileID: 5094762451894711873}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: QuadroidSplit_Army Variant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -464,7 +464,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5589986934036074100}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_LegFrontRight1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -498,7 +498,7 @@ GameObject:
   - component: {fileID: 2539934373325000315}
   - component: {fileID: 3791930534376494027}
   - component: {fileID: 6652047715053398848}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_QuadroidMnigunRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -580,7 +580,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6346660480253439369}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_WeaponLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -611,7 +611,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4649699340185075141}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_WeaponRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -642,7 +642,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6306107132350567290}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_HipFrontRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -676,7 +676,7 @@ GameObject:
   - component: {fileID: 4955206191317828038}
   - component: {fileID: 5112922686098993584}
   - component: {fileID: 313089090492354717}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Dragoon
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -757,7 +757,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5704444246211796441}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: target (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -789,7 +789,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1461238847260048636}
   - component: {fileID: 8836295218642833896}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Rig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -838,7 +838,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1028037420802550576}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_LegRearLeft1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -870,7 +870,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 729624943992108347}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_EyeHori
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -904,7 +904,7 @@ GameObject:
   - component: {fileID: 5619508262559462494}
   - component: {fileID: 1875291509217056341}
   - component: {fileID: 604258496156077296}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_QuadroidMinigunLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -987,7 +987,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4990049504547222728}
   - component: {fileID: 369790590587061260}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Leg (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1043,7 +1043,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2025586146303220300}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_Pelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1082,7 +1082,7 @@ GameObject:
   - component: {fileID: 172481156730177666}
   - component: {fileID: 3743221508152668569}
   - component: {fileID: 3566768287994967977}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_QuadroidMinigunBarrelsLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1163,7 +1163,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4173411111854763231}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1196,7 +1196,7 @@ GameObject:
   - component: {fileID: 9045352903218449279}
   - component: {fileID: 3017373252297067064}
   - component: {fileID: 4056822232732612502}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_QuadroidTurretNeck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1278,7 +1278,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 26496119226945397}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_LegRearRight2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1311,7 +1311,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4549924412809634263}
   - component: {fileID: 7687942039779185834}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Leg (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1367,7 +1367,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3831765317199982847}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_LegRearLeft2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1399,7 +1399,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2013887382293615763}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_TurretWeaponLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1431,7 +1431,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6391265197438087484}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_LegFrontLeft3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1471,7 +1471,7 @@ GameObject:
   - component: {fileID: 5003534471051930483}
   - component: {fileID: 4166738290714308449}
   - component: {fileID: 6553765913187144253}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: bot
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1684,7 +1684,7 @@ GameObject:
   - component: {fileID: 4693030238623887480}
   - component: {fileID: 6291787721763315472}
   - component: {fileID: 4272499248886711375}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_QuadroidEyeVertical
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1766,7 +1766,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5007467697189486825}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_TurretNeck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1800,7 +1800,7 @@ GameObject:
   - component: {fileID: 3677593812804072412}
   - component: {fileID: 7207997324945605783}
   - component: {fileID: 7469253699836138256}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_QuadroidMinigunBarrelsRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1881,7 +1881,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3712237666684907677}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: '***Turret***'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1914,7 +1914,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2707988464251169624}
   - component: {fileID: 5027130023911227521}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SK_QuadroidLegs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2017,7 +2017,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6882534243709552785}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_TurretHori
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2049,7 +2049,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6206393535952907999}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_LegRearRight3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2081,7 +2081,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 704465033831359662}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_TurretHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2116,7 +2116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 378912895076330252}
   - component: {fileID: 6350279974847089149}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Leg (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2174,7 +2174,7 @@ GameObject:
   - component: {fileID: 7410503137867256809}
   - component: {fileID: 3042068969782538906}
   - component: {fileID: 1945654905846117318}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_QuadroidHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2258,7 +2258,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8333866745045872128}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_HipRearLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2290,7 +2290,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5576164299773046489}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_LegFrontLeft2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2322,7 +2322,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2929341190014605832}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: target (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2353,7 +2353,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3508768068901410447}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: target (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2386,7 +2386,7 @@ GameObject:
   - component: {fileID: 7590436923986098326}
   - component: {fileID: 7754996002701483728}
   - component: {fileID: 802509344417344389}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_QuadroidTurretWeaponRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2469,7 +2469,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4385532795240625077}
   - component: {fileID: 7127825140405513258}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2525,7 +2525,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2385720756962856631}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_LegRearLeft3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2557,7 +2557,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6212664635224422824}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2591,7 +2591,7 @@ GameObject:
   - component: {fileID: 1077249936373084913}
   - component: {fileID: 4540281605958247771}
   - component: {fileID: 4057112567986945120}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_QuadroidTurretWeaponLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2675,7 +2675,7 @@ GameObject:
   - component: {fileID: 2698060517883887361}
   - component: {fileID: 771777630173115953}
   - component: {fileID: 5381002836712588914}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_QuadroidNeck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2757,7 +2757,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3220396103301465915}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: target (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2788,7 +2788,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4686018569448857606}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: target (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2819,7 +2819,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7363762220758423991}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quadroid_LegFrontRight3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2853,6 +2853,10 @@ PrefabInstance:
     - target: {fileID: 87969638227330444, guid: 8385e5ca43e126a45af29b05ce5c9fbf, type: 3}
       propertyPath: m_Name
       value: ErekiBall2
+      objectReference: {fileID: 0}
+    - target: {fileID: 87969638227330444, guid: 8385e5ca43e126a45af29b05ce5c9fbf, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 902397041532082034, guid: 8385e5ca43e126a45af29b05ce5c9fbf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2897,6 +2901,14 @@ PrefabInstance:
     - target: {fileID: 3484142340933044682, guid: 8385e5ca43e126a45af29b05ce5c9fbf, type: 3}
       propertyPath: m_IsTrigger
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4761047379556860377, guid: 8385e5ca43e126a45af29b05ce5c9fbf, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 9176433961151316009, guid: 8385e5ca43e126a45af29b05ce5c9fbf, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

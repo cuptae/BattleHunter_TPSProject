@@ -6,18 +6,14 @@ using System.IO;
 public class GameManager : MonoSingleton<GameManager>
 {
     public Character curCharacter = Character.NONSELECTED;
-    public string jsonPath;
+    public int enemyLayerMask;
+    public int groundLayer;
 
 
     protected override void Awake()
     {
         base.Awake();
-        jsonPath =Resources.Load<TextAsset>("Characterdata").text;
-        //jsonPath = Application.dataPath + "/Resources/Characterdata.json";
-    }
-
-    void Start()
-    {
-        Debug.Log(jsonPath);   
+        enemyLayerMask = 1<<LayerMask.NameToLayer("ENEMY");
+        groundLayer = 1<<LayerMask.NameToLayer("GROUND");
     }
 }

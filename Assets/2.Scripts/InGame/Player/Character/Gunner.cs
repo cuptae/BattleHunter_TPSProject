@@ -15,20 +15,19 @@ public class Gunner : PlayerCtrl
     protected override void Awake()
     {
         base.Awake();
+        characterStat.GetCharacterDataByName("Gunner");
         aimRig = GetComponentInChildren<Rig>();
         multiAimConstraint = GetComponentInChildren<MultiAimConstraint>();
         aimingPos = GameObject.FindWithTag("AimingPos").transform;
-
+        curHp = characterStat.MaxHp;
     }
 
     protected override void Start()
     {
         base.Start();
-        characterStat.GetCharacterDataByName("Gunner");
         WeightedTransformArray sourceObjects = multiAimConstraint.data.sourceObjects;
         sourceObjects.Add(new WeightedTransform(aimingPos,aimRig.weight));
         PoolManager.Instance.CreatePool(bulletEffect.name, bulletEffect, 10);
-        curHp = characterStat.MaxHp;
     }
 
     // Update is called once per frame
@@ -113,5 +112,19 @@ public class Gunner : PlayerCtrl
         GameObject effect = PoolManager.Instance.GetObject(bulletEffect.name,pos, rot);
         yield return new WaitForSeconds(0.3f);
         PoolManager.Instance.ReturnObject(bulletEffect.name,effect);
+    }
+
+    private void OnDrawGizmos()
+    {
+
+        Vector3 boxRange = new Vector3(3f, 2f, 3f);
+        Vector3 attackPos = transform.position + transform.forward * 2f + transform.up * 2f;
+        Quaternion attackRot = transform.rotation;
+
+        Gizmos.color = Color.red; // 기즈모 색상 설정
+        Matrix4x4 rotationMatrix = Matrix4x4.TRS(attackPos, attackRot, Vector3.one); // 회전 적용
+
+        Gizmos.matrix = rotationMatrix;
+        Gizmos.DrawWireCube(Vector3.zero, boxRange); // 중심을 (0,0,0)으로 설정하여 회전 적용
     }
 }

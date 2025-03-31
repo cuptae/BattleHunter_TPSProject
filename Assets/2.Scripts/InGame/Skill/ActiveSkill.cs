@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using ExitGames.Client.Photon.StructWrapping;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Rendering;
 
 public abstract class ActiveSkill : ISkill
 {
@@ -21,19 +23,35 @@ public abstract class ActiveSkill : ISkill
         onSkillEnd = callback;
     }
 
-    protected void SpawnHitBox()
+    protected List<EnemyCtrl> ScanEnemyBox()
     {
-        //monsterCols = Physics.OverlapBox(player.transform,)
+        Vector3 boxRange = new Vector3(activeData.attackRange,2f,activeData.attackDistance);
+        Vector3 attackPos = player.transform.position+player.transform.forward*1f+player.transform.up*2f;
+        Quaternion attackRot = player.transform.rotation;
+
+        Collider [] monCols = Physics.OverlapBox(attackPos,boxRange,attackRot,GameManager.Instance.enemyLayerMask);
+
+        List<EnemyCtrl> enemys = new List<EnemyCtrl>();
+
+        foreach(Collider col in monCols)
+        {
+            enemys.Add(col.GetComponent<EnemyCtrl>());
+        }
+        return enemys;
     }
 
-    protected void SpawnHitSphere()
+    protected void Effect()
     {
-
+        switch(activeData.skillEffectParam)
+        {
+            case SKILLCONSTANT.SkillEffect.KNUCKBACK:
+                
+            break;
+        }
     }
+    
 
-    protected void SpawnEffect()
-    {
-        
-    }
 
 }
+
+

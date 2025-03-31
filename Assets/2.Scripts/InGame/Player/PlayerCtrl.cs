@@ -34,8 +34,6 @@ public abstract class PlayerCtrl : MonoBehaviour
     public bool isDodge = false;
     public bool isAttack;
 
-    protected int enemyLayerMask;
-    private  int groundLayer;
 
     public CharacterStat characterStat;
     protected Camera mainCamera;
@@ -62,9 +60,6 @@ public abstract class PlayerCtrl : MonoBehaviour
         mainCamera = Camera.main;
 
         stateMachine =new PlayerStateMachine();
-
-        enemyLayerMask = 1<<LayerMask.NameToLayer("ENEMY");
-        groundLayer = 1<<LayerMask.NameToLayer("GROUND");
 
         pv = GetComponent<PhotonView>();
         pv.ObservedComponents[0] = this;
@@ -135,7 +130,7 @@ public abstract class PlayerCtrl : MonoBehaviour
     public bool IsSlope()
     {
         Ray ray = new Ray(transform.position,Vector3.down);
-        if(Physics.Raycast(ray,out slopeHit,2.0f,groundLayer))
+        if(Physics.Raycast(ray,out slopeHit,2.0f,GameManager.Instance.groundLayer))
         {
             groundNormal = slopeHit.normal;
             float groundAngle = Vector3.Angle(Vector3.up,groundNormal);

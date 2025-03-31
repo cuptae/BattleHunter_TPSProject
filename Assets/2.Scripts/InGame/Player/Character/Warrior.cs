@@ -18,6 +18,7 @@ public class Warrior : PlayerCtrl
     {
         base.Awake();
         characterStat.GetCharacterDataByName("Warrior");
+        curHp = characterStat.MaxHp;
     }
     // Start is called before the first frame update
     protected override void Start()
@@ -97,13 +98,13 @@ public class Warrior : PlayerCtrl
         animator.SetInteger("Combo",comboStep);
     }
 
+
     protected override void Attack()
     {
         Vector3 boxRange = new Vector3(3f,2f,2f);
         Vector3 attackPos = transform.position+transform.forward*2f+transform.up*1f;
         Quaternion attackRot = transform.rotation;
-
-        Collider[] monsterCollider = Physics.OverlapBox(attackPos, boxRange, attackRot, enemyLayerMask);
+        Collider[] monsterCollider = Physics.OverlapBox(attackPos, boxRange, attackRot, GameManager.Instance.enemyLayerMask);
         foreach(Collider col in monsterCollider)
         {
             Debug.Log(col.name);
