@@ -3,21 +3,21 @@ using UnityEngine.AI;
 
 public class Dragoon : EnemyCtrl
 {
-    public float stopDistance = 5f;
+    public float stopDistance = 10f;
     public float retreatSpeed = 3f;
     public float bufferDistance = 1f;
     public float rotationSpeed = 5f;
 
-    public float attackRange = 6f; // 공격 사거리
+    public float attackRange = 11f; // 공격 사거리
     public float fireInterval = 3f; // 발사 간격
-    
+
     public GameObject firePoint; // 투사체 생성 위치
 
     private NavMeshAgent agent;
     private Transform targetPlayer;
     private float fireTimer;
     public DragoonProjectile projectile; // 프리팹이 아닌, 씬에 배치된 단일 투사체
-    
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -74,11 +74,12 @@ public class Dragoon : EnemyCtrl
     {
         if (projectile != null && targetPlayer != null)
         {
-            projectile.transform.position = firePoint.transform.position; // firePoint에서 시작
-            projectile.Launch(targetPlayer);
+            Vector3 shootDirection = (targetPlayer.position - firePoint.transform.position).normalized;
+            projectile.transform.position = firePoint.transform.position;
+            projectile.Launch(shootDirection);
         }
 
-        //반동: 드라군 뒤로 0.5f 이동
+        // 반동: 드라군 뒤로 0.5f 이동
         Vector3 backDirection = -transform.forward;
         transform.position += backDirection * 0.5f;
     }

@@ -48,7 +48,7 @@ public abstract class PlayerCtrl : MonoBehaviour
     private Transform camFollow;
     public GameObject weapon;
 
-    private int curHp;
+    public int curHp;
 
     protected virtual void Awake() {
         animator = GetComponentInChildren<Animator>();
@@ -82,6 +82,7 @@ public abstract class PlayerCtrl : MonoBehaviour
         {
             stateMachine.Initialize(new IdleState(this));
         }
+        curHp = characterData.maxHp;
     }
     protected virtual void Update()
     {
@@ -166,7 +167,7 @@ public abstract class PlayerCtrl : MonoBehaviour
     }
 
     [PunRPC]
-    private void TakeDamage(int damage,PhotonMessageInfo info)
+    public void TakeDamage(int damage,PhotonMessageInfo info)
     {
         curHp -= damage;
         if(curHp<=0)

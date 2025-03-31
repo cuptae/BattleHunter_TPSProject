@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ChaseState : IEnemyState
 {
     public void EnterState(EnemyCtrl enemy)
     {
-        enemy.navMeshAgent.isStopped = false;
+        var agent = enemy.GetComponent<NavMeshAgent>();
+        if (agent != null && agent.enabled && agent.isOnNavMesh)
+        {
+            agent.isStopped = false;
+        }
     }
 
     public void UpdateState(EnemyCtrl enemy)
@@ -24,9 +29,14 @@ public class ChaseState : IEnemyState
         }
     }
 
+
     public void ExitState(EnemyCtrl enemy)
     {
-        enemy.navMeshAgent.isStopped = true;
+        var agent = enemy.GetComponent<NavMeshAgent>();
+        if (agent != null && agent.enabled && agent.isOnNavMesh)
+        {
+            agent.isStopped = true;
+        }
     }
 }
 

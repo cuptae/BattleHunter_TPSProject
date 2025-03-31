@@ -49,18 +49,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 625bf9e589013f048b7cd2a8ac471d14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movetype: 0
-  mainCamera: {fileID: 0}
   isMove: 0
   isDodge: 0
   isAttack: 0
-  weapon: {fileID: 3897433851248381228}
+  characterData:
+    characterName: 
+    maxHp: 0
+    dodgeTime: 0
+    attackRange: 0
+    attackRate: 0
+    attackWalkSpeed: 0
+    walkSpeed: 0
+    runSpeed: 0
+    rotationSpeed: 0
+    damage: 0
   curState: 4
   groundNormal: {x: 0, y: 0, z: 0}
-  camFollow: {fileID: 0}
+  movetype: 0
+  weapon: {fileID: 3897433851248381228}
+  curHp: 0
   bulletEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
-  damage: 30
-  fireRate: 0.1
 --- !u!54 &7976035198930618412
 Rigidbody:
   m_ObjectHideFlags: 0

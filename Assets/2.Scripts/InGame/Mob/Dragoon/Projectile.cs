@@ -3,9 +3,10 @@ using UnityEngine;
 public class DragoonProjectile : MonoBehaviour
 {
     public float speed = 10f;
-    private Transform target;
+    private Vector3 direction;
     private bool isActive = false;
     private Vector3 startPosition;
+    public int damage = 10;
 
     void Start()
     {
@@ -13,30 +14,23 @@ public class DragoonProjectile : MonoBehaviour
         gameObject.SetActive(false); // 시작할 때 비활성화
     }
 
-    public void Launch(Transform targetTransform)
+    // 방향을 설정해서 발사
+    public void Launch(Vector3 shootDirection)
     {
-        target = targetTransform;
+        direction = shootDirection.normalized;
         isActive = true;
         gameObject.SetActive(true);
     }
 
     void Update()
     {
-        if (!isActive || target == null) return;
+        if (!isActive) return;
 
-        Vector3 direction = (target.position - transform.position).normalized;
         transform.position += direction * speed * Time.deltaTime;
-
-        // (선택) 목표와의 거리가 너무 멀면 꺼버리기
-        if (Vector3.Distance(transform.position, target.position) < 0.5f)
-        {
-            HitTarget();
-        }
     }
 
     void HitTarget()
     {
-        // 여기서 데미지 처리 같은 걸 할 수 있어요
         isActive = false;
         gameObject.SetActive(false);
 
@@ -51,9 +45,14 @@ public class DragoonProjectile : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (!isActive) return;
         if (other.CompareTag("Player"))
         {
+            PlayerCtrl playerdamege = other.GetComponent<PlayerCtrl>();
+
+            if (playerdamege != null)
+            {
+                playerdamege.GetDamage(damage);
+            }
             HitTarget();
         }
     }
