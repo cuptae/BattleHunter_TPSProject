@@ -11,10 +11,10 @@ public class DragoonProjectile : MonoBehaviour
     void Start()
     {
         startPosition = transform.position;
-        gameObject.SetActive(false); // ½ÃÀÛÇÒ ¶§ ºñÈ°¼ºÈ­
+        gameObject.SetActive(false); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­
     }
 
-    // ¹æÇâÀ» ¼³Á¤ÇØ¼­ ¹ß»ç
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ß»ï¿½
     public void Launch(Vector3 shootDirection)
     {
         direction = shootDirection.normalized;
@@ -34,7 +34,7 @@ public class DragoonProjectile : MonoBehaviour
         isActive = false;
         gameObject.SetActive(false);
 
-        // ÀÏÁ¤ ½Ã°£ ÈÄ ¿øÀ§Ä¡·Î º¹±Í
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         Invoke(nameof(ResetProjectile), 1.5f);
     }
 

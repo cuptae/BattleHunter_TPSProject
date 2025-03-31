@@ -10,9 +10,7 @@ public class PhotonLance : ActiveSkill
         Debug.Log("포톤랜스 발동");
         player.animator.SetTrigger("RSkill");
         yield return new WaitForSeconds(4.15f);
-
         Debug.Log("PhotonLance Finished");
         onSkillEnd?.Invoke();
     }
-
 }

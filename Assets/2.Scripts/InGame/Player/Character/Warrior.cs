@@ -99,8 +99,8 @@ public class Warrior : PlayerCtrl
 
     protected override void Attack()
     {
-        Vector3 boxRange = new Vector3(3f,3f,2f);
-        Vector3 attackPos = transform.position+transform.forward*2f;
+        Vector3 boxRange = new Vector3(3f,2f,2f);
+        Vector3 attackPos = transform.position+transform.forward*2f+transform.up*1f;
         Quaternion attackRot = transform.rotation;
 
         Collider[] monsterCollider = Physics.OverlapBox(attackPos, boxRange, attackRot, enemyLayerMask);
@@ -118,10 +118,10 @@ public class Warrior : PlayerCtrl
 
 
 
-    void ODrawGizmos()
+    void OnDrawGizmos()
     {
         Gizmos.color = Color.blue; // 파란색으로 표시
-        Vector3 attackPosition = transform.position + transform.forward * 2.0f; // OverlapBox 위치
+        Vector3 attackPosition = transform.position+transform.forward*2f+transform.up*1f; // OverlapBox 위치
         Vector3 boxSize = new Vector3(3f, 2f, 2f); // 박스 크기 설정
         Gizmos.matrix = Matrix4x4.TRS(attackPosition, transform.rotation, Vector3.one); // 회전 고려
         Gizmos.DrawWireCube(Vector3.zero, boxSize); // 박스를 그리기

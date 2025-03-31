@@ -8,6 +8,7 @@ public abstract class ActiveSkill : ISkill
     protected ActiveData activeData;
     protected PlayerCtrl player;
     protected System.Action onSkillEnd;
+    Collider[] monsterCols;
     public ActiveSkill(ActiveData activeData,PlayerCtrl player)
     {
         this.activeData = activeData;
@@ -22,7 +23,7 @@ public abstract class ActiveSkill : ISkill
 
     protected void SpawnHitBox()
     {
-
+        //monsterCols = Physics.OverlapBox(player.transform,)
     }
 
     protected void SpawnHitSphere()

@@ -7,7 +7,9 @@ using UnityEngine;
 
 public class CharacterStat
 {
-    public string jsonPath = Application.dataPath + "/2.Scripts/InGame/Player/CharacterData/Characterdata.json";
+    //public string jsonPath = Application.dataPath + "/2.Scripts/InGame/Player/CharacterData/Characterdata.json";
+    //public string jsonPath = Application.dataPath + "/Resources/Characterdata.json";
+    public string jsonPath = Resources.Load<TextAsset>("Characterdata").text;
     private CharacterDataList characterDataList;
     CharacterData characterData;
 
@@ -40,10 +42,9 @@ public class CharacterStat
 
     public CharacterData GetCharacterDataByName(string characterName)
     {
-        string jsonData = File.ReadAllText(jsonPath);
+        string jsonData = jsonPath;//File.ReadAllText(GameManager.Instance.jsonPath);
         characterDataList = JsonUtility.FromJson<CharacterDataList>(jsonData);
         characterData = characterDataList.characterDataList.Find(c => c.characterName == characterName);
-
         return characterData;
     }
     public void ModifyStat(string statType, float value)

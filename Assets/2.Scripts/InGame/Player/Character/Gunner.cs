@@ -18,15 +18,17 @@ public class Gunner : PlayerCtrl
         aimRig = GetComponentInChildren<Rig>();
         multiAimConstraint = GetComponentInChildren<MultiAimConstraint>();
         aimingPos = GameObject.FindWithTag("AimingPos").transform;
-        characterStat.GetCharacterDataByName("Gunner");
+
     }
 
     protected override void Start()
     {
         base.Start();
+        characterStat.GetCharacterDataByName("Gunner");
         WeightedTransformArray sourceObjects = multiAimConstraint.data.sourceObjects;
         sourceObjects.Add(new WeightedTransform(aimingPos,aimRig.weight));
         PoolManager.Instance.CreatePool(bulletEffect.name, bulletEffect, 10);
+        curHp = characterStat.MaxHp;
     }
 
     // Update is called once per frame

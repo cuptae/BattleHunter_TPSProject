@@ -1589,11 +1589,11 @@ MonoBehaviour:
   curHp: 0
   isDead: 0
   navMeshAgent: {fileID: 0}
-  stopDistance: 10
+  stopDistance: 5
   retreatSpeed: 3
   bufferDistance: 1
   rotationSpeed: 5
-  attackRange: 11
+  attackRange: 6
   fireInterval: 3
   firePoint: {fileID: 4642896282648741027}
   projectile: {fileID: 4752966069239387939}
