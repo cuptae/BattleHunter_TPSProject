@@ -1,23 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    private static UIManager instance;
+    public GameObject optionPanel;  // 옵션 창
+    public GameObject crossHair;    // 크로스헤어 UI
+    private bool isOptionOpen = false;
 
-    public GameObject globalUI; // HP바, 미니맵 등
-
-    void Awake()
+    void Update()
     {
-        if (instance == null)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
+            ToggleOption();
+        }
+    }
+
+    public void ToggleOption()
+    {
+        isOptionOpen = !isOptionOpen;
+        optionPanel.SetActive(isOptionOpen);
+        crossHair.SetActive(!isOptionOpen);
+
+        if (isOptionOpen)
+        {
+            Cursor.lockState = CursorLockMode.None; // 마우스 활성화
+            Cursor.visible = true;
         }
         else
         {
-            Destroy(gameObject);
+            Cursor.lockState = CursorLockMode.Locked; // 마우스 숨김 (게임 모드)
+            Cursor.visible = false;
         }
     }
 }

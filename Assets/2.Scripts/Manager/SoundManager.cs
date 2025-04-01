@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum BGMType
+{
+    MainMenu,
+    MazeStage,
+    BossStage
+}
+
 public enum SFXCategory
 {
     PLAYER,
     MOBS,
     BOSS,
     OBJECT
-}
-
-public enum BGMType
-{
-    MainMenu,
-    MazeStage,
-    BossStage
 }
 
 public enum PLAYER
@@ -28,13 +28,20 @@ public enum PLAYER
     DIE
 }
 
+public enum MOBS
+{
+    MOVE,
+    FIND,
+    ATTACK,
+    DIE
+}
+
 public enum BOSS
 {
-    STEP,
-    RUN,
-    JUMP,
+    MOVE,
+    FIND,
     ATTACK,
-    SKILL,
+    SPECIAL,
     DIE
 }
 
@@ -52,8 +59,20 @@ public class SoundManager : MonoSingleton<SoundManager>
     private AudioSource bgmSource;
     private List<AudioSource> sfxSources = new List<AudioSource>(); 
     private List<AudioSource> uiSources = new List<AudioSource>(); 
+
+    //플레이어 사운드
     private Dictionary<SFXCategory, Dictionary<PLAYER, AudioClip>> 
-    sfxClips = new Dictionary<SFXCategory, Dictionary<PLAYER, AudioClip>>();
+    UserSfxClips = new Dictionary<SFXCategory, Dictionary<PLAYER, AudioClip>>();
+
+    //몬스터 사운드
+    private Dictionary<SFXCategory, Dictionary<MOBS, AudioClip>> 
+    MobsClips = new Dictionary<SFXCategory, Dictionary<MOBS, AudioClip>>();
+
+    //보스 사운드
+    private Dictionary<SFXCategory, Dictionary<BOSS, AudioClip>> 
+    BossClips = new Dictionary<SFXCategory, Dictionary<BOSS, AudioClip>>();
+
+
     private Dictionary<UIType, AudioClip> uiClips = new Dictionary<UIType, AudioClip>();
     private Dictionary<BGMType, AudioClip> bgmClips = new Dictionary<BGMType, AudioClip>();
 
@@ -86,20 +105,27 @@ public class SoundManager : MonoSingleton<SoundManager>
     void LoadSFX()
     {
     // 플레이어 효과음 등록
-    sfxClips[SFXCategory.PLAYER] = new Dictionary<PLAYER, AudioClip>();
-    sfxClips[SFXCategory.PLAYER][PLAYER.STEP] = Resources.Load<AudioClip>("Sounds/SFX/Player/Step");
-    sfxClips[SFXCategory.PLAYER][PLAYER.RUN] = Resources.Load<AudioClip>("Sounds/SFX/Player/Run");
-    sfxClips[SFXCategory.PLAYER][PLAYER.JUMP] = Resources.Load<AudioClip>("Sounds/SFX/Player/Jump");
-    sfxClips[SFXCategory.PLAYER][PLAYER.ATTACK] = Resources.Load<AudioClip>("Sounds/SFX/Player/Shoot");
-    sfxClips[SFXCategory.PLAYER][PLAYER.SKILL] = Resources.Load<AudioClip>("Sounds/SFX/Player/Skill");
-    sfxClips[SFXCategory.PLAYER][PLAYER.DIE] = Resources.Load<AudioClip>("Sounds/SFX/Player/PlayerDie");
+    UserSfxClips[SFXCategory.PLAYER] = new Dictionary<PLAYER, AudioClip>();
+    UserSfxClips[SFXCategory.PLAYER][PLAYER.STEP] = Resources.Load<AudioClip>("Sounds/SFX/Player/Step");
+    UserSfxClips[SFXCategory.PLAYER][PLAYER.RUN] = Resources.Load<AudioClip>("Sounds/SFX/Player/Run");
+    UserSfxClips[SFXCategory.PLAYER][PLAYER.JUMP] = Resources.Load<AudioClip>("Sounds/SFX/Player/Jump");
+    UserSfxClips[SFXCategory.PLAYER][PLAYER.ATTACK] = Resources.Load<AudioClip>("Sounds/SFX/Player/Shoot");
+    UserSfxClips[SFXCategory.PLAYER][PLAYER.SKILL] = Resources.Load<AudioClip>("Sounds/SFX/Player/Skill");
+    UserSfxClips[SFXCategory.PLAYER][PLAYER.DIE] = Resources.Load<AudioClip>("Sounds/SFX/Player/PlayerDie");
 
     // 몹 효과음 등록
-    sfxClips[SFXCategory.MOBS] = new Dictionary<PLAYER, AudioClip>();
-    sfxClips[SFXCategory.MOBS][PLAYER.STEP] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/Step");
-    sfxClips[SFXCategory.MOBS][PLAYER.JUMP] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/Jump");
-    sfxClips[SFXCategory.MOBS][PLAYER.DIE] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/MobDie");
+    MobsClips[SFXCategory.MOBS] = new Dictionary<MOBS, AudioClip>();
+    MobsClips[SFXCategory.MOBS][MOBS.MOVE] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/Step");
+    MobsClips[SFXCategory.MOBS][MOBS.ATTACK] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/Jump");
+    MobsClips[SFXCategory.MOBS][MOBS.DIE] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/MobDie");
 
+    // 보스 효과음 등록
+    BossClips[SFXCategory.MOBS] = new Dictionary<BOSS, AudioClip>();
+    BossClips[SFXCategory.MOBS][BOSS.MOVE] = Resources.Load<AudioClip>("Sounds/SFX/Boss/Step");
+    BossClips[SFXCategory.MOBS][BOSS.ATTACK] = Resources.Load<AudioClip>("Sounds/SFX/Boss/Jump");
+    BossClips[SFXCategory.MOBS][BOSS.DIE] = Resources.Load<AudioClip>("Sounds/SFX/Boss/BossDie");
+
+    // UI 효과음
     uiClips[UIType.SELECTCHAR] = Resources.Load<AudioClip>("Sounds/UI/SelectCharacter");
     uiClips[UIType.CROSSBTN] = Resources.Load<AudioClip>("Sounds/UI/CrossButton");
     uiClips[UIType.PUSHBTN] = Resources.Load<AudioClip>("Sounds/UI/PushButton");
@@ -200,13 +226,13 @@ public class SoundManager : MonoSingleton<SoundManager>
     {
     Debug.Log($"▶️ PlaySFX 호출됨: {category} - {type}, isSFXMuted: {isSFXMuted}");
 
-    if (isSFXMuted)
+    if (isSFXMuted) //추후 삭제 (소리 나는지 확인용)
     {
         Debug.LogWarning("🔇 SFX가 음소거 상태임! 소리 재생 안됨.");
         return;
     }
 
-    if (sfxClips.TryGetValue(category, out var typeDict))
+    if (UserSfxClips.TryGetValue(category, out var typeDict))
     {
         if (typeDict.TryGetValue(type, out AudioClip clip))
         {
@@ -216,9 +242,9 @@ public class SoundManager : MonoSingleton<SoundManager>
             sfxSource.clip = clip;
             sfxSource.volume = sfxVolume;
             sfxSource.Play();
-            Debug.Log($"🎵 [SFX] {type} 사운드 재생 완료!");
+            Debug.Log($"🎵 [SFX] {type} 사운드 재생 완료!"); //추후 삭제 (소리 나는지 확인용)
         }
-        else
+        else //추후 삭제 (소리 나는지 확인용)
         {
             Debug.LogError($"⚠️ SFX Not Found: {category} - {type}");
         }
@@ -232,9 +258,9 @@ public class SoundManager : MonoSingleton<SoundManager>
     // 🎵 UI 사운드 재생
 public void PlayUISound(UIType type)
 {
-    Debug.Log($"▶️ PlayUISound 호출됨: {type}, isUIMuted: {isUIMuted}");
+    Debug.Log($"▶️ PlayUISound 호출됨: {type}, isUIMuted: {isUIMuted}"); 
 
-    if (isUIMuted)
+    if (isUIMuted) //추후 삭제 (소리 나는지 확인용)
     {
         Debug.LogWarning("🔇 UI 사운드가 음소거 상태임! 재생 안됨.");
         return;
@@ -247,9 +273,9 @@ public void PlayUISound(UIType type)
         uiSource.volume = uiVolume;
         uiSource.Play();
 
-        Debug.Log($"🎵 [UI] {type} 사운드 재생 완료!");
+        Debug.Log($"🎵 [UI] {type} 사운드 재생 완료!"); //추후 삭제 (소리 나는지 확인용)
     }
-    else
+    else //추후 삭제 (소리 나는지 확인용)
     {
         Debug.LogError($"⚠️ UI 사운드 클립이 없음: {type}");
     }
