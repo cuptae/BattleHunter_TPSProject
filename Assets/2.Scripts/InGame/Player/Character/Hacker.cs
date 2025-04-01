@@ -64,10 +64,6 @@ public class Hacker : PlayerCtrl
         }
     }
 
-    void SetRigWeight(float weight)
-    {
-        aimRig.weight = weight;
-    }
 
     protected override void Attack()
     {
@@ -114,5 +110,11 @@ public class Hacker : PlayerCtrl
         yield return new WaitForSeconds(0.3f);
         PoolManager.Instance.ReturnObject(bulletEffect.name,effect);
     }
+ 
+ 
+    // void SetRigWeight(float weight)
+    // {
+    //     aimRig.weight = weight;
+    // }
 
 }

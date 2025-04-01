@@ -9,10 +9,9 @@ public class SkillManager : MonoSingleton<SkillManager>
 {
 
     const string tableUrl = "https://docs.google.com/spreadsheets/d/{0}/export?format=csv&gid={1}";
-    public List<Dictionary<string,object>> skillTable;
+    private List<Dictionary<string,object>> skillTable;
+    [HideInInspector]
     public PlayerCtrl player;
-
-    public int skillId;
     protected override void Awake()
     {
         base.Awake();
@@ -37,9 +36,9 @@ public class SkillManager : MonoSingleton<SkillManager>
         switch(GameManager.Instance.curCharacter)
         {
             case Character.GUNNER:
-            activeSkills.Add(new ShockWave(GetSkillData(20101),player));
-            activeSkills.Add(new GrenadeLauncher(GetSkillData(20201),player));
-            activeSkills.Add(new PhotonLance(GetSkillData(20301),player));
+            activeSkills.Add(new ShockWave(GetSkillData(20101),null,null,player));
+            activeSkills.Add(new GrenadeLauncher(GetSkillData(20201),null,null,player));
+            activeSkills.Add(new PhotonLance(GetSkillData(20301),null,null,player));
             break;
             case Character.HACKER:
             break;
@@ -101,10 +100,15 @@ public class SkillManager : MonoSingleton<SkillManager>
         data.SetAttackRange(Convert.ToSingle(skillDict["attackRange"]));
         data.SetAttackDistance(Convert.ToSingle(skillDict["attackDistance"]));
         data.SetIsCharge(Convert.ToBoolean(skillDict["isCharge"]));
+        data.SetChargeCount(Convert.ToInt32(skillDict["chargeCount"]));
         data.SetProjectileCount(Convert.ToInt32(skillDict["projectileCount"]));
         data.SetSkillEffectParam(Enum.TryParse(skillDict["skillEffectParam"].ToString(), out SkillEffect effect) ? effect : SkillEffect.NONE);
         data.SetSkillType(Enum.TryParse(skillDict["skillType"].ToString(), out SkillType type) ? type : SkillType.NONE);
 
         return data;
     }
+
+
+
+
 }

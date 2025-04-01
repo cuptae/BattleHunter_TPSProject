@@ -11,6 +11,7 @@ public class Gunner : PlayerCtrl
     MultiAimConstraint multiAimConstraint;
     private float nextFireTime = 0f;
     private Transform aimingPos;
+    public Transform firePos;
 
     protected override void Awake()
     {
@@ -74,7 +75,7 @@ public class Gunner : PlayerCtrl
         ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
         Vector3 direction = ray.direction.normalized;
-        ray = new Ray(mainCamera.transform.position, direction);
+        ray = new Ray(firePos.position, direction);
 
         if (Physics.Raycast(ray, out RaycastHit hitInfo, 50.0f))
         {

@@ -11,11 +11,19 @@ public abstract class ActiveSkill : ISkill
     protected PlayerCtrl player;
     protected System.Action onSkillEnd;
     protected bool isActivate;
+    protected int chargeCount;
     Collider[] monsterCols;
-    public ActiveSkill(ActiveData activeData,PlayerCtrl player)
+    public ActiveSkill(ActiveData activeData,GameObject effectVfx,GameObject projectile,PlayerCtrl player)
     {
         this.activeData = activeData;
         this.player = player;
+        this.chargeCount = activeData.chargeCount;
+
+        if(activeData.skillType == SKILLCONSTANT.SkillType.PROJECTILE)
+        {
+            SetProjectile(activeData.skillName,activeData.projectileCount);
+        }
+
     }
     public abstract IEnumerator Activation();
 
@@ -41,7 +49,7 @@ public abstract class ActiveSkill : ISkill
         return enemys;
     }
 
-    protected void Effect()
+    protected void Effect(EnemyCtrl enemy)
     {
         switch(activeData.skillEffectParam)
         {
@@ -59,6 +67,31 @@ public abstract class ActiveSkill : ISkill
 
 
         }
+    }
+    
+    public void SetProjectile(string name,int size)
+    {
+        GameObject prefab = Resources.Load<GameObject>(name);
+
+        if (prefab == null)
+        {
+            Debug.LogError($"Failed to load prefab at path: {name}");
+            return;
+        }
+
+        if (PoolManager.Instance == null)
+        {
+            Debug.LogError("PoolManager Instance is null!");
+            return;
+        }
+
+        PoolManager.Instance.CreatePhotonPool(name, prefab, size);
+    }
+    
+    protected GameObject SpawnProjectile(Vector3 spawnPos, Quaternion rot)
+    {
+        string name = activeData.skillName;
+        return PoolManager.Instance.GetObject(name,spawnPos,rot);
     }
 
     protected void CoolDown()

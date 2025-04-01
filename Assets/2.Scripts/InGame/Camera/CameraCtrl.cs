@@ -42,7 +42,6 @@ public class CameraCtrl : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (Cursor.visible) return;
 
         // 타겟 거리 설정
         float targetDistance = target.GetComponentInParent<PlayerCtrl>().isAttack ? attackDist : normalDist;

@@ -20,6 +20,7 @@ public abstract class PlayerCtrl : MonoBehaviour
     public Animator animator{get; protected set;}
     [HideInInspector]
     public Rigidbody rigid{get; protected set;}
+    public Vector3 groundNormal{get; private set;}
 
 
     private PlayerStateMachine stateMachine;
@@ -28,7 +29,8 @@ public abstract class PlayerCtrl : MonoBehaviour
     private Vector3 moveInput;
     private Vector3 lookForward;
     private Vector3 lookSide;
-    public Vector3 groundNormal;
+
+    
     private RaycastHit slopeHit;
     public bool isMove;
     public bool isDodge = false;

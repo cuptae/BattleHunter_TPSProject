@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShockWave : ActiveSkill
 {
-    public ShockWave(ActiveData activeData,PlayerCtrl player):base(activeData,player){}
+    public ShockWave(ActiveData activeData,GameObject effectVfx,GameObject projectile,PlayerCtrl player):base(activeData,effectVfx,projectile,player){}
     public override IEnumerator Activation()
     {
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PhotonLance : ActiveSkill
 {
-    public PhotonLance(ActiveData activeData,PlayerCtrl player):base(activeData,player){}
+    public PhotonLance(ActiveData activeData,GameObject effectVfx,GameObject projectile,PlayerCtrl player):base(activeData,effectVfx,projectile,player){}
     public override IEnumerator Activation()
     {
         Debug.Log("포톤랜스 발동");
