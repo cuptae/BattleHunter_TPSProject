@@ -143,6 +143,8 @@ public class SoundManager : MonoSingleton<SoundManager>
         }
     }
 
+    
+
     private IEnumerator FadeBGM(AudioClip newClip, float duration)
     {
         float startVolume = bgmSource.volume;
@@ -255,12 +257,12 @@ public class SoundManager : MonoSingleton<SoundManager>
     }
     }
 
-    // 🎵 UI 사운드 재생
+ // 🎵 UI 사운드 재생
 public void PlayUISound(UIType type)
 {
     Debug.Log($"▶️ PlayUISound 호출됨: {type}, isUIMuted: {isUIMuted}"); 
 
-    if (isUIMuted) //추후 삭제 (소리 나는지 확인용)
+    if (isUIMuted)
     {
         Debug.LogWarning("🔇 UI 사운드가 음소거 상태임! 재생 안됨.");
         return;
@@ -273,13 +275,14 @@ public void PlayUISound(UIType type)
         uiSource.volume = uiVolume;
         uiSource.Play();
 
-        Debug.Log($"🎵 [UI] {type} 사운드 재생 완료!"); //추후 삭제 (소리 나는지 확인용)
+        Debug.Log($"🎵 [UI] {type} 사운드 재생 완료!");
     }
-    else //추후 삭제 (소리 나는지 확인용)
+    else
     {
         Debug.LogError($"⚠️ UI 사운드 클립이 없음: {type}");
     }
 }
+
 
 
     // ✅ 🎵 객체 풀링을 활용하여 오디오 소스를 재사용
