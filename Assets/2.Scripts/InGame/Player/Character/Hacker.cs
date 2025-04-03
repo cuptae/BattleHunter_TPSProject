@@ -65,7 +65,7 @@ public class Hacker : PlayerCtrl
     }
 
 
-    protected override void Attack()
+    public override void Attack()
     {
         if(isDodge)
             return;

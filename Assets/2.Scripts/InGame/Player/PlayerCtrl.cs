@@ -156,7 +156,7 @@ public abstract class PlayerCtrl : MonoBehaviour
         animator.SetFloat("MoveZ", Input.GetAxis("Vertical"));
     }
 
-    protected abstract void Attack();
+    public abstract void Attack();
 
     public bool QSkillInput(){return Input.GetKeyDown(KeyCode.Q);}
     public bool ESkillInput(){return Input.GetKeyDown(KeyCode.E);}

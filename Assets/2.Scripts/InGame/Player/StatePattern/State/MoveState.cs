@@ -27,19 +27,10 @@ public class MoveState : PlayerState
 
         if (!player.isMove){player.ChangeState(new IdleState(player));}
         if (player.DodgeInput()){player.ChangeState(new DodgeState(player));}
-
-        if(player.QSkillInput())
-        {
-            player.ChangeState(new SkillState(player,player.activeSkills[0]));
-        }
-        if(player.ESkillInput())
-        {
-            player.ChangeState(new SkillState(player,player.activeSkills[1]));
-        }
-        if(player.RSkillInput())
-        {
-            player.ChangeState(new SkillState(player,player.activeSkills[2]));
-        }
+        if(player.isAttack){player.ChangeState(new PlayerAttackState(player));}
+        if(player.QSkillInput()){player.ChangeState(new SkillState(player,player.activeSkills[0]));}
+        if(player.ESkillInput()){ player.ChangeState(new SkillState(player,player.activeSkills[1]));}
+        if(player.RSkillInput()){player.ChangeState(new SkillState(player,player.activeSkills[2]));}
     }
     public override void FixedUpdateState()
     {
@@ -82,10 +73,7 @@ public class MoveState : PlayerState
     }
     void SpeedCheck()
     {
-        if(player.isAttack){
-            curSpeed = player.characterStat.AttackWalkSpeed;
-        }
-        else if(player.RunInput())
+        if(player.RunInput())
         {
             curSpeed = player.characterStat.RunSpeed;
             player.animator.SetFloat("Speed", 1, 0f, Time.deltaTime);

@@ -6,7 +6,7 @@ using UnityEngine;
 public class GrenadeLauncher : ActiveSkill
 {
     float totalAnim = 1.18f;
-    float attackTiming = 0.83f;
+    float attackTiming = 0.85f;
     Transform firePos;
     public GrenadeLauncher(ActiveData activeData,GameObject effectVfx,GameObject projectile,PlayerCtrl player):base(activeData,effectVfx,projectile,player){}
     public override IEnumerator Activation()
@@ -26,7 +26,5 @@ public class GrenadeLauncher : ActiveSkill
         projectile.GetComponent<Rigidbody>().velocity = Vector3.zero;
         projectile.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         onSkillEnd?.Invoke();
-   
-        
     }
 }

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class IdleState : PlayerState
 {
     public IdleState(PlayerCtrl player) : base(player) {}
@@ -19,6 +21,7 @@ public class IdleState : PlayerState
         {
             player.ChangeState(new DodgeState(player));
         }
+        if(player.isAttack){player.ChangeState(new PlayerAttackState(player));}
         if(player.QSkillInput())
         {
             player.ChangeState(new SkillState(player,player.activeSkills[0]));

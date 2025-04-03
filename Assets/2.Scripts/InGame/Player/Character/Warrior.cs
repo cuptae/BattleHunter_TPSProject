@@ -1,48 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
-
 
 public class Warrior : PlayerCtrl
 {
     private Rig aimRig;
-    public int comboStep = 0;
-    private float lastClickTime = 0f;
-    private float comboDelay = 1.0f;
-
     public bool canCombo = true;
+    public int attackCombo = 0;  // 0: 대기, 1~3: 콤보 진행 중
     public Vector3 boxRange;
-    public float boxFoward,boxUp;
-
+    public float boxFoward, boxUp;
+    
     protected override void Awake()
     {
         base.Awake();
         characterStat.GetCharacterDataByName("Warrior");
         curHp = characterStat.MaxHp;
     }
-    // Start is called before the first frame update
+
     protected override void Start()
     {
         base.Start();
         canCombo = true;
     }
+
     protected override void Update()
-    // Update is called once per frame
     {
-
         base.Update();
-        if(Input.GetMouseButtonDown(0))
-        {
-            if(canCombo)
-                HandleCombo();
-        }
-
-        if (Time.time - lastClickTime > comboDelay)
-        {
-            ResetCombo();
-        }
 
         if (Input.GetMouseButton(1))
         {
@@ -52,82 +36,73 @@ public class Warrior : PlayerCtrl
         {
             animator.SetBool("Shield", false);
         }
+
+        if (Input.GetMouseButtonDown(0) && canCombo)
+        {
+            StartCombo();
+        }
     }
-    private void HandleCombo()
+
+    void StartCombo()
     {
-        lastClickTime = Time.time;
-        StartCoroutine(CanCombo());
-        animator.SetBool("Attack",true);
-        animator.SetInteger("Combo",comboStep);
-        Attack();
+        if (isAttack) return;
+
+        attackCombo = 1; // 첫 번째 공격 시작
+        isAttack = true;
+        canCombo = false;
+        animator.SetBool("Attack", true);
+        animator.SetInteger("Combo", attackCombo);
     }
-    IEnumerator CanCombo()
+
+    public void ContinueCombo()
     {
-        if(comboStep == 0)
+        if (attackCombo < 3) // 3단 공격까지 가능
         {
-            isAttack = true;
-            comboStep+=1;
-            canCombo = false;
-        }
-        else if(comboStep == 1)
-        {
-            comboStep+=1;
-            canCombo = false;
-        }
-        else if(comboStep == 2)
-        {
-            comboStep+=1;
-            canCombo = false; 
-        }
-        yield return new WaitForSeconds(characterStat.AttackRate);
-        if(comboStep<3)
-        {
-            canCombo = true;
+            attackCombo++;
+            animator.SetInteger("Combo", attackCombo);
         }
         else
         {
-            canCombo = true;
-            ResetCombo();
+            EndCombo();
         }
     }
 
-    
-    public void ResetCombo()
+    public void EndCombo()
     {
-        comboStep = 0;
+        attackCombo = 0;
+        animator.SetBool("Attack", false);
+        animator.SetInteger("Combo", 0);
         isAttack = false;
-        animator.SetBool("Attack",isAttack);
-        animator.SetInteger("Combo",comboStep);
+        canCombo = true;
     }
 
-
-    protected override void Attack()
+    public override void Attack()
     {
-        boxRange = new Vector3(3f,2f,2f);
-        Vector3 attackPos = transform.position+transform.forward*boxFoward+transform.up*boxUp;
+        if (attackCombo == 0) return;
+
+        boxRange = new Vector3(3f, 2f, 2f);
+        Vector3 attackPos = transform.position + transform.forward * boxFoward + transform.up * boxUp;
         Quaternion attackRot = transform.rotation;
         Collider[] monsterCollider = Physics.OverlapBox(attackPos, boxRange, attackRot, GameManager.Instance.enemyLayerMask);
-        foreach(Collider col in monsterCollider)
+        
+        foreach (Collider col in monsterCollider)
         {
-            Debug.Log(col.name);
-            if(col != null)
+            if (col != null)
             {
-                EnemyCtrl enemy = col.transform.GetComponent<EnemyCtrl>();
-                if(enemy != null)
+                EnemyCtrl enemy = col.GetComponent<EnemyCtrl>();
+                if (enemy != null)
+                {
                     enemy.GetDamage(characterStat.Damage);
+                }
             }
         }
     }
 
-
-
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue; // 파란색으로 표시
-        Vector3 attackPosition = transform.position+transform.forward*boxFoward+transform.up*boxUp; // OverlapBox 위치
-        Vector3 boxSize = boxRange; // 박스 크기 설정
-        Gizmos.matrix = Matrix4x4.TRS(attackPosition, transform.rotation, Vector3.one); // 회전 고려
-        Gizmos.DrawWireCube(Vector3.zero, boxSize); // 박스를 그리기
+        Gizmos.color = Color.blue;
+        Vector3 attackPosition = transform.position + transform.forward * boxFoward + transform.up * boxUp;
+        Gizmos.matrix = Matrix4x4.TRS(attackPosition, transform.rotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, boxRange);
     }
-
 }

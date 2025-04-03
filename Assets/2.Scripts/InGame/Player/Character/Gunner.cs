@@ -39,11 +39,11 @@ public class Gunner : PlayerCtrl
         if(pv.isMine)
         {
             FireAnim();
-            if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
-            {
-                Attack();
-                nextFireTime = Time.time + characterStat.AttackRate; // 다음 발사 시간 설정
-            }
+            // if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
+            // {
+            //     Attack();
+            //     nextFireTime = Time.time + characterStat.AttackRate; // 다음 발사 시간 설정
+            // }
         }
     }
 
@@ -68,29 +68,33 @@ public class Gunner : PlayerCtrl
         aimRig.weight = weight;
     }
 
-    protected override void Attack()
+    public override void Attack()
     {
-        if(isDodge)
-            return;
-        ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
-        Vector3 direction = ray.direction.normalized;
-        ray = new Ray(firePos.position, direction);
-
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, 50.0f))
+        if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
         {
-            aimingPos.transform.position = hitInfo.point + Vector3.up * 0.5f;
-            // 부모에서 EnemyCtrl을 찾도록 수정
-            EnemyCtrl enemy = hitInfo.collider.GetComponentInParent<EnemyCtrl>();
 
-            if (enemy != null) // 적 오브젝트를 찾았다면
+        
+            ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+            Vector3 direction = ray.direction.normalized;
+            ray = new Ray(firePos.position, direction);
+
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, 50.0f))
             {
-                Quaternion hitDir = Quaternion.LookRotation(-direction);
-                enemy.GetDamage(characterStat.Damage); // 부모의 EnemyCtrl에서 데미지 처리
-                StartCoroutine(BulletEffect(hitInfo.point, hitDir));
+                aimingPos.transform.position = hitInfo.point + Vector3.up * 0.5f;
+                // 부모에서 EnemyCtrl을 찾도록 수정
+                EnemyCtrl enemy = hitInfo.collider.GetComponentInParent<EnemyCtrl>();
+
+                if (enemy != null) // 적 오브젝트를 찾았다면
+                {
+                    Quaternion hitDir = Quaternion.LookRotation(-direction);
+                    enemy.GetDamage(characterStat.Damage); // 부모의 EnemyCtrl에서 데미지 처리
+                    StartCoroutine(BulletEffect(hitInfo.point, hitDir));
+                }
             }
+            SoundManager.Instance.PlaySFX(SFXCategory.PLAYER, PLAYER.ATTACK, tr.position);
+            nextFireTime = Time.time + characterStat.AttackRate; // 다음 발사 시간 설정
         }
-        SoundManager.Instance.PlaySFX(SFXCategory.PLAYER, PLAYER.ATTACK, tr.position);
     }
 
     protected override void  OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
