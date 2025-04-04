@@ -77,16 +77,4 @@ public class ChildHealth : MainHealth
 
     protected override void Update() { }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Damage"))
-        {
-            // 데미지 트리거 예시 (사용 시 GetDamage 호출)
-            // DamageDealer dealer = other.GetComponent<DamageDealer>();
-            // if (dealer != null)
-            // {
-            //     GetDamage(dealer.damage);
-            // }
-        }
-    }
 }

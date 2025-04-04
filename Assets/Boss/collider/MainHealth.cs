@@ -2,11 +2,14 @@ using UnityEngine;
 
 public class MainHealth : MonoBehaviour
 {
+    [Header("자신의 체력")]
+    public int mainHealth = 1000; // 자기 자신의 체력
+
     [Header("자식 체력 자동 수집")]
     public ChildHealth[] children;
 
-    [Header("총 체력 (자식 체력의 합계)")]
-    public int totalHealth;  // 인스펙터에서 보이도록 필드로 작성
+    [Header("총 체력 (자신 + 자식 체력의 합계)")]
+    public int totalHealth;  // 인스펙터에 보이도록 필드로 유지
 
     public int TotalHealth => totalHealth;  // 읽기 전용 프로퍼티
 
@@ -23,7 +26,7 @@ public class MainHealth : MonoBehaviour
 
     protected void UpdateTotalHealth()
     {
-        totalHealth = 0;
+        totalHealth = mainHealth; // 자신의 체력을 먼저 더함
         foreach (var child in children)
         {
             totalHealth += child.GetHealth();
@@ -34,6 +37,7 @@ public class MainHealth : MonoBehaviour
     {
         return TotalHealth;
     }
+
     public void ForceUpdateHealth()
     {
         UpdateTotalHealth();
