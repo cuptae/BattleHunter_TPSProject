@@ -17,14 +17,6 @@ public class Monster : MonoBehaviour
 {
     currentHP = maxHP;
     initialPosition = transform.position;
-
-    // 🔹 Monster의 자식 오브젝트 중에서 MonsterHPBar가 있는지 찾음 (비활성화된 경우도 포함)
-    hpBar = GetComponentInChildren<MonsterHPBar>(true);
-
-    if (hpBar == null)
-    {
-        Debug.LogError("[Monster] HP Bar를 찾을 수 없습니다! 프리팹 구조를 확인하세요.", this);
-    }
 }
 
 
@@ -50,11 +42,10 @@ public class Monster : MonoBehaviour
         Debug.Log($"[TakeDamage] HP 감소: {currentHP} / {maxHP}");
 
         if (hpBar != null)
-{
-    hpBar.UpdateHPBarUI(); // 🔹 ShowHP 대신 호출
-}
-
-
+        {
+            hpBar.UpdateHPBarUI();
+        }
+        
         if (currentHP <= 0)
         {
             Die();

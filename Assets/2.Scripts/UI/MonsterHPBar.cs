@@ -5,82 +5,83 @@ using UnityEngine.UI;
 public class MonsterHPBar : MonoBehaviour
 {
     [Header("UI Elements")]
-    public Slider hpSlider; // HP 바 슬라이더
-    public Text enemyNameText; // 몬스터 이름 표시 UI
-    public Transform enemyTransform; // HP 바가 따라다닐 몬스터
-    public CanvasGroup hpBarCanvasGroup; // HP 바 투명도 조절
+    public Slider hpSlider;
+    public Text enemyNameText;
+    public Transform enemyTransform;
+    public CanvasGroup hpBarCanvasGroup;
 
     [Header("Visibility Settings")]
-    public float hideDistance = 15f; // 플레이어와 일정 거리 이상이면 숨김
-    public float smoothSpeed = 0.1f; // HP 바 변화 속도
+    public float hideDistance = 15f;
+    public float smoothSpeed = 0.1f;
 
     [Header("Monster HP Reference")]
-    public Monster monster; // 몬스터의 체력 정보를 가져오기 위한 참조
+    public EnemyCtrl enemyCtrl;
 
     [Header("Reference")]
-    public Camera mainCamera; // 메인 카메라 참조
-    private Transform playerTransform; // 플레이어의 위치
+    public Camera mainCamera;
+    private Transform playerTransform;
 
     public Vector3 offset = new Vector3(0, 2f, 0); // HP 바 위치 보정
 
     void Awake()
-    {
-        // 부모 객체에서 Monster 컴포넌트를 찾음
-        if (monster == null)
-            monster = GetComponentInParent<Monster>(); 
+{
+    if (enemyCtrl == null)
+        enemyCtrl = GetComponentInParent<EnemyCtrl>();
 
-        // 메인 카메라 찾기
-        if (mainCamera == null)
-            mainCamera = Camera.main;
+    if (enemyTransform == null && enemyCtrl != null)
+        enemyTransform = enemyCtrl.transform; // ✅ 자동으로 몬스터 Transform 할당
 
-        // 플레이어 찾기 (태그 기반)
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
-            playerTransform = player.transform;
+    if (mainCamera == null)
+        mainCamera = Camera.main;
 
-        // HP 바 처음에는 숨김 상태
-        if (hpBarCanvasGroup != null)
-            hpBarCanvasGroup.alpha = 0;
-    }
+    GameObject player = GameObject.FindGameObjectWithTag("Player");
+    if (player != null)
+        playerTransform = player.transform;
+
+    if (hpBarCanvasGroup != null)
+        hpBarCanvasGroup.alpha = 0;
+}
 
     void Update()
     {
-        UpdateHPBarPosition(); // HP 바 위치 갱신
-        CheckVisibility(); // HP 바 표시 여부 확인
-
-        if (monster != null)
+        if (enemyCtrl == null || enemyCtrl.isDead)
         {
-            UpdateHPBarUI(); // HP 바 UI 업데이트
-        }
-    }
-
-    /// <summary>
-    /// 몬스터 체력에 따라 HP 바 UI를 업데이트하는 함수
-    /// </summary>
-    public void UpdateHPBarUI()
-    {
-        if (monster == null || hpSlider == null)
+            if (hpBarCanvasGroup != null)
+                hpBarCanvasGroup.alpha = 0;
             return;
-
-        float hpRatio = monster.currentHP / monster.maxHP; // 현재 체력 비율 계산
-
-        StopAllCoroutines(); // 기존 코루틴 정지 후 새로운 코루틴 시작
-        StartCoroutine(SmoothHPBarChange(hpRatio));
-
-        // 체력이 최대치라면 HP 바 숨김
-        if (hpBarCanvasGroup != null)
-        {
-            hpBarCanvasGroup.alpha = (monster.currentHP < monster.maxHP) ? 1 : 0;
         }
+        
+        UpdateHPBarPosition();
+        CheckVisibility();
+        UpdateHPBarUI();
     }
 
-    /// <summary>
-    /// HP 바의 값이 부드럽게 변하도록 하는 코루틴
-    /// </summary>
+    public void UpdateHPBarUI()
+{
+    if (enemyCtrl == null || hpSlider == null)
+    {
+        Debug.LogWarning("❌ 체력바 참조가 잘못되었음!");
+        return;
+    }
+
+    Debug.Log("✅ 체력바 UI 업데이트 중");
+
+    float hpRatio = (float)enemyCtrl.curHp / enemyCtrl.maxHp;
+    StopAllCoroutines();
+    StartCoroutine(SmoothHPBarChange(hpRatio));
+
+    if (hpBarCanvasGroup != null)
+    {
+        hpBarCanvasGroup.alpha = (enemyCtrl.curHp < enemyCtrl.maxHp) ? 1 : 0;
+    }
+}
+
+
+
     private IEnumerator SmoothHPBarChange(float targetValue)
     {
         float currentValue = hpSlider.value;
-        while (Mathf.Abs(currentValue - targetValue) > 0.01f)
+        while (Mathf.Abs(currentValue - targetValue) > 0.001f)
         {
             currentValue = Mathf.Lerp(currentValue, targetValue, smoothSpeed);
             hpSlider.value = currentValue;
@@ -90,30 +91,41 @@ public class MonsterHPBar : MonoBehaviour
         hpSlider.value = targetValue;
     }
 
-    /// <summary>
-    /// HP 바 위치를 몬스터의 위치에 맞춰 업데이트하는 함수
-    /// </summary>
     private void UpdateHPBarPosition()
+{
+    if (enemyTransform == null && enemyCtrl != null)
+        enemyTransform = enemyCtrl.transform;
+
+    if (enemyTransform == null || hpSlider == null) 
     {
-        if (enemyTransform == null || hpSlider == null) return;
-
-        // HP 바를 몬스터의 월드 좌표 기준으로 이동
-        transform.position = enemyTransform.position + offset;
-
-        // HP 바가 항상 카메라를 바라보도록 설정
-        transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward, 
-                         mainCamera.transform.rotation * Vector3.up);
+        Debug.LogWarning("❌ HP 바 위치 업데이트 실패: enemyTransform이 없음!");
+        return;
     }
 
-    /// <summary>
-    /// 플레이어와의 거리에 따라 HP 바의 투명도를 조절하는 함수
-    /// </summary>
+    transform.position = enemyTransform.position + offset;
+    transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward,
+        mainCamera.transform.rotation * Vector3.up);
+
+    Debug.Log($"📍 HP 바 위치 업데이트: {transform.position}");
+}
+
+
+
     private void CheckVisibility()
     {
         if (playerTransform == null || hpBarCanvasGroup == null || enemyTransform == null)
             return;
 
         float distance = Vector3.Distance(playerTransform.position, enemyTransform.position);
-        hpBarCanvasGroup.alpha = (distance <= hideDistance) ? 1 : 0; // 일정 거리 이내면 HP 바 표시
+        hpBarCanvasGroup.alpha = (distance <= hideDistance) ? 1 : 0;
     }
+
+    public void HideHPBar()
+{
+    if (hpBarCanvasGroup != null)
+    {
+        hpBarCanvasGroup.alpha = 0;
+    }
+}
+
 }

@@ -1,65 +1,99 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum State
 {
-    ROAMING,
     CHASE,
     DIE,
     ATTACK,
 }
 public class EnemyCtrl : MonoBehaviour
 {
-    public float maxHp = 1000;
-    public float curHp;
+    private Rigidbody rigid;
+
+    public MonsterHPBar hpBar; // ✅ HP 바 참조
+
+    public int maxHp;
+    public int curHp;
     public bool isDead = false;
 
     private PhotonView pv;
     private Vector3 curPos;
     private Quaternion curRot;
+    public NavMeshAgent navMeshAgent;
+
+    IEnemyState curState;
 
     void Awake()
     {
+        rigid = GetComponent<Rigidbody>();
         pv = GetComponent<PhotonView>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
+
+    }
+    void OnEnable()
+    {
         curHp = maxHp;
+        isDead = false;
+        ChangeState(new ChaseState());
+
+        hpBar = MonsterHPBarManager.Instance.CreateHPBar(this); // 새 체력바 생성
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void OnDisable()
     {
-        
+        if (hpBar != null)
+        {
+            MonsterHPBarManager.Instance.RemoveHPBar(hpBar);
+            hpBar = null;
+        }
     }
+
+
     // Update is called once per frame
     void Update()
     {
-        
+        curState?.UpdateState(this);
     }
 
-    public void GetDamage(float damage)
+    public void ChangeState(IEnemyState newState)
+    {
+        curState?.ExitState(this); // 이전 상태 종료
+        curState = newState;
+        curState.EnterState(this); // 새로운 상태 진입
+    }
+
+    public void GetDamage(int damage)
     {
         if(PhotonNetwork.isMasterClient)
         {
-            Debug.Log("Test");
             pv.RPC("TakeDamage",PhotonTargets.AllBuffered,damage);
         }
     }
 
     [PunRPC]
-    public void TakeDamage(float damage,PhotonMessageInfo info)
-    {
-        curHp -= damage;
-        if(curHp<0)
-        {
-            Die();
-        }
-    }
+public void TakeDamage(int damage, PhotonMessageInfo info)
+{
+    curHp -= damage;
+    Debug.Log(damage);
 
-    public void Die()
+    // 🟡 체력바 보여주기 (몬스터에 달린 MonsterHPBar 호출)
+    MonsterHPBar hpBar = GetComponentInChildren<MonsterHPBar>();
+    if (hpBar != null)
+        {
+            hpBar.UpdateHPBarUI();
+        }
+
+    if (curHp <= 0)
     {
-        isDead = true;
+        ChangeState(new DieState());
     }
+}
+
 
 
 
@@ -71,7 +105,7 @@ public class EnemyCtrl : MonoBehaviour
         }
         else
         {
-            curHp = (float)stream.ReceiveNext(); 
+            curHp = (int)stream.ReceiveNext(); 
         }
     }
 }
