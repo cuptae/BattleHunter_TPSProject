@@ -30,6 +30,7 @@ public class CrossHairCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         float targetXpos = player.GetComponent<PlayerCtrl>().isAttack? firePos:defaultPos;
 
         finalPos = Mathf.Lerp(finalPos,targetXpos,0.05f);
