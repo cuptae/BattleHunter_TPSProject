@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class GrenadeLauncher : ActiveSkill
@@ -8,23 +6,46 @@ public class GrenadeLauncher : ActiveSkill
     float totalAnim = 1.18f;
     float attackTiming = 0.85f;
     Transform firePos;
-    public GrenadeLauncher(ActiveData activeData,GameObject effectVfx,GameObject projectile,PlayerCtrl player):base(activeData,effectVfx,projectile,player){}
-    public override IEnumerator Activation()
+    Rigidbody projectileRigid;
+    float[] angles;
+    public GrenadeLauncher(ActiveData activeData,GameObject effectVfx,PlayerCtrl player):base(activeData,effectVfx,player)
     {
         firePos = player.transform.Find("Sci_Fi_Character_08_03/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/Riple/SciFiGunLightWhite/GrenadeFirePos");
-
-        Debug.Log("그레네이드 런처 Activate");
+        if (activeData.projectileCount == 1)
+            angles = new float[] { 0f };
+        else if (activeData.projectileCount == 3)
+            angles = new float[] { -5f, 0f, 5f };
+        else
+        {
+            angles = new float[] { 0f };
+        }
+    }
+    public override IEnumerator Activation()
+    {
         player.animator.SetTrigger("ESkill");
         yield return new WaitForSeconds(attackTiming);
-        Debug.Log("수류탄 발사");
-        GameObject projectile = SpawnProjectile(firePos.position,Quaternion.identity);
-        projectile.GetComponent<Rigidbody>().AddForce(player.transform.forward*50f,ForceMode.Impulse);
-        yield return new WaitForSeconds(totalAnim-attackTiming);
+        foreach (float angle in angles)
+        {
+            // Y축 기준으로 회전 적용
+            Quaternion rotation = Quaternion.Euler(0, angle, 0) * player.transform.rotation;
+            Vector3 direction = rotation * Vector3.forward;
+
+            GameObject projectile = SpawnProjectile(firePos.position, Quaternion.identity);
+            projectile.GetComponent<SkillProjectile>().SetProjectileData(activeData);
+            projectile.transform.position = firePos.position;
+
+            Rigidbody rb = projectile.GetComponent<Rigidbody>();
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.AddForce(direction * 25f, ForceMode.Impulse);
+        }
+
+        yield return new WaitForSeconds(totalAnim - attackTiming);
         Debug.Log("Grenade end");
-        PoolManager.Instance.ReturnObject(activeData.skillName,projectile);
-        projectile.transform.position = firePos.transform.position;
-        projectile.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        projectile.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+
         onSkillEnd?.Invoke();
     }
 }
+
+
+

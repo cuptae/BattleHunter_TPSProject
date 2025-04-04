@@ -36,9 +36,9 @@ public class SkillManager : MonoSingleton<SkillManager>
         switch(GameManager.Instance.curCharacter)
         {
             case Character.GUNNER:
-            activeSkills.Add(new ShockWave(GetSkillData(20101),null,null,player));
-            activeSkills.Add(new GrenadeLauncher(GetSkillData(20201),null,null,player));
-            activeSkills.Add(new PhotonLance(GetSkillData(20301),null,null,player));
+            activeSkills.Add(new ShockWave(GetSkillData(20101),null,player));
+            activeSkills.Add(new GrenadeLauncher(GetSkillData(20201),null,player));
+            activeSkills.Add(new PhotonLance(GetSkillData(20301),null,player));
             break;
             case Character.HACKER:
             break;

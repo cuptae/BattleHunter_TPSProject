@@ -91,6 +91,8 @@ MonoBehaviour:
   curHp: 0
   bulletEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
   firePos: {fileID: 6817770147782224660}
+  attackDistance: 0
+  attackRange: 0
 --- !u!54 &7976035198930618412
 Rigidbody:
   m_ObjectHideFlags: 0

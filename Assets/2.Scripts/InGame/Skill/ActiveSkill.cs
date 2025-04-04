@@ -12,8 +12,9 @@ public abstract class ActiveSkill : ISkill
     protected System.Action onSkillEnd;
     protected bool isActivate;
     protected int chargeCount;
+    protected GameObject projectilePrefab;
     Collider[] monsterCols;
-    public ActiveSkill(ActiveData activeData,GameObject effectVfx,GameObject projectile,PlayerCtrl player)
+    public ActiveSkill(ActiveData activeData,GameObject effectVfx,PlayerCtrl player)
     {
         this.activeData = activeData;
         this.player = player;
@@ -34,18 +35,23 @@ public abstract class ActiveSkill : ISkill
 
     protected List<EnemyCtrl> ScanEnemyBox()
     {
-        Vector3 boxRange = new Vector3(activeData.attackRange,2f,activeData.attackDistance);
-        Vector3 attackPos = player.transform.position+player.transform.forward*1f+player.transform.up*2f;
+        Vector3 boxRange = new Vector3(activeData.attackRange,3,activeData.attackDistance);
+        Vector3 boxCenter = new Vector3(0, -1, -1 + boxRange.z / 2);
+        Vector3 attackPos = player.transform.position + player.transform.forward * 2f + player.transform.up * 2f;
         Quaternion attackRot = player.transform.rotation;
 
-        Collider [] monCols = Physics.OverlapBox(attackPos,boxRange,attackRot,GameManager.Instance.enemyLayerMask);
+        Vector3 center = attackPos + attackRot * boxCenter;
+
+        Collider[] monCols = Physics.OverlapBox(center, boxRange * 0.5f, attackRot, GameManager.Instance.enemyLayerMask);
 
         List<EnemyCtrl> enemys = new List<EnemyCtrl>();
-
-        foreach(Collider col in monCols)
+        foreach (Collider col in monCols)
         {
-            enemys.Add(col.GetComponent<EnemyCtrl>());
+            EnemyCtrl enemy = col.GetComponent<EnemyCtrl>();
+            if (enemy != null)
+                enemys.Add(enemy);
         }
+
         return enemys;
     }
 
@@ -71,22 +77,15 @@ public abstract class ActiveSkill : ISkill
     
     public void SetProjectile(string name,int size)
     {
-        GameObject prefab = Resources.Load<GameObject>(name);
+        projectilePrefab = Resources.Load<GameObject>(name);
 
-        if (prefab == null)
+        if (projectilePrefab == null)
         {
             Debug.LogError($"Failed to load prefab at path: {name}");
             return;
         }
-
-        if (PoolManager.Instance == null)
-        {
-            Debug.LogError("PoolManager Instance is null!");
-            return;
-        }
-
-        PoolManager.Instance.CreatePhotonPool(name, prefab, size);
-    }
+        PoolManager.Instance.CreatePhotonPool(name, projectilePrefab, size);
+    }   
     
     protected GameObject SpawnProjectile(Vector3 spawnPos, Quaternion rot)
     {

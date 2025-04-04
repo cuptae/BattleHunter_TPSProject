@@ -22,6 +22,7 @@ public class PoolManager : MonoSingleton<PoolManager>
             for(int i = 0; i< size; i++)
             {
                 GameObject go = Instantiate(prefab,pa.transform);//프리팹 생성
+                go.transform.name = prefab.name;
                 go.SetActive(false);//비활성
                 pool[key].Enqueue(go);//큐에 넣는다
             }
@@ -42,6 +43,7 @@ public class PoolManager : MonoSingleton<PoolManager>
             {
                 GameObject go = PhotonNetwork.Instantiate(prefab.name,transform.position,transform.rotation,0);//프리팹 생성
                 go.transform.parent = pa.transform;
+                go.transform.name = prefab.name;
                 go.SetActive(false);//비활성
                 pool[key].Enqueue(go);//큐에 넣는다
             }
@@ -56,7 +58,10 @@ public class PoolManager : MonoSingleton<PoolManager>
             GameObject go = pool[key].Dequeue();
             go.transform.position = pos;
             go.transform.rotation = rot;
-            go.SetActive(true);
+            if(go.activeSelf == false)
+            {
+                go.SetActive(true);
+            }
             return go;
         }
         return null;

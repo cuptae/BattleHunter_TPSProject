@@ -12,6 +12,9 @@ public class Gunner : PlayerCtrl
     private float nextFireTime = 0f;
     private Transform aimingPos;
     public Transform firePos;
+    public float attackDistance;
+    public float attackRange;
+    
 
     protected override void Awake()
     {
@@ -119,17 +122,25 @@ public class Gunner : PlayerCtrl
         PoolManager.Instance.ReturnObject(bulletEffect.name,effect);
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
+        #if UNITY_EDITOR
 
-        Vector3 boxRange = new Vector3(3f, 2f, 3f);
-        Vector3 attackPos = transform.position + transform.forward * 2f + transform.up * 2f;
-        Quaternion attackRot = transform.rotation;
+            // 공격 범위 세팅
+            Vector3 boxRange = new Vector3(attackRange, 3f, attackDistance);
+            Vector3 boxCenter = new Vector3(0, -1, -1 + boxRange.z / 2f);
+            Vector3 attackPos = transform.position + transform.forward * 2f + transform.up * 2f;
+            Quaternion attackRot = transform.rotation;
 
-        Gizmos.color = Color.red; // 기즈모 색상 설정
-        Matrix4x4 rotationMatrix = Matrix4x4.TRS(attackPos, attackRot, Vector3.one); // 회전 적용
+            // 최종 중심 계산
+            Vector3 center = attackPos + attackRot * boxCenter;
 
-        Gizmos.matrix = rotationMatrix;
-        Gizmos.DrawWireCube(Vector3.zero, boxRange); // 중심을 (0,0,0)으로 설정하여 회전 적용
+            // 회전 행렬 적용
+            Gizmos.color = Color.red;
+            Matrix4x4 rotMatrix = Matrix4x4.TRS(center, attackRot, Vector3.one);
+            Gizmos.matrix = rotMatrix;
+
+            Gizmos.DrawWireCube(Vector3.zero, boxRange);
+        #endif
     }
 }

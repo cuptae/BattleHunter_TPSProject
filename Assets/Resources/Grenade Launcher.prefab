@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7320301361102627630}
   - component: {fileID: 9218398906511756445}
   - component: {fileID: -7082547746736002514}
+  - component: {fileID: 6666538730126587119}
   - component: {fileID: 3941820224958304385}
   m_Layer: 8
   m_Name: Grenade Launcher
@@ -134,6 +135,18 @@ MonoBehaviour:
   instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
+--- !u!114 &6666538730126587119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 40130984369196862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c340baf7ae31b1f4c977c05cf447836e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &3941820224958304385
 Rigidbody:
   m_ObjectHideFlags: 0
