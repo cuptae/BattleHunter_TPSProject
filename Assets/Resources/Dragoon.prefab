@@ -1467,10 +1467,10 @@ GameObject:
   - component: {fileID: 895931051882844642}
   - component: {fileID: 5866104699293204072}
   - component: {fileID: 7274389632100105874}
-  - component: {fileID: 6947754072348105415}
   - component: {fileID: 5003534471051930483}
   - component: {fileID: 4166738290714308449}
   - component: {fileID: 6553765913187144253}
+  - component: {fileID: 2521838565959445252}
   m_Layer: 0
   m_Name: bot
   m_TagString: Enemy
@@ -1573,30 +1573,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4, y: 5, z: 4}
   m_Center: {x: 0, y: 2.5, z: 0}
---- !u!114 &6947754072348105415
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5668653701387261828}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c76dbdd63b2b6b44b80ec6e508e24ef9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHp: 150
-  curHp: 0
-  isDead: 0
-  navMeshAgent: {fileID: 0}
-  stopDistance: 10
-  retreatSpeed: 3
-  bufferDistance: 1
-  rotationSpeed: 5
-  attackRange: 11
-  fireInterval: 3
-  firePoint: {fileID: 4642896282648741027}
-  projectile: {fileID: 4752966069239387939}
 --- !u!195 &5003534471051930483
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1673,6 +1649,31 @@ MonoBehaviour:
   instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
+--- !u!114 &2521838565959445252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5668653701387261828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c76dbdd63b2b6b44b80ec6e508e24ef9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHp: 150
+  curHp: 0
+  isDead: 0
+  navMeshAgent: {fileID: 0}
+  stopDistance: 10
+  retreatSpeed: 3
+  bufferDistance: 1
+  rotationSpeed: 5
+  attackRange: 4
+  fireInterval: 3
+  firePoint: {fileID: 4642896282648741027}
+  projectile: {fileID: 4752966069239387939}
+  Armor: 30
 --- !u!1 &5846914905330729339
 GameObject:
   m_ObjectHideFlags: 0

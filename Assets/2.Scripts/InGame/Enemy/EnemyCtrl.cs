@@ -53,7 +53,7 @@ public class EnemyCtrl : MonoBehaviour
         curState.EnterState(this); // 새로운 상태 진입
     }
 
-    public void GetDamage(int damage)
+    public virtual void GetDamage(int damage)
     {
         if(PhotonNetwork.isMasterClient)
         {

@@ -44,4 +44,5 @@ MonoBehaviour:
   - RequestForPickupTimes
   - TaggedPlayer
   - TakeDamage
+  - TakeDamageRPC
   DisableAutoOpenWizard: 1

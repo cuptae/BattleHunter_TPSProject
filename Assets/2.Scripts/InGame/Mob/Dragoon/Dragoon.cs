@@ -3,20 +3,22 @@ using UnityEngine.AI;
 
 public class Dragoon : EnemyCtrl
 {
+
     public float stopDistance = 10f;
     public float retreatSpeed = 3f;
     public float bufferDistance = 1f;
     public float rotationSpeed = 5f;
 
-    public float attackRange = 11f; // 공격 사거리
-    public float fireInterval = 3f; // 발사 간격
-
-    public GameObject firePoint; // 투사체 생성 위치
+    public float attackRange = 11f;
+    public float fireInterval = 3f;
+    public GameObject firePoint;
+    public DragoonProjectile projectile;
+ 
+    public float Armor = 0f; // 방어력이 높을수록 더 많은 데미지를 받음
 
     private NavMeshAgent agent;
     private Transform targetPlayer;
     private float fireTimer;
-    public DragoonProjectile projectile; // 프리팹이 아닌, 씬에 배치된 단일 투사체
 
     void Start()
     {
@@ -27,7 +29,6 @@ public class Dragoon : EnemyCtrl
     void Update()
     {
         targetPlayer = FindClosestPlayer();
-
         if (targetPlayer == null) return;
 
         float distance = Vector3.Distance(transform.position, targetPlayer.position);
@@ -65,10 +66,9 @@ public class Dragoon : EnemyCtrl
         }
         else
         {
-            fireTimer = fireInterval; // 사거리 벗어나면 타이머 리셋
+            fireTimer = fireInterval;
         }
     }
-
 
     void FireProjectile()
     {
@@ -79,7 +79,7 @@ public class Dragoon : EnemyCtrl
             projectile.Launch(shootDirection);
         }
 
-        // 반동: 드라군 뒤로 0.5f 이동
+        // 반동
         Vector3 backDirection = -transform.forward;
         transform.position += backDirection * 0.5f;
     }
@@ -101,5 +101,13 @@ public class Dragoon : EnemyCtrl
         }
 
         return closestPlayer;
+    }
+
+    //방어력이 높을수록 데미지를 더 많이 받음
+    public override void GetDamage(int damage)
+    {
+        float multiplier = 1f + Armor/100;
+        int finalDamage = Mathf.CeilToInt(damage * multiplier);
+        base.GetDamage(finalDamage);
     }
 }

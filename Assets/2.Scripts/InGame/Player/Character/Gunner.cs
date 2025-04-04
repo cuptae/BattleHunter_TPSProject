@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Properties;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 public class Gunner : PlayerCtrl
@@ -79,12 +80,20 @@ public class Gunner : PlayerCtrl
             aimingPos.transform.position = hitInfo.point + Vector3.up * 0.5f;
             // 부모에서 EnemyCtrl을 찾도록 수정
             EnemyCtrl enemy = hitInfo.collider.GetComponentInParent<EnemyCtrl>();
+            ChildHealth Boss = hitInfo.collider.GetComponentInParent<ChildHealth>();
 
-            if (enemy != null) // 적 오브젝트를 찾았다면
+            Quaternion hitDir = Quaternion.LookRotation(-direction);
+
+            if (enemy != null)
             {
-                Quaternion hitDir = Quaternion.LookRotation(-direction);
-                enemy.GetDamage(characterData.damage); // 부모의 EnemyCtrl에서 데미지 처리
+                enemy.GetDamage(characterData.damage);
                 StartCoroutine(BulletEffect(hitInfo.point, hitDir));
+            }
+
+            if (Boss != null)
+            {
+                Boss.GetDamage(characterData.damage);
+                StartCoroutine(BulletEffect(hitInfo.point, hitDir)); // 중복되더라도 상관 없으면 그대로
             }
         }
     }
