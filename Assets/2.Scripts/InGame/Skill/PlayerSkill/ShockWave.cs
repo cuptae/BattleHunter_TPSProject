@@ -10,7 +10,7 @@ public class ShockWave : ActiveSkill
 
         Debug.Log($"skillId: {activeData.skillId},skillName: {activeData.skillName},damage: {activeData.damage},attackDistance: {activeData.attackDistance},attackRange: {activeData.attackRange}");
         player.animator.SetTrigger("QSkill");
-        yield return new WaitForSeconds(0.63333f);
+        yield return new WaitForSeconds(0.4222f);
         if(ScanEnemyBox() != null)
         {
             foreach(EnemyCtrl enemy in ScanEnemyBox())
@@ -21,7 +21,7 @@ public class ShockWave : ActiveSkill
         }
 
         // 애니메이션 길이만큼 대기
-        yield return new WaitForSeconds(1.8f-0.63333f);
+        yield return new WaitForSeconds(0.7777f); // 나머지 애니메이션 시간
 
         Debug.Log("ShockWave Finished");
         onSkillEnd?.Invoke();

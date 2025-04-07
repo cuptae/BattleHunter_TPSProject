@@ -17,7 +17,6 @@ public class SkillProjectile : MonoBehaviour
     {
         if(data == null)
         {
-            Debug.Log("data is null");
             Collider[] enemyCols = Physics.OverlapSphere(transform.position,3,GameManager.Instance.enemyLayerMask);
 
             foreach(Collider col in enemyCols)

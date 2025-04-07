@@ -6,6 +6,7 @@ using UnityEngine.Animations.Rigging;
 public class Gunner : PlayerCtrl
 {
     public GameObject bulletEffect;
+    public GameObject gunFire;
     private Rig aimRig;
     private Ray ray;
     MultiAimConstraint multiAimConstraint;
@@ -32,6 +33,7 @@ public class Gunner : PlayerCtrl
         WeightedTransformArray sourceObjects = multiAimConstraint.data.sourceObjects;
         sourceObjects.Add(new WeightedTransform(aimingPos,aimRig.weight));
         PoolManager.Instance.CreatePool(bulletEffect.name, bulletEffect, 10);
+        PoolManager.Instance.CreatePool(gunFire.name,gunFire,10);
     }
 
     // Update is called once per frame
@@ -76,12 +78,11 @@ public class Gunner : PlayerCtrl
         if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
         {
 
-        
             ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
             Vector3 direction = ray.direction.normalized;
             ray = new Ray(firePos.position, direction);
-
+            StartCoroutine(FireEffect());
             if (Physics.Raycast(ray, out RaycastHit hitInfo, 50.0f))
             {
                 aimingPos.transform.position = hitInfo.point + Vector3.up * 0.5f;
@@ -118,8 +119,16 @@ public class Gunner : PlayerCtrl
     IEnumerator BulletEffect(Vector3 pos, Quaternion rot)
     {
         GameObject effect = PoolManager.Instance.GetObject(bulletEffect.name,pos, rot);
+
         yield return new WaitForSeconds(0.3f);
         PoolManager.Instance.ReturnObject(bulletEffect.name,effect);
+
+    }
+    IEnumerator FireEffect()
+    {
+        GameObject gunFire = PoolManager.Instance.GetObject(this.gunFire.name,firePos.position,Quaternion.LookRotation(firePos.forward));
+        yield return new WaitForSeconds(0.3f);
+        PoolManager.Instance.ReturnObject(this.gunFire.name,gunFire);
     }
 
     private void OnDrawGizmosSelected()

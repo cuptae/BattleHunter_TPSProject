@@ -10,6 +10,8 @@ public class GunnerAnimationEvent : MonoBehaviour
     public GameObject rifle;
     public Transform shotgunHolster;
     public Transform shotgunGrip;
+    public GameObject gunFire;
+    public Transform firePos;
     void Awake()
     {
         player = GetComponentInParent<PlayerCtrl>();

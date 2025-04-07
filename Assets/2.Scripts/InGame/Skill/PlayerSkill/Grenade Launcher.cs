@@ -6,7 +6,6 @@ public class GrenadeLauncher : ActiveSkill
     float totalAnim = 1.18f;
     float attackTiming = 0.85f;
     Transform firePos;
-    Rigidbody projectileRigid;
     float[] angles;
     public GrenadeLauncher(ActiveData activeData,GameObject effectVfx,PlayerCtrl player):base(activeData,effectVfx,player)
     {
@@ -15,10 +14,6 @@ public class GrenadeLauncher : ActiveSkill
             angles = new float[] { 0f };
         else if (activeData.projectileCount == 3)
             angles = new float[] { -5f, 0f, 5f };
-        else
-        {
-            angles = new float[] { 0f };
-        }
     }
     public override IEnumerator Activation()
     {
@@ -31,8 +26,8 @@ public class GrenadeLauncher : ActiveSkill
             Vector3 direction = rotation * Vector3.forward;
 
             GameObject projectile = SpawnProjectile(firePos.position, Quaternion.identity);
-            projectile.GetComponent<SkillProjectile>().SetProjectileData(activeData);
             projectile.transform.position = firePos.position;
+            projectile.GetComponent<SkillProjectile>().SetProjectileData(activeData);
 
             Rigidbody rb = projectile.GetComponent<Rigidbody>();
             rb.velocity = Vector3.zero;
