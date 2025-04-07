@@ -13,13 +13,15 @@ public abstract class ActiveSkill : ISkill
     protected bool isActivate;
     protected int chargeCount;
     protected GameObject projectilePrefab;
+    protected GameObject EffectPrefab;
+
+    public static List<GizmoDrawRequest> gizmoBoxes = new List<GizmoDrawRequest>();
     Collider[] monsterCols;
     public ActiveSkill(ActiveData activeData,GameObject effectVfx,PlayerCtrl player)
     {
         this.activeData = activeData;
         this.player = player;
         this.chargeCount = activeData.chargeCount;
-
         if(activeData.skillType == SKILLCONSTANT.SkillType.PROJECTILE)
         {
             SetProjectile(activeData.skillName,activeData.projectileCount);
@@ -33,15 +35,19 @@ public abstract class ActiveSkill : ISkill
         onSkillEnd = callback;
     }
 
-    protected List<EnemyCtrl> ScanEnemyBox()
+    protected List<EnemyCtrl> ScanEnemyBox(float angleOffset)
     {
-        Vector3 boxRange = new Vector3(activeData.attackRange,3,activeData.attackDistance);
-        Vector3 boxCenter = new Vector3(0, -1, -1 + boxRange.z / 2);
-        Vector3 attackPos = player.transform.position + player.transform.forward * 2f + player.transform.up * 2f;
-        Quaternion attackRot = player.transform.rotation;
+        Vector3 boxRange = new Vector3(activeData.attackRange, 3, activeData.attackDistance);
+        Vector3 boxCenter = new Vector3(0, 0, -1 + boxRange.z / 2);
 
-        Vector3 center = attackPos + attackRot * boxCenter;
+        // 원하는 방향으로 회전
+        Quaternion attackRot = Quaternion.Euler(0, angleOffset, 0) * player.transform.rotation;
 
+        // 그 방향 기준으로 중심 위치 계산
+        Vector3 center = player.transform.position + attackRot * Vector3.forward * 2f + attackRot * boxCenter;
+        gizmoBoxes.Add(new GizmoDrawRequest(center, boxRange, attackRot, 4f));
+
+        // 박스 범위 감지
         Collider[] monCols = Physics.OverlapBox(center, boxRange * 0.5f, attackRot, GameManager.Instance.enemyLayerMask);
 
         List<EnemyCtrl> enemys = new List<EnemyCtrl>();
@@ -85,7 +91,8 @@ public abstract class ActiveSkill : ISkill
             return;
         }
         PoolManager.Instance.CreatePhotonPool(name, projectilePrefab, size);
-    }   
+    }
+
     
     protected GameObject SpawnProjectile(Vector3 spawnPos, Quaternion rot)
     {

@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class ShockWave : ActiveSkill
 {
-    public ShockWave(ActiveData activeData,GameObject effectVfx,PlayerCtrl player):base(activeData,effectVfx,player){}
+    Transform firePos;
+    public ShockWave(ActiveData activeData,GameObject effectVfx,PlayerCtrl player):base(activeData,effectVfx,player)
+    {
+        firePos = player.transform.Find("Sci_Fi_Character_08_03/root/pelvis/spine_01/spine_02/ShotHolster/ShotGun/FirePos");
+        if (activeData.projectileCount == 1)
+        effectVfx = Resources.Load<GameObject>(activeData.skillName+"Vfx");
+        PoolManager.Instance.CreatePool(activeData.skillName+"Vfx",effectVfx,3);
+    }
     public override IEnumerator Activation()
     {
-
         Debug.Log($"skillId: {activeData.skillId},skillName: {activeData.skillName},damage: {activeData.damage},attackDistance: {activeData.attackDistance},attackRange: {activeData.attackRange}");
         player.animator.SetTrigger("QSkill");
         yield return new WaitForSeconds(0.4222f);
-        if(ScanEnemyBox() != null)
+        PoolManager.Instance.GetObject(activeData.skillName+"Vfx",firePos.position,Quaternion.LookRotation(firePos.forward));
+        if(ScanEnemyBox(0) != null)
         {
-            foreach(EnemyCtrl enemy in ScanEnemyBox())
+            foreach(EnemyCtrl enemy in ScanEnemyBox(0))
             {
                 Debug.Log(enemy.transform.name);
                 enemy.GetDamage(activeData.damage);

@@ -82,7 +82,7 @@ public class Gunner : PlayerCtrl
 
             Vector3 direction = ray.direction.normalized;
             ray = new Ray(firePos.position, direction);
-            StartCoroutine(FireEffect());
+            FireEffect();
             if (Physics.Raycast(ray, out RaycastHit hitInfo, 50.0f))
             {
                 aimingPos.transform.position = hitInfo.point + Vector3.up * 0.5f;
@@ -93,7 +93,7 @@ public class Gunner : PlayerCtrl
                 {
                     Quaternion hitDir = Quaternion.LookRotation(-direction);
                     enemy.GetDamage(characterStat.Damage); // 부모의 EnemyCtrl에서 데미지 처리
-                    StartCoroutine(BulletEffect(hitInfo.point, hitDir));
+                    BulletEffect(hitInfo.point, hitDir);
                 }
             }
             SoundManager.Instance.PlaySFX(SFXCategory.PLAYER, PLAYER.ATTACK, tr.position);
@@ -116,19 +116,13 @@ public class Gunner : PlayerCtrl
         }
     }
 
-    IEnumerator BulletEffect(Vector3 pos, Quaternion rot)
+    void BulletEffect(Vector3 pos, Quaternion rot)
     {
         GameObject effect = PoolManager.Instance.GetObject(bulletEffect.name,pos, rot);
-
-        yield return new WaitForSeconds(0.3f);
-        PoolManager.Instance.ReturnObject(bulletEffect.name,effect);
-
     }
-    IEnumerator FireEffect()
+    void FireEffect()
     {
         GameObject gunFire = PoolManager.Instance.GetObject(this.gunFire.name,firePos.position,Quaternion.LookRotation(firePos.forward));
-        yield return new WaitForSeconds(0.3f);
-        PoolManager.Instance.ReturnObject(this.gunFire.name,gunFire);
     }
 
     private void OnDrawGizmosSelected()
