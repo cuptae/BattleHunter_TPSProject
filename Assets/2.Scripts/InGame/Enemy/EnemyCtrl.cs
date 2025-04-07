@@ -15,6 +15,8 @@ public class EnemyCtrl : MonoBehaviour
 {
     private Rigidbody rigid;
 
+    public MonsterHPBar hpBar; // ✅ HP 바 참조
+
     public int maxHp;
     public int curHp;
     public bool isDead = false;
@@ -34,9 +36,21 @@ public class EnemyCtrl : MonoBehaviour
 
     }
     void OnEnable()
-    {   
+    {
         curHp = maxHp;
+        isDead = false;
         ChangeState(new ChaseState());
+
+        hpBar = MonsterHPBarManager.Instance.CreateHPBar(this); // 새 체력바 생성
+    }
+
+    public void OnDisable()
+    {
+        if (hpBar != null)
+        {
+            MonsterHPBarManager.Instance.RemoveHPBar(hpBar);
+            hpBar = null;
+        }
     }
 
 
@@ -62,15 +76,24 @@ public class EnemyCtrl : MonoBehaviour
     }
 
     [PunRPC]
-    public void TakeDamage(int damage,PhotonMessageInfo info)
-    {
-        curHp -= damage;
-        Debug.Log(damage);
-        if(curHp<=0)
+public void TakeDamage(int damage, PhotonMessageInfo info)
+{
+    curHp -= damage;
+    Debug.Log(damage);
+
+    // 🟡 체력바 보여주기 (몬스터에 달린 MonsterHPBar 호출)
+    MonsterHPBar hpBar = GetComponentInChildren<MonsterHPBar>();
+    if (hpBar != null)
         {
-            ChangeState(new DieState());
+            hpBar.UpdateHPBarUI();
         }
+
+    if (curHp <= 0)
+    {
+        ChangeState(new DieState());
     }
+}
+
 
 
 
