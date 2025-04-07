@@ -43,6 +43,9 @@ public class SkillManager : MonoSingleton<SkillManager>
             case Character.HACKER:
             break;
             case Character.WARRIOR:
+            activeSkills.Add(new FocusField(GetSkillData(10101),null,player));
+            activeSkills.Add(new EnergyBurst(GetSkillData(10201),null,player));
+            activeSkills.Add(new EnduranceMode(GetSkillData(10301),null,player));
             break;
         }
         return activeSkills;
