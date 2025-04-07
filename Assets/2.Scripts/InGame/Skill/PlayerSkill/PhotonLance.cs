@@ -59,7 +59,7 @@ public class PhotonLance : ActiveSkill
             }
         }
 
-        yield return new WaitForSeconds(2.3f);
+        yield return new WaitForSeconds(2.5f);
         Debug.Log("PhotonLance Finished");
         onSkillEnd?.Invoke();
     }
