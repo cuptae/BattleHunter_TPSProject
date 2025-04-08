@@ -8,14 +8,15 @@ public class ExpolsionSkillProjectile : MonoBehaviour
     ActiveData data;
     public GameObject effectVfx;
 
-    void OnCollisionEnter(Collision collision)
+
+    void OnTriggerEnter(Collider other)
     {
+        Vector3 hitPos = transform.position; // 또는 other.ClosestPoint(transform.position);
+        Vector3 direction = (other.transform.position - transform.position).normalized;
+        Quaternion hitRot = Quaternion.LookRotation(direction);
+
+        PoolManager.Instance.GetObject(data.skillName + "Vfx", hitPos, hitRot);
         Explosion();
-        ContactPoint contact = collision.contacts[0];
-        Vector3 hitPos = contact.point;
-        Quaternion hitRot = Quaternion.LookRotation(contact.normal);
-        GameObject fx = PoolManager.Instance.GetObject(data.skillName + "Vfx", hitPos, hitRot);
-        PoolManager.Instance.ReturnObject(this.transform.name,this.gameObject);
     }
 
     public void Explosion()
@@ -29,6 +30,7 @@ public class ExpolsionSkillProjectile : MonoBehaviour
                 col.GetComponent<EnemyCtrl>().GetDamage(data.damage);
             }
         }
+        PoolManager.Instance.ReturnObject(this.transform.name,this.gameObject);
     }
 
     public void SetProjectileData(ActiveData data)

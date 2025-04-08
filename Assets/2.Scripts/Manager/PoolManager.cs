@@ -42,9 +42,9 @@ public class PoolManager : MonoSingleton<PoolManager>
             for(int i = 0; i< size; i++)
             {
                 GameObject go = PhotonNetwork.Instantiate(prefab.name,transform.position,transform.rotation,0);//프리팹 생성
+                go.SetActive(false);//비활성
                 go.transform.parent = pa.transform;
                 go.transform.name = prefab.name;
-                go.SetActive(false);//비활성
                 pool[key].Enqueue(go);//큐에 넣는다
             }
         }

@@ -8,15 +8,15 @@ public class Dragoon : EnemyCtrl
     public float bufferDistance = 1f;
     public float rotationSpeed = 5f;
 
-    public float attackRange = 11f; // °ø°Ý »ç°Å¸®
-    public float fireInterval = 3f; // ¹ß»ç °£°Ý
+    public float attackRange = 11f; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½
+    public float fireInterval = 3f; // ï¿½ß»ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-    public GameObject firePoint; // Åõ»çÃ¼ »ý¼º À§Ä¡
+    public GameObject firePoint; // ï¿½ï¿½ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
 
     private NavMeshAgent agent;
     private Transform targetPlayer;
     private float fireTimer;
-    public DragoonProjectile projectile; // ÇÁ¸®ÆÕÀÌ ¾Æ´Ñ, ¾À¿¡ ¹èÄ¡µÈ ´ÜÀÏ Åõ»çÃ¼
+    public DragoonProjectile projectile; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼
 
     void Start()
     {
@@ -32,13 +32,13 @@ public class Dragoon : EnemyCtrl
 
         float distance = Vector3.Distance(transform.position, targetPlayer.position);
 
-        // È¸Àü
+        // È¸ï¿½ï¿½
         Vector3 direction = (targetPlayer.position - transform.position).normalized;
         direction.y = 0;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
 
-        // ÀÌµ¿
+        // ï¿½Ìµï¿½
         if (distance > stopDistance)
         {
             agent.SetDestination(targetPlayer.position);
@@ -53,7 +53,7 @@ public class Dragoon : EnemyCtrl
             agent.ResetPath();
         }
 
-        // °ø°Ý
+        // ï¿½ï¿½ï¿½ï¿½
         if (distance <= attackRange)
         {
             fireTimer -= Time.deltaTime;
@@ -65,7 +65,7 @@ public class Dragoon : EnemyCtrl
         }
         else
         {
-            fireTimer = fireInterval; // »ç°Å¸® ¹þ¾î³ª¸é Å¸ÀÌ¸Ó ¸®¼Â
+            fireTimer = fireInterval; // ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½î³ªï¿½ï¿½ Å¸ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
     }
 
@@ -79,7 +79,7 @@ public class Dragoon : EnemyCtrl
             projectile.Launch(shootDirection);
         }
 
-        // ¹Ýµ¿: µå¶ó±º µÚ·Î 0.5f ÀÌµ¿
+        //ï¿½Ýµï¿½: ï¿½ï¿½ï¿½ ï¿½Ú·ï¿½ 0.5f ï¿½Ìµï¿½
         Vector3 backDirection = -transform.forward;
         transform.position += backDirection * 0.5f;
     }

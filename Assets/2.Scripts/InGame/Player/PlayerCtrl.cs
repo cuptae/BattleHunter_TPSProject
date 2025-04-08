@@ -50,7 +50,17 @@ public abstract class PlayerCtrl : MonoBehaviour
     public GameObject weapon;
     public int curHp;
 
+    [SerializeField] 
+    Transform groundCheck;
+
     public List<ActiveSkill> activeSkills;
+
+
+    public bool rSkillTrigger;
+    public bool qSkillTrigger;
+    public bool eSkillTrigger;
+    public bool dodgeTrigger;
+
 
     protected virtual void Awake() {
         animator = GetComponentInChildren<Animator>();
@@ -87,9 +97,20 @@ public abstract class PlayerCtrl : MonoBehaviour
     {
         if(pv.isMine)
         {
+            qSkillTrigger = QSkillInput();
+            eSkillTrigger = ESkillInput();
+            rSkillTrigger = RSkillInput();
+            dodgeTrigger = DodgeInput();
             MoveInput();
             RunInput();
-            IsSlope();
+            if(IsSlope()&&IsGrounded())
+            {
+                rigid.useGravity = false;
+            }
+            else
+            {
+                rigid.useGravity = true;
+            }
             MoveAnim();
             stateMachine.Update();
         }
@@ -141,6 +162,15 @@ public abstract class PlayerCtrl : MonoBehaviour
         return false;
     }
 
+
+
+    public bool IsGrounded()
+    {
+        Vector3 boxSize = new Vector3(transform.lossyScale.x-0.5f, 0.05f, transform.lossyScale.z-0.5f);
+        return Physics.CheckBox(groundCheck.position, boxSize, Quaternion.identity, GameManager.Instance.groundLayer);
+    }
+
+
     public void ChangeState(PlayerState newState)
     {
         stateMachine.ChangeState(newState);
@@ -191,6 +221,10 @@ public abstract class PlayerCtrl : MonoBehaviour
             stream.SendNext(animator.GetFloat("MoveX"));
             stream.SendNext(animator.GetFloat("MoveZ"));
             stream.SendNext(animator.GetBool("Move"));
+            stream.SendNext(rSkillTrigger);
+            stream.SendNext(qSkillTrigger);
+            stream.SendNext(eSkillTrigger);
+            stream.SendNext(dodgeTrigger);
         }
         else
         {
@@ -202,7 +236,39 @@ public abstract class PlayerCtrl : MonoBehaviour
             animator.SetFloat("MoveX",(float)stream.ReceiveNext());
             animator.SetFloat("MoveZ",(float)stream.ReceiveNext());
             animator.SetBool("Move",(bool)stream.ReceiveNext());
+            rSkillTrigger = (bool)stream.ReceiveNext();
+            qSkillTrigger = (bool)stream.ReceiveNext();
+            eSkillTrigger = (bool)stream.ReceiveNext();
+            dodgeTrigger = (bool)stream.ReceiveNext();
+
+            if (eSkillTrigger)
+            {
+                animator.SetTrigger("ESkill");
+                eSkillTrigger = false;
+            }
+            if (rSkillTrigger)
+            {
+                animator.SetTrigger("RSkill");
+                rSkillTrigger = false; // 한 번만 발동하게 초기화
+            }
+            if (qSkillTrigger)
+            {
+                animator.SetTrigger("QSkill");
+                qSkillTrigger = false;
+            }
+            if (dodgeTrigger)
+            {
+                animator.SetTrigger("Dodge");
+                dodgeTrigger = false;
+            }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Vector3 boxSize = new Vector3(transform.lossyScale.x, 0.05f, transform.lossyScale.z);
+        Gizmos.DrawWireCube(groundCheck.position, boxSize);
     }
 
 }

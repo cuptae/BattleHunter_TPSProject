@@ -147,6 +147,7 @@ Transform:
   - {fileID: 3015107516823688062}
   - {fileID: 4197237324192550111}
   - {fileID: 6478703949264390379}
+  - {fileID: 9175028804801671331}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6746668556164547244
@@ -168,8 +169,13 @@ MonoBehaviour:
   isAttack: 0
   weapon: {fileID: 3897433851248381228}
   curHp: 0
+  groundCheck: {fileID: 9175028804801671331}
+  rSkillTrigger: 0
+  qSkillTrigger: 0
+  eSkillTrigger: 0
+  dodgeTrigger: 0
   bulletEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
-  gunFire: {fileID: 5050487563143714509, guid: 32d7e3cae78f2184d89be5c9aa1d6a9b, type: 3}
+  gunFire: {fileID: 6980259576133684760, guid: 1f58a1dea6bbd9347843e4935585e6a2, type: 3}
   firePos: {fileID: 6817770147782224660}
   attackDistance: 0
   attackRange: 0
@@ -345,6 +351,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3867203739307747596}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 180}
+--- !u!1 &5481354011381076919
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1801981533726886373}
+  m_Layer: 3
+  m_Name: PhotonLancePos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1801981533726886373
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5481354011381076919}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.017639508, y: 0.023483163, z: -0.1622735, w: 0.9863087}
+  m_LocalPosition: {x: 0.19318682, y: 1.5440834, z: 1.4486736}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3015107516823688062}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5966024023383763884
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,7 +392,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5043125522800604378}
   m_Layer: 3
-  m_Name: SniperSlot
+  m_Name: SniperHolster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -457,6 +494,37 @@ MonoBehaviour:
   onlySelected: 0
   myColor: {r: 1, g: 0, b: 0, a: 1}
   radius: 0.01
+--- !u!1 &7215922080571991319
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9175028804801671331}
+  m_Layer: 3
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9175028804801671331
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7215922080571991319}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3654104362611864328}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8158340345613125920
 GameObject:
   m_ObjectHideFlags: 0
@@ -1833,6 +1901,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8694017505111132838, guid: 713912b46b0763b49a839f8b18f51cb5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 383827509737678827}
+    - targetCorrespondingSourceObject: {fileID: 8694017505111132838, guid: 713912b46b0763b49a839f8b18f51cb5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1801981533726886373}
     - targetCorrespondingSourceObject: {fileID: 8062854723093809935, guid: 713912b46b0763b49a839f8b18f51cb5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5043125522800604378}

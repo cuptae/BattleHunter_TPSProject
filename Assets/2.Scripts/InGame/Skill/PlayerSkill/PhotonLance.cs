@@ -5,12 +5,14 @@ using UnityEngine;
 public class PhotonLance : ActiveSkill
 {
     Transform firePos;
+    float duration = 117f / 60f - 69f / 60f;
 
     public PhotonLance(ActiveData activeData,GameObject effectVfx,PlayerCtrl player):base(activeData,effectVfx,player)
     {
-        firePos = player.transform.Find("Sci_Fi_Character_08_03/root/pelvis/spine_01/spine_02/SniperSlot/Sniper_Rifle_03/FirePos");
+        //firePos = player.transform.Find("Sci_Fi_Character_08_03/root/pelvis/spine_01/spine_02/SniperHolster/Sniper_Rifle_03/FirePos");
+        firePos = player.transform.Find("Sci_Fi_Character_08_03/PhotonLancePos");
         effectVfx = Resources.Load<GameObject>(activeData.skillName+"Vfx");
-        PoolManager.Instance.CreatePool(activeData.skillName+"Vfx",effectVfx,3);
+        PoolManager.Instance.CreatePhotonPool(activeData.skillName+"Vfx",effectVfx,3);
     }
     public override IEnumerator Activation()
     {
@@ -19,7 +21,6 @@ public class PhotonLance : ActiveSkill
 
         yield return new WaitForSeconds(1.16f);
 
-        float duration = 117f / 60f - 69f / 60f;
         float interval = 0.1f;
 
         if (activeData.projectileCount == 2)
@@ -59,7 +60,7 @@ public class PhotonLance : ActiveSkill
             }
         }
 
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(2.25f);
         Debug.Log("PhotonLance Finished");
         onSkillEnd?.Invoke();
     }

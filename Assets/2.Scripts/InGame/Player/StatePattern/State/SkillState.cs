@@ -28,6 +28,5 @@ public class SkillState : PlayerState
     }
     public override void ExitState()
     {
-        
     }
 }

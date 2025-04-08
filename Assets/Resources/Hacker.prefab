@@ -99,6 +99,7 @@ Transform:
   - {fileID: 4943315448963350614}
   - {fileID: 4464966741227592457}
   - {fileID: 3156797707494188649}
+  - {fileID: 1020081404115419982}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1095192583758836900
@@ -115,12 +116,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curState: 4
   movetype: 0
-  groundNormal: {x: 0, y: 0, z: 0}
   isMove: 0
   isDodge: 0
   isAttack: 0
   weapon: {fileID: 0}
   curHp: 0
+  groundCheck: {fileID: 1020081404115419982}
   bulletEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
 --- !u!54 &7621017222107906122
 Rigidbody:
@@ -732,6 +733,37 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0000033092365, y: 0.0044493014, z: -0.0044364114}
     m_Extent: {x: 0.00013574876, y: 0.00016450603, z: 0.00014980556}
   m_DirtyAABB: 0
+--- !u!1 &705164092862310912
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1020081404115419982}
+  m_Layer: 0
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1020081404115419982
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705164092862310912}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7259450394693634562}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &735923661759448667
 GameObject:
   m_ObjectHideFlags: 0

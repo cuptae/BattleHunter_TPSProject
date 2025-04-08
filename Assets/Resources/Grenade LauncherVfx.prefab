@@ -4822,6 +4822,7 @@ GameObject:
   - component: {fileID: 198856239026640498}
   - component: {fileID: 199756426985724656}
   - component: {fileID: 870745307099671383}
+  - component: {fileID: 8183649259574144006}
   m_Layer: 0
   m_Name: Grenade LauncherVfx
   m_TagString: Untagged
@@ -9753,6 +9754,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1be2aaaa2e5c9f498137006e7297b9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8183649259574144006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1329845292236604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 3
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 4865135451303388}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &1367458547200666
 GameObject:
   m_ObjectHideFlags: 0
