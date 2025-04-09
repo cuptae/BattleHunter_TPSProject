@@ -79,19 +79,38 @@ public class EnemyCtrl : MonoBehaviour
 public void TakeDamage(int damage, PhotonMessageInfo info)
 {
     curHp -= damage;
-    Debug.Log(damage);
+    if (curHp < 0) curHp = 0;
 
-    // 🟡 체력바 보여주기 (몬스터에 달린 MonsterHPBar 호출)
-    MonsterHPBar hpBar = GetComponentInChildren<MonsterHPBar>();
+    // UI 업데이트
     if (hpBar != null)
-        {
-            hpBar.UpdateHPBarUI();
-        }
+    {
+        hpBar.UpdateHPBarUI();
+    }
 
+    // 기존 DieState 진입 제거
+    // if (curHp <= 0) ChangeState(new DieState());
+
+    // 대신 코루틴으로 지연 처리
     if (curHp <= 0)
     {
-        ChangeState(new DieState());
+        StartCoroutine(WaitForHPBarDepletion());
     }
+}
+
+private IEnumerator WaitForHPBarDepletion()
+{
+    // hpBar가 null일 수도 있으니 예외처리
+    if (hpBar != null)
+    {
+        // HP 슬라이더가 0에 가까워질 때까지 기다림
+        while (hpBar.hpSlider != null && hpBar.hpSlider.value > 0.01f)
+        {
+            yield return null;
+        }
+    }
+
+    // 완전히 닳았으면 오브젝트 제거
+    ChangeState(new DieState());
 }
 
 
