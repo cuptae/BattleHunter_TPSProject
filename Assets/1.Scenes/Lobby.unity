@@ -4141,6 +4141,7 @@ MonoBehaviour:
   curCharacter: 3
   enemyLayerMask: 0
   groundLayer: 0
+  gameEnd: 0
 --- !u!4 &2083063859
 Transform:
   m_ObjectHideFlags: 0

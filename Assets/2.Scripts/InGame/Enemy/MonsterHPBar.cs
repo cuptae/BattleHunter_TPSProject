@@ -64,8 +64,6 @@ public class MonsterHPBar : MonoBehaviour
         return;
     }
 
-    Debug.Log("✅ 체력바 UI 업데이트 중");
-
     float hpRatio = (float)enemyCtrl.curHp / enemyCtrl.maxHp;
     StopAllCoroutines();
     StartCoroutine(SmoothHPBarChange(hpRatio));
@@ -105,8 +103,6 @@ public class MonsterHPBar : MonoBehaviour
     transform.position = enemyTransform.position + offset;
     transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward,
         mainCamera.transform.rotation * Vector3.up);
-
-    Debug.Log($"📍 HP 바 위치 업데이트: {transform.position}");
 }
 
 

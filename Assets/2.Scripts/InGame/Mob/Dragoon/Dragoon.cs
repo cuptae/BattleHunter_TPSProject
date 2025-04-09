@@ -6,100 +6,44 @@ public class Dragoon : EnemyCtrl
     public float stopDistance = 10f;
     public float retreatSpeed = 3f;
     public float bufferDistance = 1f;
-    public float rotationSpeed = 5f;
 
-    public float attackRange = 11f; // ���� ��Ÿ�
-    public float fireInterval = 3f; // �߻� ����
+    public Transform firePos;
 
-    public GameObject firePoint; // ����ü ���� ��ġ
 
-    private NavMeshAgent agent;
-    private Transform targetPlayer;
-    private float fireTimer;
-    public DragoonProjectile projectile; // �������� �ƴ�, ���� ��ġ�� ���� ����ü
-
-    void Start()
+    protected override void Update()
     {
-        agent = GetComponent<NavMeshAgent>();
-        fireTimer = fireInterval;
-    }
-
-    void Update()
-    {
-        targetPlayer = FindClosestPlayer();
-
-        if (targetPlayer == null) return;
-
-        float distance = Vector3.Distance(transform.position, targetPlayer.position);
-
-        // ȸ��
+        base.Update();
+        //플레이어 접근하면 뒤로가는 코드
         Vector3 direction = (targetPlayer.position - transform.position).normalized;
         direction.y = 0;
-        Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
-
-        // �̵�
+        float distance = Vector3.Distance(transform.position, targetPlayer.position);
         if (distance > stopDistance)
         {
-            agent.SetDestination(targetPlayer.position);
+            navMeshAgent.SetDestination(targetPlayer.position);
         }
         else if (distance < stopDistance - bufferDistance)
         {
             Vector3 retreatDirection = -direction;
-            agent.Move(retreatDirection * retreatSpeed * Time.deltaTime);
+            navMeshAgent.Move(retreatDirection * retreatSpeed * Time.deltaTime);
         }
         else
         {
-            agent.ResetPath();
+            navMeshAgent.ResetPath();
         }
-
-        // ����
-        if (distance <= attackRange)
-        {
-            fireTimer -= Time.deltaTime;
-            if (fireTimer <= 0f)
-            {
-                FireProjectile();
-                fireTimer = fireInterval;
-            }
-        }
-        else
-        {
-            fireTimer = fireInterval; // ��Ÿ� ����� Ÿ�̸� ����
-        }
+    
     }
 
-
-    void FireProjectile()
+    public override void Attack()
     {
+        GameObject go = PoolManager.Instance.GetObject("DragoonProjectile",firePos.position,Quaternion.identity);
+        DragoonProjectile projectile = go.GetComponent<DragoonProjectile>();
         if (projectile != null && targetPlayer != null)
         {
-            Vector3 shootDirection = (targetPlayer.position - firePoint.transform.position).normalized;
-            projectile.transform.position = firePoint.transform.position;
+            Vector3 shootDirection = (targetPlayer.position - firePos.transform.position).normalized;
+            projectile.transform.position = firePos.transform.position;
             projectile.Launch(shootDirection);
         }
-
-        //�ݵ�: ��� �ڷ� 0.5f �̵�
         Vector3 backDirection = -transform.forward;
         transform.position += backDirection * 0.5f;
-    }
-
-    Transform FindClosestPlayer()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        Transform closestPlayer = null;
-        float closestDistance = Mathf.Infinity;
-
-        foreach (GameObject player in players)
-        {
-            float distance = Vector3.Distance(transform.position, player.transform.position);
-            if (distance < closestDistance)
-            {
-                closestDistance = distance;
-                closestPlayer = player.transform;
-            }
-        }
-
-        return closestPlayer;
     }
 }

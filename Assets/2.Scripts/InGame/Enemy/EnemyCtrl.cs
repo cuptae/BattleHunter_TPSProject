@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum State
+public enum EnemyState
 {
     CHASE,
     DIE,
@@ -25,8 +25,12 @@ public class EnemyCtrl : MonoBehaviour
     private Vector3 curPos;
     private Quaternion curRot;
     public NavMeshAgent navMeshAgent;
+    public float attackRange = 11f; // ���� ��Ÿ�
+    public Transform targetPlayer;
+    public float rotationSpeed = 5f;
 
     IEnemyState curState;
+    public EnemyState currState;
 
     void Awake()
     {
@@ -39,7 +43,7 @@ public class EnemyCtrl : MonoBehaviour
     {
         curHp = maxHp;
         isDead = false;
-        ChangeState(new ChaseState());
+        ChangeState(new EnemyChaseState());
 
         hpBar = MonsterHPBarManager.Instance.CreateHPBar(this); // 새 체력바 생성
     }
@@ -55,8 +59,14 @@ public class EnemyCtrl : MonoBehaviour
 
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
+        targetPlayer = FindClosestPlayer();
+        
+        Vector3 direction = (targetPlayer.position - transform.position).normalized;
+        direction.y = 0;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
         curState?.UpdateState(this);
     }
 
@@ -75,27 +85,52 @@ public class EnemyCtrl : MonoBehaviour
         }
     }
 
-    [PunRPC]
-public void TakeDamage(int damage, PhotonMessageInfo info)
-{
-    curHp -= damage;
-    Debug.Log(damage);
 
-    // 🟡 체력바 보여주기 (몬스터에 달린 MonsterHPBar 호출)
-    MonsterHPBar hpBar = GetComponentInChildren<MonsterHPBar>();
-    if (hpBar != null)
+    public virtual void Attack(){}
+
+
+    public Transform FindClosestPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        Transform closestPlayer = null;
+        float closestDistance = Mathf.Infinity;
+
+        foreach (GameObject player in players)
         {
-            hpBar.UpdateHPBarUI();
+            float distance = Vector3.Distance(transform.position, player.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestPlayer = player.transform;
+            }
         }
 
-    if (curHp <= 0)
-    {
-        ChangeState(new DieState());
+        if(closestPlayer == null)
+        {
+            Debug.Log("플레이어를 못찾겠어요");
+        }
+        return closestPlayer;
     }
-}
 
 
+    [PunRPC]
+    public void TakeDamage(int damage, PhotonMessageInfo info)
+    {
+        curHp -= damage;
+        Debug.Log(damage);
 
+        // 🟡 체력바 보여주기 (몬스터에 달린 MonsterHPBar 호출)
+        MonsterHPBar hpBar = GetComponentInChildren<MonsterHPBar>();
+        if (hpBar != null)
+            {
+                hpBar.UpdateHPBarUI();
+            }
+
+        if (curHp <= 0)
+        {
+            ChangeState(new EnemyDieState());
+        }
+    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

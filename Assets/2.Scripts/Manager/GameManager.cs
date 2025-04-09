@@ -1,13 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
 
 public class GameManager : MonoSingleton<GameManager>
 {
+
     public Character curCharacter = Character.NONSELECTED;
     public int enemyLayerMask;
     public int groundLayer;
+    public bool gameEnd = false;
 
 
     protected override void Awake()

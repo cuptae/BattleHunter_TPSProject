@@ -7,9 +7,11 @@ public class Spawner : MonoBehaviour
 {
     public Transform[] spawnPos;
     public GameObject[] enemyPrefabs;
+    public GameObject enemyProjectile;
 
     public int maxEnemyCnt;
     public int oneceSpawnCnt;
+    public float spawnDelay = 5.0f;
 
     void Awake()
     {
@@ -20,7 +22,8 @@ public class Spawner : MonoBehaviour
     {
         if(PhotonNetwork.isMasterClient)
         {
-            PoolManager.Instance.CreatePhotonPool("Mutant",enemyPrefabs[0],maxEnemyCnt);
+            PoolManager.Instance.CreatePhotonPool("Dragoon",enemyPrefabs[0],maxEnemyCnt);
+            PoolManager.Instance.CreatePhotonPool("DragoonProjectile",enemyProjectile,maxEnemyCnt*2);
             StartCoroutine(SpawnEnemy());
         }
     }
@@ -29,12 +32,12 @@ public class Spawner : MonoBehaviour
     {
         while(true)
         {
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(spawnDelay);
             
             for(int i =0; i<oneceSpawnCnt; i++)
             {
                 int randPos = Random.Range(1,spawnPos.Length);
-                GameObject Mutant = PoolManager.Instance.GetObject("Mutant",spawnPos[randPos].position,spawnPos[randPos].rotation);
+                GameObject dragoon = PoolManager.Instance.GetObject("Dragoon",spawnPos[randPos].position,spawnPos[randPos].rotation);
             }
         }
     }

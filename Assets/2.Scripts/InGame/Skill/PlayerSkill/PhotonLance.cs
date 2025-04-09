@@ -19,7 +19,7 @@ public class PhotonLance : ActiveSkill
         Debug.Log("포톤랜스 발동");
         player.animator.SetTrigger("RSkill");
 
-        yield return new WaitForSeconds(1.16f);
+        yield return new WaitForSeconds(1.15f);
 
         float interval = 0.1f;
 
