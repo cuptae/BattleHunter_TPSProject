@@ -14,6 +14,7 @@ public enum EnemyState
 public class EnemyCtrl : MonoBehaviour
 {
     private Rigidbody rigid;
+    protected Transform tr;
 
     public MonsterHPBar hpBar; // ✅ HP 바 참조
 
@@ -35,8 +36,18 @@ public class EnemyCtrl : MonoBehaviour
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
+        tr = GetComponent<Transform>();
         pv = GetComponent<PhotonView>();
+        pv.ObservedComponents[0] = this;
+        pv.synchronization = ViewSynchronization.UnreliableOnChange;
         navMeshAgent = GetComponent<NavMeshAgent>();
+
+        if(!pv.isMine)
+        {
+            rigid.isKinematic = true;
+            // curPos = tr.position;
+            // curRot = tr.rotation;
+        }
 
     }
     void OnEnable()
@@ -62,12 +73,20 @@ public class EnemyCtrl : MonoBehaviour
     protected virtual void Update()
     {
         targetPlayer = FindClosestPlayer();
-        
-        Vector3 direction = (targetPlayer.position - transform.position).normalized;
-        direction.y = 0;
-        Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
-        curState?.UpdateState(this);
+        if(pv.isMine)
+        {
+            
+            Vector3 direction = (targetPlayer.position - transform.position).normalized;
+            direction.y = 0;
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+            curState?.UpdateState(this);
+        }
+        else
+        {
+            tr.position = Vector3.Lerp(tr.position,curPos,Time.fixedDeltaTime *navMeshAgent.speed);
+            tr.rotation = Quaternion.Slerp(tr.rotation, curRot, Time.fixedDeltaTime * rotationSpeed);
+        }
     }
 
     public void ChangeState(IEnemyState newState)
@@ -104,11 +123,6 @@ public class EnemyCtrl : MonoBehaviour
                 closestPlayer = player.transform;
             }
         }
-
-        if(closestPlayer == null)
-        {
-            Debug.Log("플레이어를 못찾겠어요");
-        }
         return closestPlayer;
     }
 
@@ -137,10 +151,15 @@ public class EnemyCtrl : MonoBehaviour
         if(stream.isWriting)
         {
             stream.SendNext(curHp);
+            stream.SendNext(tr.position);
+            stream.SendNext(tr.rotation);
+
         }
         else
         {
             curHp = (int)stream.ReceiveNext(); 
+            curPos = (Vector3)stream.ReceiveNext();
+            curRot = (Quaternion)stream.ReceiveNext();
         }
     }
 }

@@ -4,6 +4,7 @@ public class GameManager : MonoSingleton<GameManager>
 {
 
     public Character curCharacter = Character.NONSELECTED;
+    public string userId;
     public int enemyLayerMask;
     public int groundLayer;
     public bool gameEnd = false;

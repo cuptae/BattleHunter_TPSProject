@@ -15,7 +15,6 @@ public class Dragoon : EnemyCtrl
         base.Update();
         //플레이어 접근하면 뒤로가는 코드
         Vector3 direction = (targetPlayer.position - transform.position).normalized;
-        direction.y = 0;
         float distance = Vector3.Distance(transform.position, targetPlayer.position);
         if (distance > stopDistance)
         {
