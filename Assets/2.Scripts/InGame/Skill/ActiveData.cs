@@ -16,7 +16,7 @@ public class ActiveData
     public bool isCharge{get; private set;}
     public int chargeCount{get; private set;}
     public int projectileCount{get; private set;}
-    public bool isPenetrate{get; private set;}
+    public float duration{get; private set;}
     public SkillEffect skillEffectParam{get; private set;}
     public SkillType skillType{get; private set;}
 
@@ -31,7 +31,7 @@ public void SetAttackDistance(float attackDistance){this.attackDistance = attack
 public void SetIsCharge(bool isCharge) { this.isCharge = isCharge; }
 public void SetChargeCount(int chargeCount){this.chargeCount = chargeCount;}
 public void SetProjectileCount(int projectileCount) { this.projectileCount = projectileCount; }
-public void SetIsPenetrate(bool isPenetrate) { this.isPenetrate = isPenetrate; }
+public void SetDuration(float duration) { this.duration = duration; }
 public void SetSkillEffectParam(SkillEffect skillEffectParam) { this.skillEffectParam = skillEffectParam; }
 public void SetSkillType(SkillType skillType) { this.skillType = skillType; }
 }

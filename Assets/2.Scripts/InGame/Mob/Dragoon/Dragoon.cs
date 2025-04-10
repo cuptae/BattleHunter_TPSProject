@@ -1,3 +1,4 @@
+using Unity.Properties;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,21 +14,24 @@ public class Dragoon : EnemyCtrl
     protected override void Update()
     {
         base.Update();
-        //플레이어 접근하면 뒤로가는 코드
-        Vector3 direction = (targetPlayer.position - transform.position).normalized;
-        float distance = Vector3.Distance(transform.position, targetPlayer.position);
-        if (distance > stopDistance)
+        if(pv.isMine)
         {
-            navMeshAgent.SetDestination(targetPlayer.position);
-        }
-        else if (distance < stopDistance - bufferDistance)
-        {
-            Vector3 retreatDirection = -direction;
-            navMeshAgent.Move(retreatDirection * retreatSpeed * Time.deltaTime);
-        }
-        else
-        {
-            navMeshAgent.ResetPath();
+            //플레이어 접근하면 뒤로가는 코드
+            Vector3 direction = (targetPlayer.position - transform.position).normalized;
+            float distance = Vector3.Distance(transform.position, targetPlayer.position);
+            if (distance > stopDistance)
+            {
+                navMeshAgent.SetDestination(targetPlayer.position);
+            }
+            else if (distance < stopDistance - bufferDistance)
+            {
+                Vector3 retreatDirection = -direction;
+                navMeshAgent.Move(retreatDirection * retreatSpeed * Time.deltaTime);
+            }
+            else
+            {
+                navMeshAgent.ResetPath();
+            }
         }
     
     }

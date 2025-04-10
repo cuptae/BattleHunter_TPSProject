@@ -8,8 +8,8 @@ public class EnemyChaseState : IEnemyState
     public void EnterState(EnemyCtrl enemy)
     {
         enemy.currState = EnemyState.CHASE;
-    
-        enemy.navMeshAgent.isStopped = false;
+        if(enemy.pv.isMine)
+            enemy.navMeshAgent.isStopped = false;
         
     }
 
@@ -17,7 +17,8 @@ public class EnemyChaseState : IEnemyState
     {
         if (enemy.targetPlayer != null)
         {
-            enemy.navMeshAgent.SetDestination(enemy.targetPlayer.position);
+            if(enemy.pv.isMine)
+                enemy.navMeshAgent.SetDestination(enemy.targetPlayer.position);
 
             // 플레이어가 공격 범위 내에 있으면 ATTACK 상태로 전환
             if (Vector3.Distance(enemy.transform.position, enemy.targetPlayer.position) < enemy.attackRange)
@@ -35,10 +36,13 @@ public class EnemyChaseState : IEnemyState
 
     public void ExitState(EnemyCtrl enemy)
     {
-        var agent = enemy.GetComponent<NavMeshAgent>();
-        if (agent != null && agent.enabled && agent.isOnNavMesh)
+        if(enemy.pv.isMine)
         {
-            agent.isStopped = true;
+            var agent = enemy.GetComponent<NavMeshAgent>();
+            if (agent != null && agent.enabled && agent.isOnNavMesh)
+            {
+                agent.isStopped = true;
+            }
         }
     }
 }

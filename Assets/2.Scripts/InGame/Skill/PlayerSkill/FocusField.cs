@@ -8,7 +8,17 @@ public class FocusField : ActiveSkill
 
     public override IEnumerator Activation()
     {
-        yield return null;
+        if(ScanEnemySphere() != null)
+        {
+            foreach(EnemyCtrl enemy in ScanEnemySphere())
+            {
+                Debug.Log(enemy.transform.name);
+                enemy.Taunt(player.transform,activeData.duration);
+            }
+        }
+        yield return new WaitForSeconds(0.5f);
+        Debug.Log("FocusField Finished");
+        onSkillEnd?.Invoke();
     }
 }
 

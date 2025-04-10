@@ -11,7 +11,7 @@ public class GrenadeLauncher : ActiveSkill
     {
         firePos = player.transform.Find("Sci_Fi_Character_08_03/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/Riple/SciFiGunLightWhite/GrenadeFirePos");
         effectVfx = Resources.Load<GameObject>(activeData.skillName+"Vfx");
-        PoolManager.Instance.CreatePhotonPool(activeData.skillName+"Vfx"+GameManager.Instance.userId,effectVfx,3);
+        PoolManager.Instance.CreatePhotonPool(activeData.skillName+"Vfx",effectVfx,3);
         if (activeData.projectileCount == 1)
             angles = new float[] { 0f };
         else if (activeData.projectileCount == 3)

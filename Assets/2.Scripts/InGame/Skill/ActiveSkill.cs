@@ -15,7 +15,7 @@ public abstract class ActiveSkill : ISkill
     protected GameObject projectilePrefab;
     protected GameObject EffectPrefab;
 
-    public static List<GizmoDrawRequest> gizmoBoxes = new List<GizmoDrawRequest>();
+    public static List<GizmoDrawRequest> gizmo = new List<GizmoDrawRequest>();
     Collider[] monsterCols;
     public ActiveSkill(ActiveData activeData,GameObject effectVfx,PlayerCtrl player)
     {
@@ -45,7 +45,7 @@ public abstract class ActiveSkill : ISkill
 
         // 그 방향 기준으로 중심 위치 계산
         Vector3 center = player.transform.position + attackRot * Vector3.forward * 2f + attackRot * boxCenter;
-        gizmoBoxes.Add(new GizmoDrawRequest(center, boxRange, attackRot, 4f));
+        gizmo.Add(new GizmoDrawRequest(center, boxRange, attackRot, 4f,GizmoDrawRequest.DrawType.Box));
 
         // 박스 범위 감지
         Collider[] monCols = Physics.OverlapBox(center, boxRange * 0.5f, attackRot, GameManager.Instance.enemyLayerMask);
@@ -58,6 +58,22 @@ public abstract class ActiveSkill : ISkill
                 enemys.Add(enemy);
         }
 
+        return enemys;
+    }
+
+    protected List<EnemyCtrl> ScanEnemySphere()
+    {
+        Vector3 diameter = Vector3.one * activeData.attackRange * 2f; // (x, y, z 모두 지름)
+        gizmo.Add(new GizmoDrawRequest(player.transform.position,diameter,Quaternion.identity,4f,GizmoDrawRequest.DrawType.Sphere));
+
+        Collider[] monCols = Physics.OverlapSphere(player.transform.position,activeData.attackRange);
+        List<EnemyCtrl> enemys = new List<EnemyCtrl>();
+        foreach (Collider col in monCols)
+        {
+            EnemyCtrl enemy = col.GetComponent<EnemyCtrl>();
+            if (enemy != null)
+                enemys.Add(enemy);
+        }
         return enemys;
     }
 

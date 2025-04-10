@@ -2,24 +2,23 @@ using UnityEngine.AI;
 
 public class EnemyDieState : IEnemyState
 {
-    //public void EnterState(EnemyCtrl enemy)
-    //{
-    //    enemy.isDead = true;
-    //    enemy.navMeshAgent.isStopped = true;
-    //    PoolManager.Instance.ReturnObject("Mutant", enemy.gameObject);
-    //}
     public void EnterState(EnemyCtrl enemy)
     {
+        enemy.currState = EnemyState.DIE;
         enemy.isDead = true;
 
-        var agent = enemy.GetComponent<NavMeshAgent>();
-        if (agent != null && agent.enabled && agent.isOnNavMesh)
+        if(enemy.pv.isMine)
         {
-            agent.isStopped = true;
-            agent.ResetPath(); // 필요 시
+            var agent = enemy.GetComponent<NavMeshAgent>();
+            if (agent != null && agent.enabled && agent.isOnNavMesh)
+            {
+                agent.isStopped = true;
+                agent.ResetPath(); // 필요 시
+            }
         }
 
-        PoolManager.Instance.ReturnObject("Dragoon", enemy.gameObject);
+        //PoolManager.Instance.ReturnObject("Dragoon", enemy.gameObject);
+        enemy.Invoke("Die",0.2f);
     }
 
     public void UpdateState(EnemyCtrl enemy)
@@ -36,5 +35,8 @@ public class EnemyDieState : IEnemyState
     {
         // 사망 상태 해제 불가능
     }
+
+
+    
 }
 

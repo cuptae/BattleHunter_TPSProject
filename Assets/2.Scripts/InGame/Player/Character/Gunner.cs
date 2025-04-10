@@ -92,7 +92,7 @@ public class Gunner : PlayerCtrl
                 if (enemy != null) // 적 오브젝트를 찾았다면
                 {
                     Quaternion hitDir = Quaternion.LookRotation(-direction);
-                    enemy.GetDamage(characterStat.Damage); // 부모의 EnemyCtrl에서 데미지 처리
+                    enemy.GetDamage(characterStat.Damage); 
                     BulletEffect(hitInfo.point, hitDir);
                 }
             }

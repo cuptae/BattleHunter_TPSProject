@@ -12,7 +12,8 @@ public class EnemyAttackState : IEnemyState
     {
         enemy.currState = EnemyState.ATTACK;
         lastAttackTime = Time.time;
-        enemy.navMeshAgent.isStopped = true;
+        if(enemy.pv.isMine)
+            enemy.navMeshAgent.isStopped = true;
     }
 
     public void UpdateState(EnemyCtrl enemy)
@@ -21,9 +22,11 @@ public class EnemyAttackState : IEnemyState
         if (player != null)
         {
             // 플레이어가 범위 밖이면 다시 추격
-            if (Vector3.Distance(enemy.transform.position, player.transform.position) > enemy.attackRange)
+            if (Vector3.Distance(enemy.transform.position, player.transform.position) > enemy.attackRange+1 )
             {
-                enemy.navMeshAgent.isStopped = false;
+                if(enemy.pv.isMine)
+                    enemy.navMeshAgent.isStopped = false;
+
                 enemy.ChangeState(new EnemyChaseState());
                 return;
             }
@@ -32,7 +35,7 @@ public class EnemyAttackState : IEnemyState
                 // 그렇지 않으면 공격
                 if (Time.time - lastAttackTime >= attackDelay)
                 {
-                    enemy.Attack();// 를 넣으면 될듯?
+                    enemy.Attack();
                     lastAttackTime = Time.time;
                 }
             }

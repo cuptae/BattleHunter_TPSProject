@@ -8,8 +8,6 @@ public class StageManager : MonoBehaviour
     PhotonView pv;
     Transform[] playerSpawnPos;
 
-    Transform[] enemySpawnPos;
-
     void Awake()
     {
         pv = GetComponent<PhotonView>();
@@ -32,6 +30,7 @@ public class StageManager : MonoBehaviour
             case Character.WARRIOR:
                 player = PhotonNetwork.Instantiate("Warrior",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
                 SkillManager.Instance.player = player.GetComponent<PlayerCtrl>();
+                player.GetComponent<PlayerCtrl>().activeSkills = SkillManager.Instance.SkillAdd();
                 break;
             case Character.HACKER:
                 player = PhotonNetwork.Instantiate("Hacker",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);

@@ -67,6 +67,33 @@ public class PoolManager : MonoSingleton<PoolManager>
         return null;
     }
 
+    public GameObject PvGetObject(string key, Vector3 pos, Quaternion rot)
+    {
+        if (pool.ContainsKey(key) && pool[key].Count > 0)
+        {
+            GameObject go = pool[key].Dequeue();
+            go.transform.position = pos;
+            go.transform.rotation = rot;
+
+            PhotonView pv = go.GetComponent<PhotonView>();
+            if (pv != null)
+            {
+                // 모든 클라이언트에서 활성화하도록 RPC 호출
+                pv.RPC("EnableObject", PhotonTargets.All);
+            }
+            else
+            {
+                Debug.LogWarning("PhotonView not found on pooled object.");
+                go.SetActive(true);
+            }
+
+            return go;
+        }
+        return null;
+    }
+
+
+
     public void ReturnObject(string key, GameObject go)
     {
         go.SetActive(false);
@@ -80,4 +107,28 @@ public class PoolManager : MonoSingleton<PoolManager>
             pool[key].Enqueue(go);
         }
     }
+
+    public void PvReturnObject(string key, GameObject go)
+    {
+        PhotonView pv = go.GetComponent<PhotonView>();
+        if (pv != null)
+        {
+            pv.RPC("DisableObject", PhotonTargets.All);
+        }
+        else
+        {
+            go.SetActive(false); // fallback
+        }
+
+        if (pool.ContainsKey(key))
+        {
+            pool[key].Enqueue(go);
+        }
+        else
+        {
+            pool[key] = new Queue<GameObject>();
+            pool[key].Enqueue(go);
+        }
+    }
+
 }

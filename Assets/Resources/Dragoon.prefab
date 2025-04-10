@@ -767,12 +767,13 @@ MonoBehaviour:
   maxHp: 150
   curHp: 0
   isDead: 0
+  pv: {fileID: 0}
   navMeshAgent: {fileID: 0}
   attackRange: 5
   targetPlayer: {fileID: 0}
   rotationSpeed: 5
   currState: 0
-  stopDistance: 5
+  stopDistance: 4
   retreatSpeed: 3
   bufferDistance: 1
   firePos: {fileID: 4173411111854763231}

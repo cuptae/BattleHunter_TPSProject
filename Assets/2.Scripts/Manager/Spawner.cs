@@ -37,8 +37,14 @@ public class Spawner : MonoBehaviour
             for(int i =0; i<oneceSpawnCnt; i++)
             {
                 int randPos = Random.Range(1,spawnPos.Length);
-                GameObject dragoon = PoolManager.Instance.GetObject("Dragoon",spawnPos[randPos].position,spawnPos[randPos].rotation);
+                GameObject dragoon = PoolManager.Instance.PvGetObject("Dragoon",spawnPos[randPos].position,spawnPos[randPos].rotation);
+                if (dragoon == null)
+                {
+                    continue;
+                }
             }
         }
     }
+
+
 }

@@ -105,6 +105,7 @@ public class SkillManager : MonoSingleton<SkillManager>
         data.SetIsCharge(Convert.ToBoolean(skillDict["isCharge"]));
         data.SetChargeCount(Convert.ToInt32(skillDict["chargeCount"]));
         data.SetProjectileCount(Convert.ToInt32(skillDict["projectileCount"]));
+        data.SetDuration(Convert.ToSingle(skillDict["duration"]));
         data.SetSkillEffectParam(Enum.TryParse(skillDict["skillEffectParam"].ToString(), out SkillEffect effect) ? effect : SkillEffect.NONE);
         data.SetSkillType(Enum.TryParse(skillDict["skillType"].ToString(), out SkillType type) ? type : SkillType.NONE);
 

@@ -44,4 +44,9 @@ MonoBehaviour:
   - RequestForPickupTimes
   - TaggedPlayer
   - TakeDamage
+  - RequestDamage
+  - DisableObject
+  - EnableObject
+  - SetActiveState
+  - RPC_Taunt
   DisableAutoOpenWizard: 1
