@@ -11,6 +11,7 @@ TagManager:
   - AimingPos
   - EnemySpawnPoint
   - OpeningDoor
+  - Test
   layers:
   - Default
   - TransparentFX

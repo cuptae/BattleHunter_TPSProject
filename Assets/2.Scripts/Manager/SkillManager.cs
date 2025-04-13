@@ -12,6 +12,10 @@ public class SkillManager : MonoSingleton<SkillManager>
     private List<Dictionary<string,object>> skillTable;
     [HideInInspector]
     public PlayerCtrl player;
+
+
+    public int modify = 0;
+
     protected override void Awake()
     {
         base.Awake();
@@ -36,16 +40,16 @@ public class SkillManager : MonoSingleton<SkillManager>
         switch(GameManager.Instance.curCharacter)
         {
             case Character.GUNNER:
-            activeSkills.Add(new ShockWave(GetSkillData(20101),null,player));
-            activeSkills.Add(new GrenadeLauncher(GetSkillData(20201),null,player));
-            activeSkills.Add(new PhotonLance(GetSkillData(20301),null,player));
+            activeSkills.Add(new ShockWave(GetSkillData(20101+modify),null,player));
+            activeSkills.Add(new GrenadeLauncher(GetSkillData(20201+modify),null,player));
+            activeSkills.Add(new PhotonLance(GetSkillData(20301+modify),null,player));
             break;
             case Character.HACKER:
             break;
             case Character.WARRIOR:
-            activeSkills.Add(new FocusField(GetSkillData(10101),null,player));
-            activeSkills.Add(new EnergyBurst(GetSkillData(10201),null,player));
-            activeSkills.Add(new EnduranceMode(GetSkillData(10301),null,player));
+            activeSkills.Add(new FocusField(GetSkillData(10101+modify),null,player));
+            activeSkills.Add(new EnergyBurst(GetSkillData(10201+modify),null,player));
+            activeSkills.Add(new EnduranceMode(GetSkillData(10301+modify),null,player));
             break;
         }
         return activeSkills;

@@ -17,8 +17,7 @@ public class EnemyDieState : IEnemyState
             }
         }
 
-        //PoolManager.Instance.ReturnObject("Dragoon", enemy.gameObject);
-        enemy.Invoke("Die",0.2f);
+        enemy.Die();
     }
 
     public void UpdateState(EnemyCtrl enemy)

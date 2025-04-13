@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using Unity.VisualScripting;
 using System.Collections.Generic;
+using UnityEngine.UI;
 public enum STATE
 {
     IDLE,
@@ -62,7 +63,9 @@ public abstract class PlayerCtrl : MonoBehaviour
     public bool dodgeTrigger;
 
 
+    public GameObject TestBtn;
     protected virtual void Awake() {
+        TestBtn = GameObject.FindWithTag("Test");
         animator = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
@@ -92,6 +95,8 @@ public abstract class PlayerCtrl : MonoBehaviour
         {
             stateMachine.Initialize(new IdleState(this));
         }
+
+        TestBtn.GetComponent<Button>().onClick.AddListener(TestSkillLevelUP);
     }
     protected virtual void Update()
     {
@@ -271,4 +276,23 @@ public abstract class PlayerCtrl : MonoBehaviour
         Gizmos.DrawWireCube(groundCheck.position, boxSize);
     }
 
+
+    public void TestSkillLevelUP()
+    {
+        if(SkillManager.Instance.modify <3)
+        {
+            SkillManager.Instance.modify += 1;
+            Debug.Log($"현재 레벨 : {SkillManager.Instance.modify}");
+        }
+        else
+        {
+            Debug.Log("이미 최대 레벨 입니다");
+            return;
+        }
+
+        activeSkills.Clear();
+        activeSkills = SkillManager.Instance.SkillAdd();
+
+
+    }
 }

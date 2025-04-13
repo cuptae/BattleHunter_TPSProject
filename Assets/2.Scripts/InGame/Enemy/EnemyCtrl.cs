@@ -209,7 +209,7 @@ public class EnemyCtrl : MonoBehaviour
         // 마스터에서만 실행됨
         TakeDamage(damage, info);
     }
-    void Die()
+    public void Die()
     {
         if (PhotonNetwork.isMasterClient)
         {

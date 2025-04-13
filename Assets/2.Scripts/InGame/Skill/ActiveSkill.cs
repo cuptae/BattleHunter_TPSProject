@@ -24,7 +24,7 @@ public abstract class ActiveSkill : ISkill
         this.chargeCount = activeData.chargeCount;
         if(activeData.skillType == SKILLCONSTANT.SkillType.PROJECTILE)
         {
-            SetProjectile(activeData.skillName,activeData.projectileCount);
+            SetProjectile(activeData.skillName,activeData.projectileCount+5);
         }
 
     }
