@@ -2,20 +2,20 @@ using UnityEngine;
 
 public class MainHealth : MonoBehaviour
 {
-    [Header("ÀÚ½ÅÀÇ Ã¼·Â")]
-    public int mainHealth = 1000; // ÀÚ±â ÀÚ½ÅÀÇ Ã¼·Â
+    [Header("ï¿½Ú½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½")]
+    public int mainHealth = 1000; // ï¿½Ú±ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½
 
-    [Header("ÀÚ½Ä Ã¼·Â ÀÚµ¿ ¼öÁý")]
+    [Header("ï¿½Ú½ï¿½ Ã¼ï¿½ï¿½ ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½")]
     public ChildHealth[] children;
 
-    [Header("ÃÑ Ã¼·Â (ÀÚ½Å + ÀÚ½Ä Ã¼·ÂÀÇ ÇÕ°è)")]
-    public int totalHealth;  // ÀÎ½ºÆåÅÍ¿¡ º¸ÀÌµµ·Ï ÇÊµå·Î À¯Áö
+    [Header("ï¿½ï¿½ Ã¼ï¿½ï¿½ (ï¿½Ú½ï¿½ + ï¿½Ú½ï¿½ Ã¼ï¿½ï¿½ï¿½ï¿½ ï¿½Õ°ï¿½)")]
+    public int totalHealth;  // ï¿½Î½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½ ï¿½Êµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-    public int TotalHealth => totalHealth;  // ÀÐ±â Àü¿ë ÇÁ·ÎÆÛÆ¼
+    public int TotalHealth => totalHealth;  // ï¿½Ð±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼
 
     void Awake()
     {
-        // ÀÚ½Ä ¿ÀºêÁ§Æ®¿¡¼­ ChildHealth ÄÄÆ÷³ÍÆ® ÀÚµ¿ ¼öÁý
+        // ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ChildHealth ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½
         children = GetComponentsInChildren<ChildHealth>();
     }
 
@@ -26,7 +26,7 @@ public class MainHealth : MonoBehaviour
 
     protected void UpdateTotalHealth()
     {
-        totalHealth = mainHealth; // ÀÚ½ÅÀÇ Ã¼·ÂÀ» ¸ÕÀú ´õÇÔ
+        totalHealth = mainHealth; // ï¿½Ú½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         foreach (var child in children)
         {
             totalHealth += child.GetHealth();

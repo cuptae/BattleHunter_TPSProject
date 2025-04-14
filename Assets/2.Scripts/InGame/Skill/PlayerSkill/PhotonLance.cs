@@ -51,8 +51,8 @@ public class PhotonLance : ActiveSkill
             float timer = 0f;
             while (timer < duration)
             {
-                List<EnemyCtrl> enemies = ScanEnemyBox(0);
-                foreach (EnemyCtrl enemy in enemies)
+                List<IDamageable> enemies = ScanEnemyBox(0);
+                foreach (IDamageable enemy in enemies)
                     enemy.GetDamage(activeData.damage);
 
                 timer += interval;
@@ -73,13 +73,13 @@ public class PhotonLance : ActiveSkill
                 float leftAngle = Mathf.Lerp(-40f, 0f, t);
                 float rightAngle = Mathf.Lerp(40f, 0f, t);
 
-                List<EnemyCtrl> leftEnemies = ScanEnemyBox(leftAngle);
-                List<EnemyCtrl> rightEnemies = ScanEnemyBox(rightAngle);
+                List<IDamageable> leftEnemies = ScanEnemyBox(leftAngle);
+                List<IDamageable> rightEnemies = ScanEnemyBox(rightAngle);
 
-                foreach (EnemyCtrl enemy in leftEnemies)
+                foreach (IDamageable enemy in leftEnemies)
                     enemy.GetDamage(activeData.damage);
 
-                foreach (EnemyCtrl enemy in rightEnemies)
+                foreach (IDamageable enemy in rightEnemies)
                     enemy.GetDamage(activeData.damage);
 
                 timer += interval;

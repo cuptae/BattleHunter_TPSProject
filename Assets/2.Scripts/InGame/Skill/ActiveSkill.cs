@@ -35,7 +35,7 @@ public abstract class ActiveSkill : ISkill
         onSkillEnd = callback;
     }
 
-    protected List<EnemyCtrl> ScanEnemyBox(float angleOffset)
+    protected List<IDamageable> ScanEnemyBox(float angleOffset)
     {
         Vector3 boxRange = new Vector3(activeData.attackRange, 3, activeData.attackDistance);
         Vector3 boxCenter = new Vector3(0, 0, -1 + boxRange.z / 2);
@@ -50,10 +50,12 @@ public abstract class ActiveSkill : ISkill
         // 박스 범위 감지
         Collider[] monCols = Physics.OverlapBox(center, boxRange * 0.5f, attackRot, GameManager.Instance.enemyLayerMask);
 
-        List<EnemyCtrl> enemys = new List<EnemyCtrl>();
+        //List<EnemyCtrl> enemys = new List<EnemyCtrl>();
+        List<IDamageable> enemys = new List<IDamageable>();
         foreach (Collider col in monCols)
         {
-            EnemyCtrl enemy = col.GetComponent<EnemyCtrl>();
+            //EnemyCtrl enemy = col.GetComponent<EnemyCtrl>();
+            IDamageable enemy = col.GetComponent<IDamageable>();
             if (enemy != null)
                 enemys.Add(enemy);
         }
@@ -61,16 +63,18 @@ public abstract class ActiveSkill : ISkill
         return enemys;
     }
 
-    protected List<EnemyCtrl> ScanEnemySphere()
+    protected List<IDamageable> ScanEnemySphere()
     {
         Vector3 diameter = Vector3.one * activeData.attackRange * 2f; // (x, y, z 모두 지름)
         gizmo.Add(new GizmoDrawRequest(player.transform.position,diameter,Quaternion.identity,4f,GizmoDrawRequest.DrawType.Sphere));
 
         Collider[] monCols = Physics.OverlapSphere(player.transform.position,activeData.attackRange);
-        List<EnemyCtrl> enemys = new List<EnemyCtrl>();
+        //List<EnemyCtrl> enemys = new List<EnemyCtrl>();
+        List<IDamageable> enemys = new List<IDamageable>();
         foreach (Collider col in monCols)
         {
-            EnemyCtrl enemy = col.GetComponent<EnemyCtrl>();
+            //EnemyCtrl enemy = col.GetComponent<EnemyCtrl>();
+            IDamageable enemy = col.GetComponent<IDamageable>();
             if (enemy != null)
                 enemys.Add(enemy);
         }

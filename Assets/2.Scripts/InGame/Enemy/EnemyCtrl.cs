@@ -11,7 +11,7 @@ public enum EnemyState
     DIE,
     ATTACK,
 }
-public class EnemyCtrl : MonoBehaviour
+public class EnemyCtrl : MonoBehaviour,IDamageable
 {
     private Rigidbody rigid;
     protected Transform tr;

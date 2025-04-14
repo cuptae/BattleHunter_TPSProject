@@ -87,57 +87,24 @@ public class Gunner : PlayerCtrl
             {
                 aimingPos.transform.position = hitInfo.point + Vector3.up * 0.5f;
                 // 부모에서 EnemyCtrl을 찾도록 수정
-                EnemyCtrl enemy = hitInfo.collider.GetComponentInParent<EnemyCtrl>();
-                ChildHealth Boss = hitInfo.collider.GetComponentInParent<ChildHealth>();
+                var enemy = hitInfo.collider.GetComponent<IDamageable>();
+                
                 Quaternion hitDir = Quaternion.LookRotation(-direction);
                 if (enemy != null) // 적 오브젝트를 찾았다면
                 {
                     enemy.GetDamage(characterStat.Damage); 
                     BulletEffect(hitInfo.point, hitDir);
                 }
-                if (Boss != null)
-                {
-                    Boss.GetDamage(characterStat.Damage);
-                    BulletEffect(hitInfo.point, hitDir); // 중복되더라도 상관 없으면 그대로
-                }
+                // if (Boss != null)
+                // {
+                //     Boss.GetDamage(characterStat.Damage);
+                //     BulletEffect(hitInfo.point, hitDir); // 중복되더라도 상관 없으면 그대로
+                // }
             }
             SoundManager.Instance.PlaySFX(SFXCategory.PLAYER, PLAYER.ATTACK, tr.position);
             nextFireTime = Time.time + characterStat.AttackRate; // 다음 발사 시간 설정
         }
     }
-
-        // protected override void Attack()
-    // {
-    //     if(isDodge)
-    //         return;
-    //     ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
-    //     Vector3 direction = ray.direction.normalized;
-    //     ray = new Ray(mainCamera.transform.position, direction);
-
-    //     if (Physics.Raycast(ray, out RaycastHit hitInfo, 50.0f))
-    //     {
-    //         aimingPos.transform.position = hitInfo.point + Vector3.up * 0.5f;
-    //         // 부모에서 EnemyCtrl을 찾도록 수정
-    //         EnemyCtrl enemy = hitInfo.collider.GetComponentInParent<EnemyCtrl>();
-    //         ChildHealth Boss = hitInfo.collider.GetComponentInParent<ChildHealth>();
-
-    //         Quaternion hitDir = Quaternion.LookRotation(-direction);
-
-    //         if (enemy != null)
-    //         {
-    //             enemy.GetDamage(characterData.damage);
-    //             StartCoroutine(BulletEffect(hitInfo.point, hitDir));
-    //         }
-
-    //         if (Boss != null)
-    //         {
-    //             Boss.GetDamage(characterData.damage);
-    //             StartCoroutine(BulletEffect(hitInfo.point, hitDir)); // 중복되더라도 상관 없으면 그대로
-    //         }
-    //     }
-    // }
-
     protected override void  OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         base.OnPhotonSerializeView(stream,info);

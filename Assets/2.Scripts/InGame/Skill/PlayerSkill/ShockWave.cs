@@ -20,9 +20,8 @@ public class ShockWave : ActiveSkill
         PoolManager.Instance.GetObject(activeData.skillName+"Vfx",firePos.position,Quaternion.LookRotation(firePos.forward));
         if(ScanEnemyBox(0) != null)
         {
-            foreach(EnemyCtrl enemy in ScanEnemyBox(0))
+            foreach(IDamageable enemy in ScanEnemyBox(0))
             {
-                Debug.Log(enemy.transform.name);
                 enemy.GetDamage(activeData.damage);
             }
         }
