@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using SKILLCONSTANT;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,6 +11,7 @@ public enum EnemyState
     CHASE,
     DIE,
     ATTACK,
+    STUN,
 }
 public class EnemyCtrl : MonoBehaviour,IDamageable
 {
@@ -35,6 +37,8 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
 
     public bool isTaunt;
 
+    public int amorBreakRate = 1;
+
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -43,29 +47,15 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
         pv.ObservedComponents[0] = this;
         pv.synchronization = ViewSynchronization.UnreliableOnChange;
         navMeshAgent = GetComponent<NavMeshAgent>();
-
-
-
     }
 
-    void Start()
-    {
-        if(!pv.isMine)
-        {
-            rigid.isKinematic = true;
-            curPos = tr.position;
-            curRot = tr.rotation;
-            navMeshAgent.enabled = false;
-        }   
-    }
     void OnEnable()
     {
         curHp = maxHp;
         isDead = false;
-
         ChangeState(new EnemyChaseState());
-        
-
+        UpdateTargetPlayer();
+        InvokeRepeating("UpdateTargetPlayer",0f,1.0f);
         hpBar = MonsterHPBarManager.Instance.CreateHPBar(this); // 새 체력바 생성
     }
 
@@ -77,20 +67,24 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
             hpBar = null;
         }
     }
+    void Start()
+    {
+        if(!pv.isMine)
+        {
+            rigid.isKinematic = true;
+            curPos = tr.position;
+            curRot = tr.rotation;
+            navMeshAgent.enabled = false;
+        }   
+    }
 
 
     // Update is called once per frame
     protected virtual void Update()
     {
-
-        targetPlayer = FindClosestPlayer();
-
         if(pv.isMine)
         {
-            Vector3 direction = (targetPlayer.position - transform.position).normalized;
-            direction.y = 0;
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+            curState?.UpdateState(this);
         }
         else
         {
@@ -99,9 +93,7 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
                 gameObject.SetActive(false);
             }
         }
-        curState?.UpdateState(this);
     }
-
     void FixedUpdate()
     {
         if (!pv.isMine)
@@ -113,19 +105,12 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
             tr.rotation = Quaternion.Slerp(tr.rotation, curRot, Time.fixedDeltaTime * rotationSpeed);
         }
     }
-
     public void ChangeState(IEnemyState newState)
     {
         curState?.ExitState(this); // 이전 상태 종료
         curState = newState;
         curState.EnterState(this); // 새로운 상태 진입
     }
-
-
-
-    public virtual void Attack(){}
-
-
     public Transform FindClosestPlayer()
     {
         if(isTaunt)
@@ -149,43 +134,120 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
         }
     }
 
-    public void GetDamage(int damage)
+
+    public virtual void Attack(){}
+
+
+    private void UpdateTargetPlayer()
+    {
+        targetPlayer = FindClosestPlayer();
+    }
+
+
+
+    public void GetDamage(int damage,ActiveData skill = null)
     {
         if (!PhotonNetwork.isMasterClient)
         {
-            pv.RPC("RequestDamage", PhotonTargets.MasterClient, damage);
+            int casterViewID = skill != null ? skill.caster.GetComponent<PhotonView>().viewID : -1;
+            SkillEffect effect = skill != null ? skill.skillEffectParam : SkillEffect.NONE;
+            float duration = skill != null ? skill.duration : 0f;
+             pv.RPC("RequestDamage", PhotonTargets.MasterClient, damage, (int)effect, duration, casterViewID);
         }
         else
         {
-            TakeDamage(damage, new PhotonMessageInfo()); // 로컬 마스터가 직접 처리
+            TakeDamage(damage,skill); // 로컬 마스터가 직접 처리
         }
     }
 
-    [PunRPC]
-    public void TakeDamage(int damage, PhotonMessageInfo info)
+    public void TakeDamage(int damage,ActiveData skill = null)
     {
-        // 🟡 체력바 보여주기 (몬스터에 달린 MonsterHPBar 호출)
         MonsterHPBar hpBar = GetComponentInChildren<MonsterHPBar>();
         if (hpBar != null)
         {
             hpBar.UpdateHPBarUI();
         }
-        curHp -= damage;
-        Debug.Log(damage);
+        int totalDamage = damage*amorBreakRate;
+        curHp -= totalDamage;
+        Debug.Log(totalDamage);
 
 
         if (curHp <= 0)
         {
-
             ChangeState(new EnemyDieState());
         }
+        if(!isDead&&skill != null)
+        {
+            switch(skill.skillEffectParam)
+            {
+                case SkillEffect.TAUNT:
+                Taunt(skill.caster.transform,skill.duration);
+                break;
+                case SkillEffect.STUN:
+                Stun(skill.duration);
+                break;
+                case SkillEffect.AMORBREAK:
+                Debug.Log("아머브레이크");
+                AmorBreak(skill.duration);
+                break;
+                case SkillEffect.KNOCKBACK:
+                Debug.Log("넉백!");
+                KnockBack(skill.caster.transform);
+                break;
+                default:
+                break;
+            }
+        }
+
+    }
+
+    [PunRPC]
+    public void RequestDamage(int damage, int effect, float duration, int casterViewID)
+    {
+        ActiveData skill = null;
+        if (effect != (int)SkillEffect.NONE && casterViewID != -1)
+        {
+            GameObject casterObj = PhotonView.Find(casterViewID)?.gameObject;
+            if (casterObj != null)
+            {
+                skill = new ActiveData();
+                skill.SetSkillEffectParam((SkillEffect)effect);
+                skill.SetDuration(duration);
+                skill.SetCaster(casterObj.GetComponent<PlayerCtrl>());
+            }
+        }
+
+        TakeDamage(damage, skill);
+    }
+
+
+    public void Stun(float time)
+    {
+        pv.RPC("RPC_Stun", PhotonTargets.All, time);
+    }
+
+    [PunRPC]
+    public void RPC_Stun(float time)
+    {
+        ChangeState(new EnemyStunState(time));
+
+        // 마크 표시
+        EnalbeDebuffMark(1);
+    }
+
+    public void AmorBreak(float duration)
+    {
+        amorBreakRate = 2;
+        Invoke("RecoverAmor",duration);
+    }
+    public void RecoverAmor()
+    {
+        amorBreakRate = 1;
     }
 
     public void Taunt(Transform target, float time)
     {
-
         pv.RPC("RPC_Taunt", PhotonTargets.All, target.GetComponent<PhotonView>().viewID, time);
-        
     }
     [PunRPC]
     public void RPC_Taunt(int targetViewID, float duration)
@@ -196,19 +258,34 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
         {
             targetPlayer = targetPv.transform;
             isTaunt = true;
-            Invoke(nameof(UnTaunt), 5.0f);
+            //hpBar.deBuff[0].SetActive(true);
+            EnalbeDebuffMark(0);
+            Invoke(nameof(UnTaunt), duration);
         }
         else
         {
             Debug.Log("targetPv is null");
         }
     }
-    [PunRPC]
-    public void RequestDamage(int damage, PhotonMessageInfo info)
+    public void UnTaunt()
     {
-        // 마스터에서만 실행됨
-        TakeDamage(damage, info);
+        if(hpBar.deBuff[0] != null)
+        {
+            //hpBar.deBuff[0].SetActive(false);
+            DisableDebuffMark(0);
+        }
+        isTaunt = false;
     }
+
+    public void KnockBack(Transform caster)
+    {
+        // Vector3 dir = (transform.position - caster.position).normalized;
+        // navMeshAgent.enabled = false;
+        // rigid.AddForce(dir*100f,ForceMode.Impulse);
+        ChangeState(new EnemyKnockBackState(caster));
+    }
+
+
     public void Die()
     {
         if (PhotonNetwork.isMasterClient)
@@ -224,24 +301,27 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
     {
         gameObject.SetActive(true);
     }
+
     [PunRPC]
     public void DisableObject()
     {
         gameObject.SetActive(false);
     }
 
-    // public void Taunt(Transform target,float time)
-    // {
-    //     targetPlayer = target;
-    //     isTaunt = true;
-
-    //     //Invoke("UnTaunt",200f);
-    // }
-
-    public void UnTaunt()
+    [PunRPC]
+    public void EnalbeDebuffMark(int mark)
     {
-        isTaunt = false;
+        hpBar.deBuff[mark].SetActive(true);       
     }
+    [PunRPC]
+    public void DisableDebuffMark(int mark)
+    {
+        hpBar.deBuff[mark].SetActive(false);
+    }
+
+
+
+
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -252,7 +332,6 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
             stream.SendNext(tr.rotation);
             stream.SendNext(currState);
             stream.SendNext(isTaunt);
-            //stream.SendNext(targetPlayer);
         }
         else
         {
@@ -261,17 +340,6 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
             curRot = (Quaternion)stream.ReceiveNext();
             currState = (EnemyState)stream.ReceiveNext();
             isTaunt = (bool)stream.ReceiveNext();
-            //targetPlayer = (Transform)stream.ReceiveNext();
         }
     }
-
-
-
-    // public void Effected(SKILLCONSTANT.SkillEffect effect)
-    // {
-    //     switch(effect)
-    //     {
-    //         case SKILLCONSTANT.SkillEffect.
-    //     }
-    // }
 }

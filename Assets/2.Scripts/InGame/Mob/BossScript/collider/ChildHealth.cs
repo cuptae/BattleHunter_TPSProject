@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SKILLCONSTANT;
 using UnityEngine;
 
 public class ChildHealth : MainHealth,IDamageable
@@ -22,7 +23,7 @@ public class ChildHealth : MainHealth,IDamageable
         pv = GetComponent<PhotonView>();
     }
 
-    public void GetDamage(int damage)
+    public void GetDamage(int damage,ActiveData skill = null)
     {
         if (PhotonNetwork.isMasterClient)
         {

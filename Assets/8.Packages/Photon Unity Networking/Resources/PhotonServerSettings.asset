@@ -50,4 +50,7 @@ MonoBehaviour:
   - SetActiveState
   - RPC_Taunt
   - TakeDamageRPC
+  - DisableDebuffMark
+  - EnalbeDebuffMark
+  - RPC_Stun
   DisableAutoOpenWizard: 1

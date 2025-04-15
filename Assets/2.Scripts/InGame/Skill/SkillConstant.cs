@@ -3,8 +3,9 @@ namespace SKILLCONSTANT
     public enum SkillEffect
     {
         STUN,
+        TAUNT,
         SLOW,
-        KNUCKBACK,
+        KNOCKBACK,
         AMORBREAK,
         SPAWN,
         NONE

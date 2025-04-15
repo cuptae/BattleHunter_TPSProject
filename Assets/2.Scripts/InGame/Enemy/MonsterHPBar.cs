@@ -21,7 +21,9 @@ public class MonsterHPBar : MonoBehaviour
     public Camera mainCamera;
     private Transform playerTransform;
 
-    public Vector3 offset = new Vector3(0, 2f, 0); // HP 바 위치 보정
+    public Vector3 offset = new Vector3(0, -5f, 0); // HP 바 위치 보정
+
+    public GameObject[] deBuff;
 
     void Awake()
 {

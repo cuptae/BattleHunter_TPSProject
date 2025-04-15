@@ -15,16 +15,44 @@ public class EnemyChaseState : IEnemyState
 
     public void UpdateState(EnemyCtrl enemy)
     {
-        if (enemy.targetPlayer != null)
-        {
-            if(enemy.pv.isMine)
-                enemy.navMeshAgent.SetDestination(enemy.targetPlayer.position);
+    if (enemy.targetPlayer == null)
+        return;
 
-            // 플레이어가 공격 범위 내에 있으면 ATTACK 상태로 전환
-            if (Vector3.Distance(enemy.transform.position, enemy.targetPlayer.position) < enemy.attackRange)
+    if (enemy.pv.isMine)
+    {
+            Vector3 direction = (enemy.targetPlayer.position - enemy.transform.position).normalized;
+            direction.y = 0;
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            enemy.transform.rotation = Quaternion.Slerp(enemy.transform.rotation, lookRotation, enemy.rotationSpeed * Time.deltaTime);
+            // 👇 Dragoon만 후퇴 로직
+            if (enemy is Dragoon dragoon)
             {
-                enemy.ChangeState(new EnemyAttackState());
+                float distance = Vector3.Distance(dragoon.transform.position, dragoon.targetPlayer.position);
+
+                if (distance < dragoon.stopDistance - dragoon.bufferDistance)
+                {
+                    // 후퇴 중일 땐 SetDestination 비활성
+                    dragoon.navMeshAgent.ResetPath();
+                    Vector3 retreatDirection = -direction;
+                    dragoon.navMeshAgent.Move(retreatDirection * dragoon.retreatSpeed * Time.deltaTime);
+                    return;
+                }
+                else
+                {
+                    dragoon.navMeshAgent.SetDestination(dragoon.targetPlayer.position);
+                }
             }
+            else
+            {
+                enemy.navMeshAgent.SetDestination(enemy.targetPlayer.position);
+            }
+        }
+
+        // 공격 범위 체크는 후퇴 안 하고 있을 때만
+        float attackDistance = Vector3.Distance(enemy.transform.position, enemy.targetPlayer.position);
+        if (attackDistance < enemy.attackRange)
+        {
+            enemy.ChangeState(new EnemyAttackState());
         }
     }
 

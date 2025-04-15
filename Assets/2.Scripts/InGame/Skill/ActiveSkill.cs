@@ -22,6 +22,7 @@ public abstract class ActiveSkill : ISkill
         this.activeData = activeData;
         this.player = player;
         this.chargeCount = activeData.chargeCount;
+        this.activeData.SetCaster(player);
         if(activeData.skillType == SKILLCONSTANT.SkillType.PROJECTILE)
         {
             SetProjectile(activeData.skillName,activeData.projectileCount+5);
@@ -79,26 +80,6 @@ public abstract class ActiveSkill : ISkill
                 enemys.Add(enemy);
         }
         return enemys;
-    }
-
-    protected void Effect(EnemyCtrl enemy)
-    {
-        switch(activeData.skillEffectParam)
-        {
-            case SKILLCONSTANT.SkillEffect.KNUCKBACK:
-                
-            break;
-
-            case SKILLCONSTANT.SkillEffect.STUN:
-
-            break;
-
-            case SKILLCONSTANT.SkillEffect.SLOW:
-
-            break;
-
-
-        }
     }
     
     public void SetProjectile(string name,int size)

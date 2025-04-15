@@ -54,7 +54,7 @@ public class Warrior : PlayerCtrl
         {
             if (col != null)
             {
-                EnemyCtrl enemy = col.GetComponent<EnemyCtrl>();
+                var enemy = col.GetComponent<IDamageable>();
                 if (enemy != null)
                 {
                     enemy.GetDamage(characterStat.Damage);

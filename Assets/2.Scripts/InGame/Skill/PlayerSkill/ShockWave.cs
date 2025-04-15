@@ -22,7 +22,7 @@ public class ShockWave : ActiveSkill
         {
             foreach(IDamageable enemy in ScanEnemyBox(0))
             {
-                enemy.GetDamage(activeData.damage);
+                enemy.GetDamage(activeData.damage,activeData);
             }
         }
 

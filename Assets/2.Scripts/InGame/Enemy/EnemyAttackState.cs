@@ -18,28 +18,45 @@ public class EnemyAttackState : IEnemyState
 
     public void UpdateState(EnemyCtrl enemy)
     {
-        GameObject player = GameObject.FindWithTag("Player");
-        if (player != null)
-        {
-            // 플레이어가 범위 밖이면 다시 추격
-            if (Vector3.Distance(enemy.transform.position, player.transform.position) > enemy.attackRange+1 )
-            {
-                if(enemy.pv.isMine)
-                    enemy.navMeshAgent.isStopped = false;
+            Vector3 direction = (enemy.targetPlayer.position - enemy.transform.position).normalized;
+            direction.y = 0;
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            enemy.transform.rotation = Quaternion.Slerp(enemy.transform.rotation, lookRotation, enemy.rotationSpeed * Time.deltaTime);
+        if (enemy.targetPlayer == null)
+            return;
 
+        if (enemy is Dragoon dragoon)
+        {
+            float distance = Vector3.Distance(dragoon.transform.position, dragoon.targetPlayer.position);
+
+            // 가까이 붙으면 후퇴 위해 Chase 상태로 다시 전환
+            if (distance < dragoon.stopDistance - dragoon.bufferDistance)
+            {
                 enemy.ChangeState(new EnemyChaseState());
                 return;
             }
-            else
+            else if (dragoon.pv.isMine)
             {
-                // 그렇지 않으면 공격
-                if (Time.time - lastAttackTime >= attackDelay)
-                {
-                    enemy.Attack();
-                    lastAttackTime = Time.time;
-                }
+                // 공격 거리 유지하면 멈춤
+                dragoon.navMeshAgent.ResetPath();
             }
+        }
 
+        // 공격 사거리 벗어났으면 다시 Chase
+        if (Vector3.Distance(enemy.transform.position, enemy.targetPlayer.position) > enemy.attackRange + 1)
+        {
+            if (enemy.pv.isMine)
+                enemy.navMeshAgent.isStopped = false;
+
+            enemy.ChangeState(new EnemyChaseState());
+            return;
+        }
+
+        // 공격 가능하면 공격
+        if (Time.time - lastAttackTime >= attackDelay)
+        {
+            enemy.Attack();
+            lastAttackTime = Time.time;
         }
     }
 

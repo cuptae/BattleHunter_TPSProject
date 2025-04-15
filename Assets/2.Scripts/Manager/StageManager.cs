@@ -36,6 +36,8 @@ public class StageManager : MonoBehaviour
                 player = PhotonNetwork.Instantiate("Hacker",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
                 SkillManager.Instance.player = player.GetComponent<PlayerCtrl>();
                 break;
+            default:
+                break;
         }
         
         yield return null;

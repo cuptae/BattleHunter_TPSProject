@@ -13,7 +13,7 @@ public class FocusField : ActiveSkill
             foreach(EnemyCtrl enemy in ScanEnemySphere())
             {
                 Debug.Log(enemy.transform.name);
-                enemy.Taunt(player.transform,activeData.duration);
+                enemy.GetDamage(activeData.damage,activeData);
             }
         }
         yield return new WaitForSeconds(0.5f);

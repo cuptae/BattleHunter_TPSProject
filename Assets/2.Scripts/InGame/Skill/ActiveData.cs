@@ -19,6 +19,7 @@ public class ActiveData
     public float duration{get; private set;}
     public SkillEffect skillEffectParam{get; private set;}
     public SkillType skillType{get; private set;}
+    public PlayerCtrl caster{get; private set;}
 
 public void SetSkillId(int skillId) { this.skillId = skillId; }
 public void SetSkillName(string skillName) { this.skillName = skillName; }
@@ -34,4 +35,5 @@ public void SetProjectileCount(int projectileCount) { this.projectileCount = pro
 public void SetDuration(float duration) { this.duration = duration; }
 public void SetSkillEffectParam(SkillEffect skillEffectParam) { this.skillEffectParam = skillEffectParam; }
 public void SetSkillType(SkillType skillType) { this.skillType = skillType; }
+public void SetCaster(PlayerCtrl caster){this.caster = caster;}
 }
