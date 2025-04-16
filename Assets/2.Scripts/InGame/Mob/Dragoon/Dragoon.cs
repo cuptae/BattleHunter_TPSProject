@@ -37,7 +37,7 @@ public class Dragoon : EnemyCtrl
 
     public override void Attack()
     {
-        GameObject go = PoolManager.Instance.GetObject("DragoonProjectile",firePos.position,Quaternion.identity);
+        GameObject go = PoolManager.Instance.PvGetObject("DragoonProjectile",firePos.position,Quaternion.identity);
         DragoonProjectile projectile = go.GetComponent<DragoonProjectile>();
         if (projectile != null && targetPlayer != null)
         {

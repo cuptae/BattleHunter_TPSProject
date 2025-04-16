@@ -55,6 +55,7 @@ public class EnemyAttackState : IEnemyState
         // 공격 가능하면 공격
         if (Time.time - lastAttackTime >= attackDelay)
         {
+            Debug.Log("Dragoon Attack");
             enemy.Attack();
             lastAttackTime = Time.time;
         }

@@ -53,4 +53,7 @@ MonoBehaviour:
   - DisableDebuffMark
   - EnalbeDebuffMark
   - RPC_Stun
+  - KnockBack
+  - RPC_KnockBack
+  - RPC_EnableRigBuilder
   DisableAutoOpenWizard: 1

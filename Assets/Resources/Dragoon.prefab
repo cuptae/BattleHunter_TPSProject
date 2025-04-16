@@ -764,7 +764,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpBar: {fileID: 0}
-  maxHp: 500
+  maxHp: 5000
   curHp: 0
   isDead: 0
   pv: {fileID: 0}
@@ -774,6 +774,7 @@ MonoBehaviour:
   rotationSpeed: 5
   currState: 0
   isTaunt: 0
+  amorBreakRate: 1
   stopDistance: 4
   retreatSpeed: 3
   bufferDistance: 1

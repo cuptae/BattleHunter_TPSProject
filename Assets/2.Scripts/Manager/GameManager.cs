@@ -8,6 +8,7 @@ public class GameManager : MonoSingleton<GameManager>
     public int enemyLayerMask;
     public int groundLayer;
     public bool gameEnd = false;
+    public bool startGame{get; private set;}
 
 
     protected override void Awake()
@@ -16,4 +17,6 @@ public class GameManager : MonoSingleton<GameManager>
         enemyLayerMask = 1<<LayerMask.NameToLayer("ENEMY");
         groundLayer = 1<<LayerMask.NameToLayer("GROUND");
     }
+
+    public void SetStartGame(bool startGame){this.startGame = startGame;}
 }

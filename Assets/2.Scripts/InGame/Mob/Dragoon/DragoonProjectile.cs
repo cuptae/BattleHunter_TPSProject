@@ -4,13 +4,27 @@ public class DragoonProjectile : MonoBehaviour
 {
     public float speed = 10f;
     private Vector3 direction;
-    private bool isActive = false;
+
     private Vector3 startPosition;
     public int damage = 10;
 
+    private Vector3 curPos;
+    private Quaternion curRot;
+    private Transform tr;
+    private PhotonView pv;
+
     void OnEnable()
     {
-        Invoke("ResetProjectile",2.0f);
+        Invoke("ResetProjectile",5.0f);
+    }
+
+
+    void Awake()
+    {
+        tr = GetComponent<Transform>();
+        pv = GetComponent<PhotonView>();
+        pv.ObservedComponents[0] = this;
+        pv.synchronization = ViewSynchronization.UnreliableOnChange;
     }
 
     void Start()
@@ -25,23 +39,25 @@ public class DragoonProjectile : MonoBehaviour
 
 
     void Update()
-    {
-        //if (!isActive) return;
-
-        transform.position += direction * speed * Time.deltaTime;
+    {        
+        if(pv.isMine)
+        {
+            transform.position += direction * speed * Time.deltaTime;
+        }
     }
 
-    void HitTarget()
+    void FixedUpdate()
     {
-        isActive = false;
-        gameObject.SetActive(false);
-
-        Invoke(nameof(ResetProjectile), 1.5f);
+        if (!pv.isMine)
+        {
+            tr.position = Vector3.Lerp(tr.position, curPos, Time.fixedDeltaTime * speed);
+            tr.rotation = Quaternion.Slerp(tr.rotation, curRot, Time.fixedDeltaTime*10f);
+        }
     }
 
     void ResetProjectile()
     {
-        PoolManager.Instance.ReturnObject("DragoonProjectile",this.gameObject);
+        PoolManager.Instance.PvReturnObject("DragoonProjectile",this.gameObject);
     }
 
     void OnTriggerEnter(Collider other)
@@ -53,8 +69,42 @@ public class DragoonProjectile : MonoBehaviour
             if (playerdamege != null)
             {
                 playerdamege.GetDamage(damage);
-                PoolManager.Instance.ReturnObject("DragoonProjectile",this.gameObject);
+                CancelInvoke("ResetProjectile");
+                PoolManager.Instance.PvReturnObject("DragoonProjectile",this.gameObject);
             }
+        }
+    }
+
+    [PunRPC]
+    public void EnableObject(Vector3 pos, Quaternion rot)
+    {
+        transform.position = pos;
+        transform.rotation = rot;
+
+        // Lerp 기준값도 업데이트
+        curPos = pos;
+        curRot = rot;
+        gameObject.SetActive(true);
+    }
+
+    [PunRPC]
+    public void DisableObject()
+    {
+        gameObject.SetActive(false);
+    }
+
+
+     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if(stream.isWriting)
+        {
+            stream.SendNext(tr.position);
+            stream.SendNext(tr.rotation);
+        }
+        else
+        {
+            curPos = (Vector3)stream.ReceiveNext();
+            curRot = (Quaternion)stream.ReceiveNext();
         }
     }
 }

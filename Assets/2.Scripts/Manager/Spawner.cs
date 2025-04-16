@@ -23,14 +23,13 @@ public class Spawner : MonoBehaviour
         if(PhotonNetwork.isMasterClient)
         {
             PoolManager.Instance.CreatePhotonPool("Dragoon",enemyPrefabs[0],maxEnemyCnt);
-            PoolManager.Instance.CreatePhotonPool("DragoonProjectile",enemyProjectile,maxEnemyCnt*2);
-            StartCoroutine(SpawnEnemy());
+            PoolManager.Instance.CreatePhotonPool("DragoonProjectile",enemyProjectile,maxEnemyCnt*3);                
         }
     }
 
     IEnumerator SpawnEnemy()
     {
-        while(true)
+        while(GameManager.Instance.startGame)
         {
             yield return new WaitForSeconds(spawnDelay);
             
@@ -44,6 +43,13 @@ public class Spawner : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void StartSpawn()
+    {
+        Debug.Log("Spawn Start");
+        GameManager.Instance.SetStartGame(true);
+        StartCoroutine(SpawnEnemy());
     }
 
 

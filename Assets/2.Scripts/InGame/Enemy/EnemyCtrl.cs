@@ -12,6 +12,7 @@ public enum EnemyState
     DIE,
     ATTACK,
     STUN,
+    KNOCKBACK
 }
 public class EnemyCtrl : MonoBehaviour,IDamageable
 {
@@ -252,7 +253,6 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
     [PunRPC]
     public void RPC_Taunt(int targetViewID, float duration)
     {
-        Debug.Log("RPC_Taunt Call");
         PhotonView targetPv = PhotonView.Find(targetViewID);
         if (targetPv != null)
         {
@@ -279,10 +279,19 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
 
     public void KnockBack(Transform caster)
     {
-        // Vector3 dir = (transform.position - caster.position).normalized;
-        // navMeshAgent.enabled = false;
-        // rigid.AddForce(dir*100f,ForceMode.Impulse);
-        ChangeState(new EnemyKnockBackState(caster));
+        int casterViewID = caster.GetComponent<PhotonView>().viewID;
+        pv.RPC("RPC_KnockBack", PhotonTargets.All, casterViewID);
+    }
+
+    [PunRPC]
+    public void RPC_KnockBack(int casterViewID)
+    {
+        PhotonView casterPv = PhotonView.Find(casterViewID);
+        if (casterPv != null)
+        {
+            Transform casterTr = casterPv.transform;
+            ChangeState(new EnemyKnockBackState(casterTr));
+        }
     }
 
 
@@ -296,17 +305,8 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
     }
 
 
-    [PunRPC]
-    public void EnableObject()
-    {
-        gameObject.SetActive(true);
-    }
+   
 
-    [PunRPC]
-    public void DisableObject()
-    {
-        gameObject.SetActive(false);
-    }
 
     [PunRPC]
     public void EnalbeDebuffMark(int mark)
@@ -319,7 +319,29 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
         hpBar.deBuff[mark].SetActive(false);
     }
 
+    [PunRPC]
+    public void RPC_EnableRigBuilder()
+    {
+        GetComponentInChildren<UnityEngine.Animations.Rigging.RigBuilder>().enabled = true;
+    }
+    [PunRPC]
+    public void EnableObject(Vector3 pos,Quaternion rot)
+    {
+        transform.position = pos;
+        transform.rotation = rot;
 
+        // Lerp 기준값도 업데이트
+        curPos = pos;
+        curRot = rot;
+        gameObject.SetActive(true);
+
+    gameObject.SetActive(true);
+    }
+    [PunRPC]
+    public void DisableObject()
+    {
+        gameObject.SetActive(false);
+    }
 
 
 

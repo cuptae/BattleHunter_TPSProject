@@ -79,7 +79,7 @@ public class PoolManager : MonoSingleton<PoolManager>
             if (pv != null)
             {
                 // 모든 클라이언트에서 활성화하도록 RPC 호출
-                pv.RPC("EnableObject", PhotonTargets.All);
+                pv.RPC("EnableObject", PhotonTargets.All, pos, rot);
             }
             else
             {
