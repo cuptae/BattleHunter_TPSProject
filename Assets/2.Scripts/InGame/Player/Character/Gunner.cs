@@ -24,7 +24,8 @@ public class Gunner : PlayerCtrl
         aimRig = GetComponentInChildren<Rig>();
         multiAimConstraint = GetComponentInChildren<MultiAimConstraint>();
         aimingPos = GameObject.FindWithTag("AimingPos").transform;
-        curHp = characterStat.MaxHp;
+        //curHp = characterStat.MaxHp;
+        SetHPInit(characterStat.MaxHp);
     }
 
     protected override void Start()

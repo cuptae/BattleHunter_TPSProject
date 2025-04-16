@@ -14,7 +14,8 @@ public class Warrior : PlayerCtrl
     {
         base.Awake();
         characterStat.GetCharacterDataByName("Warrior");
-        curHp = characterStat.MaxHp;
+        //curHp = characterStat.MaxHp;
+        SetHPInit(characterStat.MaxHp);
     }
 
     protected override void Start()
@@ -70,4 +71,6 @@ public class Warrior : PlayerCtrl
         Gizmos.matrix = Matrix4x4.TRS(attackPosition, transform.rotation, Vector3.one);
         Gizmos.DrawWireCube(Vector3.zero, boxRange);
     }
+
+
 }

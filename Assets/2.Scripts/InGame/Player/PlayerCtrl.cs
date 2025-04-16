@@ -49,7 +49,10 @@ public abstract class PlayerCtrl : MonoBehaviour
     [HideInInspector]
     private Transform camFollow;
     public GameObject weapon;
-    public int curHp;
+    public int curHp{get; private set;}
+
+    public event System.Action OnHpChanged; // HP 변경 이벤트
+
 
     [SerializeField] 
     Transform groundCheck;
@@ -213,6 +216,7 @@ public abstract class PlayerCtrl : MonoBehaviour
         {
             ChangeState(new PlayerDieState(this));
         }
+        OnHpChanged?.Invoke(); // HP 변경 이벤트 호출
     }
     protected virtual void  OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -294,5 +298,10 @@ public abstract class PlayerCtrl : MonoBehaviour
         activeSkills = SkillManager.Instance.SkillAdd();
 
 
+    }
+
+    protected void SetHPInit(int hp)
+    {
+        curHp = hp;;
     }
 }
