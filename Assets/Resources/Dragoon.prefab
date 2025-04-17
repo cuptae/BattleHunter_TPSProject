@@ -1585,10 +1585,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c76dbdd63b2b6b44b80ec6e508e24ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hpBar: {fileID: 0}
   maxHp: 150
   curHp: 0
   isDead: 0
   navMeshAgent: {fileID: 0}
+  dropItems:
+  - {fileID: 7151176108056059030, guid: 6ea190f2b6c386a41b820cd51f7a571b, type: 3}
+  - {fileID: 3360220000004996657, guid: d58fb744dbb6c324597a2e432f404867, type: 3}
+  - {fileID: 8107677012736325626, guid: c157e6b1e7688564395a587b095b4b7c, type: 3}
   stopDistance: 5
   retreatSpeed: 3
   bufferDistance: 1

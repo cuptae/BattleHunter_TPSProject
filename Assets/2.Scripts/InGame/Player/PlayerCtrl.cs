@@ -39,6 +39,9 @@ public abstract class PlayerCtrl : MonoBehaviour
 
     public CharacterStat characterStat;
     protected Camera mainCamera;
+    public InventoryManager invenMgr;
+    public IngameUIManager IngameUI;
+    public SlotClass[] backupItems;
 
     //Photon
     protected PhotonView pv = null;
@@ -53,6 +56,8 @@ public abstract class PlayerCtrl : MonoBehaviour
     public List<ActiveSkill> activeSkills;
 
     protected virtual void Awake() {
+        invenMgr = GameObject.FindGameObjectWithTag("InventoryManager").GetComponent<InventoryManager>();
+        IngameUI = GameObject.FindGameObjectWithTag("UIManager").GetComponent<IngameUIManager>();
         animator = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
@@ -81,6 +86,12 @@ public abstract class PlayerCtrl : MonoBehaviour
         if(stateMachine != null)
         {
             stateMachine.Initialize(new IdleState(this));
+        }
+
+        backupItems = new SlotClass[32];
+        for(int i = 0; i < backupItems.Length; i++)
+        {
+            backupItems[i] = new SlotClass();
         }
     }
     protected virtual void Update()
@@ -176,6 +187,21 @@ public abstract class PlayerCtrl : MonoBehaviour
         curHp -= damage;
         if(curHp<=0)
         {
+            //아이템 백업
+            for (int i = 0; i < invenMgr.items.Length; i++)
+            {
+                if(invenMgr.items[i] != null)
+                {
+                    backupItems[i].AddItem(invenMgr.items[i].GetItem(), invenMgr.items[i].GetCount());                
+                }
+            }
+            
+            //빈털터리됨
+            for(int i = 0; i < invenMgr.CurrentItems().Length; i++)
+            {
+                invenMgr.CurrentItems()[i].Clear();
+            }
+            
             ChangeState(new PlayerDieState(this));
         }
     }

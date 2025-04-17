@@ -26,6 +26,8 @@ public class EnemyCtrl : MonoBehaviour
     private Quaternion curRot;
     public NavMeshAgent navMeshAgent;
 
+    public GameObject[] dropItems;
+
     IEnemyState curState;
 
     void Awake()
@@ -94,6 +96,8 @@ public void TakeDamage(int damage, PhotonMessageInfo info)
     if (curHp <= 0)
     {
         StartCoroutine(WaitForHPBarDepletion());
+        Vector3 dropPos = transform.position + Vector3.up * 1.0f; // 위로 살짝 띄우기
+        DropRandomItem();
     }
 }
 
@@ -126,5 +130,21 @@ private IEnumerator WaitForHPBarDepletion()
         {
             curHp = (int)stream.ReceiveNext(); 
         }
+    }
+
+    public void DropItem()
+    {
+        foreach (GameObject dropItem in dropItems)
+        {
+            Instantiate(dropItem, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+        }
+    }
+
+    public void DropRandomItem()
+    {
+        if (dropItems.Length == 0) return;
+        int randomIndex = Random.Range(0, dropItems.Length); // 0 ~ Length-1 사이
+        GameObject selectedItem = dropItems[randomIndex];
+        Instantiate(selectedItem, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
     }
 }

@@ -21,7 +21,8 @@ public class StageManager : MonoBehaviour
     IEnumerator CreatePlayer(Character character)
     {
         Room curRoom = PhotonNetwork.room;
-        GameObject player;
+        GameObject player = null;
+
         switch(character)
         {
             case Character.GUNNER:
@@ -37,6 +38,11 @@ public class StageManager : MonoBehaviour
                 player = PhotonNetwork.Instantiate("Hacker",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
                 SkillManager.Instance.player = player.GetComponent<PlayerCtrl>();
                 break;
+        }
+
+        if (player != null)
+        {
+            FindObjectOfType<scJson>()?.SetPlayer(player.GetComponent<PlayerCtrl>());
         }
         
         yield return null;

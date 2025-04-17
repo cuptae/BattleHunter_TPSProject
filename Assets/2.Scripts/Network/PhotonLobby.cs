@@ -12,6 +12,7 @@ public class PhotonLobby : MonoBehaviour
     public GameObject roomItem;
     public GameObject scrollContents;
     public InputField roomName;
+    public InputField UserPass;
 
     void Awake()
     {
@@ -116,10 +117,8 @@ public class PhotonLobby : MonoBehaviour
         yield return ao;
     }
 
-
     void OnGUI()
     {
-
         //화면 좌측 상단에 접속 과정에 대한 로그를 출력(포톤 클라우드 접속 상태 메시지 출력)
         // PhotonNetwork.ConnectUsingSettings 함수 호출시 속성 PhotonNetwork.connectionStateDetailed는
         //포톤 클라우드 서버에 접속하는 단계별 메시지를 반환함.
@@ -153,8 +152,6 @@ public class PhotonLobby : MonoBehaviour
             }
         }
 
-        
-
         //PhotonServerSettings 값 가져오기
         {
             GUI.Label(new Rect(0, 170, 400, 100), "AppID  :  " +
@@ -172,5 +169,4 @@ public class PhotonLobby : MonoBehaviour
             GUI.Label(new Rect(0, 310, 200, 100), "Ping: " + pingTime.ToString());
         }
     }
-
 }

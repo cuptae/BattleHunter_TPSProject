@@ -11,6 +11,8 @@ TagManager:
   - AimingPos
   - EnemySpawnPoint
   - OpeningDoor
+  - UIManager
+  - InventoryManager
   layers:
   - Default
   - TransparentFX
@@ -21,7 +23,7 @@ TagManager:
   - GROUND
   - ENEMY
   - PLAYERPROJECTILE
-  - 
+  - ItemGroundCol
   - 
   - 
   - 

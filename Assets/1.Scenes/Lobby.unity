@@ -1099,6 +1099,7 @@ MonoBehaviour:
   roomItem: {fileID: 227334423556666315, guid: cde585ece1618da4a868b613f6a187fb, type: 3}
   scrollContents: {fileID: 743866158}
   roomName: {fileID: 1677389618}
+  UserPass: {fileID: 0}
 --- !u!4 &613197071
 Transform:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class LobbyManager : MonoBehaviour
+public class LobbyManager1 : MonoBehaviour
 {
     // UI 요소 연결 변수
     public GameObject uiOption;   // 옵션 UI
@@ -110,11 +110,4 @@ public class LobbyManager : MonoBehaviour
         SFXMUTE.isOn = isSFXMuted;
         UIMUTE.isOn = isUIMuted;
     }
-
-    public void PlayGame(){  
-		// GameObject.Find ("SoundManager").GetComponent<AudioSource> ().Stop (); //1
-		// GameObject.Find ("SoundCanvas").GetComponent<Canvas> ().enabled = false; //2
-		//Application.LoadLevel ("ShareUI");  //3
-		SceneManager.LoadScene("ShareUI"); //3
-	}
 }
