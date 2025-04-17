@@ -17,72 +17,83 @@ public enum STATE
 [RequireComponent(typeof(Rigidbody))]
 public abstract class PlayerCtrl : MonoBehaviour
 {
+    #region Components
     [HideInInspector]
-    public Animator animator{get; protected set;}
+    public Animator animator { get; private set; }
     [HideInInspector]
-    public Rigidbody rigid{get; protected set;}
-    public Vector3 groundNormal{get; private set;}
+    public Rigidbody rigid { get; private set; }
+    protected Camera mainCamera;
+    protected PhotonView pv = null;
+    protected Transform tr;
+    private Transform camFollow;
+    #endregion
 
-
+    #region State Management
     private PlayerStateMachine stateMachine;
-    public STATE curState; 
+    public STATE curState;
     public Movetype movetype;
+    #endregion
+
+    #region Movement Variables
+    [SerializeField]
+    private Transform groundCheck;   
     private Vector3 moveInput;
     private Vector3 lookForward;
     private Vector3 lookSide;
-
-    
     private RaycastHit slopeHit;
+    public Vector3 groundNormal { get; private set; }
     public bool isMove;
     public bool isDodge = false;
     public bool isAttack;
+    #endregion
 
-
+    #region Character Stats
     public CharacterStat characterStat;
-    protected Camera mainCamera;
+    public int curHp { get; private set; }
+    public event System.Action OnHpChanged;
+    public float damageReduceRate =0f;
+    public bool invincible;
+    #endregion
 
-    //Photon
-    protected PhotonView pv = null;
+    #region Skill Variables
+    [HideInInspector]
+    public List<ActiveSkill> activeSkills;
+    protected Image abilitycooldownbar;
+    private bool rSkillTrigger;
+    private bool qSkillTrigger;
+    private bool eSkillTrigger;
+    private bool dodgeTrigger;
+    public bool canAbility = true;
+    #endregion
+
+    #region Weapon and Effects
+    public GameObject weapon;
+    public GameObject TestBtn;
+    #endregion
+
+    #region Photon Networking
     protected Vector3 curPos = Vector3.zero;
     protected Quaternion curRot = Quaternion.identity;
-    protected Transform tr;
-    [HideInInspector]
-    private Transform camFollow;
-    public GameObject weapon;
-    public int curHp{get; private set;}
+    #endregion
 
-    public event System.Action OnHpChanged; // HP 변경 이벤트
-
-
-    [SerializeField] 
-    Transform groundCheck;
-
-    public List<ActiveSkill> activeSkills;
-
-
-    public bool rSkillTrigger;
-    public bool qSkillTrigger;
-    public bool eSkillTrigger;
-    public bool dodgeTrigger;
-
-
-    public GameObject TestBtn;
-    protected virtual void Awake() {
+    #region Unity Callbacks
+    protected virtual void Awake()
+    {
         TestBtn = GameObject.FindWithTag("Test");
+        abilitycooldownbar = GameObject.FindWithTag("AbilityCooldown").GetComponent<Image>();
         animator = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
-        //characterData = new CharacterData();
         characterStat = new CharacterStat();
         camFollow = transform.Find("CameraFollow");
         mainCamera = Camera.main;
 
-        stateMachine =new PlayerStateMachine();
+        stateMachine = new PlayerStateMachine();
 
         pv = GetComponent<PhotonView>();
         pv.ObservedComponents[0] = this;
         pv.synchronization = ViewSynchronization.UnreliableOnChange;
-        if(pv.isMine)
+        if (pv.isMine)
         {
             mainCamera.GetComponent<CameraCtrl>().target = camFollow;
         }
@@ -93,17 +104,20 @@ public abstract class PlayerCtrl : MonoBehaviour
             curRot = tr.rotation;
         }
     }
-    protected virtual void Start() {
-        if(stateMachine != null)
+
+    protected virtual void Start()
+    {
+        if (stateMachine != null)
         {
             stateMachine.Initialize(new IdleState(this));
         }
 
         TestBtn.GetComponent<Button>().onClick.AddListener(TestSkillLevelUP);
     }
+
     protected virtual void Update()
     {
-        if(pv.isMine)
+        if (pv.isMine)
         {
             qSkillTrigger = QSkillInput();
             eSkillTrigger = ESkillInput();
@@ -111,7 +125,7 @@ public abstract class PlayerCtrl : MonoBehaviour
             dodgeTrigger = DodgeInput();
             MoveInput();
             RunInput();
-            if(IsSlope()&&IsGrounded())
+            if (IsSlope() && IsGrounded())
             {
                 rigid.useGravity = false;
             }
@@ -124,66 +138,63 @@ public abstract class PlayerCtrl : MonoBehaviour
         }
     }
 
-    private void FixedUpdate() {
-        if(pv.isMine)
+    private void FixedUpdate()
+    {
+        if (pv.isMine)
         {
             stateMachine.FixedUpdate();
         }
         else
         {
-            tr.position = Vector3.Lerp(tr.position,curPos,Time.fixedDeltaTime * characterStat.RunSpeed);
+            tr.position = Vector3.Lerp(tr.position, curPos, Time.fixedDeltaTime * characterStat.RunSpeed);
             tr.rotation = Quaternion.Slerp(tr.rotation, curRot, Time.fixedDeltaTime * characterStat.RotationSpeed);
         }
     }
+    #endregion
+
+    #region Movement Methods
     void MoveInput()
     {
         float xAxis = Input.GetAxisRaw("Horizontal");
-		float zAxis = Input.GetAxisRaw("Vertical");
-        moveInput = new Vector3(xAxis,0,zAxis).normalized;
+        float zAxis = Input.GetAxisRaw("Vertical");
+        moveInput = new Vector3(xAxis, 0, zAxis).normalized;
         isMove = moveInput.magnitude > 0;
     }
-    public bool RunInput(){return Input.GetKey(KeyCode.LeftShift);}
-    public bool DodgeInput(){return Input.GetKeyDown(KeyCode.Space);}
-    
+
+    public bool RunInput() { return Input.GetKey(KeyCode.LeftShift); }
+    public bool DodgeInput() { return Input.GetKeyDown(KeyCode.Space); }
+
     public Vector3 MoveDir()
     {
-        lookSide = new Vector3(mainCamera.transform.right.x,0,mainCamera.transform.right.z).normalized;
-        return (lookForward * moveInput.z) + (lookSide*moveInput.x);
+        lookSide = new Vector3(mainCamera.transform.right.x, 0, mainCamera.transform.right.z).normalized;
+        return (lookForward * moveInput.z) + (lookSide * moveInput.x);
     }
 
     public void Rotation()
     {
-        lookForward = new Vector3(mainCamera.transform.forward.x,0,mainCamera.transform.forward.z).normalized;
+        lookForward = new Vector3(mainCamera.transform.forward.x, 0, mainCamera.transform.forward.z).normalized;
         curRot = Quaternion.LookRotation(lookForward);
-        transform.localRotation = Quaternion.Lerp(transform.localRotation,curRot,characterStat.RotationSpeed*Time.deltaTime);
+        transform.localRotation = Quaternion.Lerp(transform.localRotation, curRot, characterStat.RotationSpeed * Time.deltaTime);
     }
-    
+
     public bool IsSlope()
     {
-        Ray ray = new Ray(transform.position,Vector3.down);
-        if(Physics.Raycast(ray,out slopeHit,2.0f,GameManager.Instance.groundLayer))
+        Ray ray = new Ray(transform.position, Vector3.down);
+        if (Physics.Raycast(ray, out slopeHit, 2.0f, GameManager.Instance.groundLayer))
         {
             groundNormal = slopeHit.normal;
-            float groundAngle = Vector3.Angle(Vector3.up,groundNormal);
+            float groundAngle = Vector3.Angle(Vector3.up, groundNormal);
             return groundAngle != 0f;
         }
         return false;
     }
 
-
-
     public bool IsGrounded()
     {
-        Vector3 boxSize = new Vector3(transform.lossyScale.x-0.5f, 0.05f, transform.lossyScale.z-0.5f);
+        Vector3 boxSize = new Vector3(transform.lossyScale.x - 0.5f, 0.05f, transform.lossyScale.z - 0.5f);
         return Physics.CheckBox(groundCheck.position, boxSize, Quaternion.identity, GameManager.Instance.groundLayer);
     }
-
-
-    public void ChangeState(PlayerState newState)
-    {
-        stateMachine.ChangeState(newState);
-    }
-
+    
     void MoveAnim()
     {
         float moveAnimPercent = RunInput() ? 1f : 0f;
@@ -193,31 +204,21 @@ public abstract class PlayerCtrl : MonoBehaviour
         // 전후 이동 값
         animator.SetFloat("MoveZ", Input.GetAxis("Vertical"));
     }
+    #endregion
 
+    #region State Management Methods
+    public void ChangeState(PlayerState newState)
+    {
+        stateMachine.ChangeState(newState);
+    }
+    #endregion
+
+    #region Abstract Methods
     public abstract void Attack();
+    public abstract void UniqueAbility();
+    #endregion
 
-    public bool QSkillInput(){return Input.GetKeyDown(KeyCode.Q);}
-    public bool ESkillInput(){return Input.GetKeyDown(KeyCode.E);}
-    public bool RSkillInput(){return Input.GetKeyDown(KeyCode.R);}
-
-    public void GetDamage(int damage)
-    {
-        if(PhotonNetwork.isMasterClient)
-        {
-            pv.RPC("TakeDamage",PhotonTargets.AllBuffered,damage);
-        }
-    }
-
-    [PunRPC]
-    public void TakeDamage(int damage,PhotonMessageInfo info)
-    {
-        curHp -= damage;
-        if(curHp<=0)
-        {
-            ChangeState(new PlayerDieState(this));
-        }
-        OnHpChanged?.Invoke(); // HP 변경 이벤트 호출
-    }
+    #region PhotonSerializeView
     protected virtual void  OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.isWriting)
@@ -272,14 +273,95 @@ public abstract class PlayerCtrl : MonoBehaviour
             }
         }
     }
+    #endregion
 
-    private void OnDrawGizmos()
+    #region Skill Input Methods
+    public bool QSkillInput() { return Input.GetKeyDown(KeyCode.Q); }
+    public bool ESkillInput() { return Input.GetKeyDown(KeyCode.E); }
+    public bool RSkillInput() { return Input.GetKeyDown(KeyCode.R); }
+    #endregion
+
+    #region Damage and HP Methods
+    public void GetDamage(int damage)
     {
-        Gizmos.color = Color.red;
-        Vector3 boxSize = new Vector3(transform.lossyScale.x, 0.05f, transform.lossyScale.z);
-        Gizmos.DrawWireCube(groundCheck.position, boxSize);
+        if (invincible) return;
+        if (PhotonNetwork.isMasterClient)
+        {
+            pv.RPC("TakeDamage", PhotonTargets.AllBuffered, damage);
+        }
+    }
+    [PunRPC]
+    public void TakeDamage(int damage, PhotonMessageInfo info)
+    {
+        // 데미지 감소율 적용
+        int reducedDamage = Mathf.CeilToInt(damage * damageReduceRate); // 감소된 데미지를 계산
+
+        // HP 감소
+        curHp -= reducedDamage;
+
+        // HP가 0 이하라면 사망 상태로 전환
+        if (curHp <= 0)
+        {
+            ChangeState(new PlayerDieState(this));
+        }
+
+        // HP 변경 이벤트 호출
+        OnHpChanged?.Invoke();
     }
 
+    protected void SetHPInit(int hp) { curHp = hp; }
+    public void SetInvincible(bool _invincible) { invincible = _invincible; }
+    #endregion
+
+
+    #region Stat Modification Methods
+    public void ModifyDamage(int damage, float duration)
+    {
+        characterStat.modifyDamage += damage;
+        //StartCoroutine(RecoverDamage(damage, duration));
+    }
+    public void RecoverDamage(int damage)
+    {
+        characterStat.modifyDamage -= damage;
+    }
+    public IEnumerator RecoverDamage(int damage, float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        characterStat.modifyDamage -= damage;
+    }
+
+    public void ModifyMaxHp(int maxHp, float duration)
+    {
+        characterStat.modifyMaxHp += maxHp;
+        StartCoroutine(RecoverMaxHp(maxHp, duration));
+    }
+    public void RecoverMaxHp(int maxHp)
+    {
+        characterStat.modifyMaxHp -= maxHp;
+    }
+
+    public IEnumerator RecoverMaxHp(int maxHp, float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        characterStat.modifyMaxHp -= maxHp;
+    }
+
+    public void ModifyAttackRate(float attackRate, float duration)
+    {
+        characterStat.modifyAttackRate += attackRate;
+        StartCoroutine(RecoverAttackRate(attackRate, duration));
+    }
+    public void RecoverAttackRate(float attackRate)
+    {
+        characterStat.modifyAttackRate -= attackRate;
+    }
+    public IEnumerator RecoverAttackRate(float attackRate, float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        characterStat.modifyAttackRate -= attackRate;
+    }
+    #endregion
+    
 
     public void TestSkillLevelUP()
     {
@@ -296,12 +378,6 @@ public abstract class PlayerCtrl : MonoBehaviour
 
         activeSkills.Clear();
         activeSkills = SkillManager.Instance.SkillAdd();
-
-
     }
 
-    protected void SetHPInit(int hp)
-    {
-        curHp = hp;;
-    }
 }

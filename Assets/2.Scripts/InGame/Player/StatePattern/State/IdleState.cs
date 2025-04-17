@@ -22,17 +22,22 @@ public class IdleState : PlayerState
             player.ChangeState(new DodgeState(player));
         }
         if(player.isAttack){player.ChangeState(new PlayerAttackState(player));}
-        if(player.QSkillInput())
+       // Q 스킬 입력 처리
+        if (player.QSkillInput() && !player.activeSkills[0].isOnCooldown)
         {
-            player.ChangeState(new SkillState(player,player.activeSkills[0]));
+            player.ChangeState(new SkillState(player, player.activeSkills[0]));
         }
-        if(player.ESkillInput())
+
+        // E 스킬 입력 처리
+        if (player.ESkillInput() && !player.activeSkills[1].isOnCooldown)
         {
-            player.ChangeState(new SkillState(player,player.activeSkills[1]));
+            player.ChangeState(new SkillState(player, player.activeSkills[1]));
         }
-        if(player.RSkillInput())
+
+        // R 스킬 입력 처리
+        if (player.RSkillInput() && !player.activeSkills[2].isOnCooldown)
         {
-            player.ChangeState(new SkillState(player,player.activeSkills[2]));
+            player.ChangeState(new SkillState(player, player.activeSkills[2]));
         }
     }
 

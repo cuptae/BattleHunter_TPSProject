@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using SKILLCONSTANT;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class SkillManager : MonoSingleton<SkillManager>
 {
@@ -13,9 +14,10 @@ public class SkillManager : MonoSingleton<SkillManager>
     [HideInInspector]
     public PlayerCtrl player;
 
-
     public int modify = 0;
-
+    public Image QskillIcon;
+    public Image EskillIcon;
+    public Image RskillIcon;
     protected override void Awake()
     {
         base.Awake();
@@ -34,28 +36,34 @@ public class SkillManager : MonoSingleton<SkillManager>
 
     }
 
+
     public List<ActiveSkill> SkillAdd()
     {
         List<ActiveSkill> activeSkills = new List<ActiveSkill>();
         switch(GameManager.Instance.curCharacter)
         {
             case Character.GUNNER:
-            activeSkills.Add(new ShockWave(GetSkillData(20101+modify),null,player));
-            activeSkills.Add(new GrenadeLauncher(GetSkillData(20201+modify),null,player));
-            activeSkills.Add(new PhotonLance(GetSkillData(20301+modify),null,player));
+            activeSkills.Add(new ShockWave(GetSkillData(20101+modify),null,player,QskillIcon));
+            activeSkills.Add(new GrenadeLauncher(GetSkillData(20201+modify),null,player,EskillIcon));
+            activeSkills.Add(new PhotonLance(GetSkillData(20301+modify),null,player,RskillIcon));
             break;
             case Character.HACKER:
             break;
             case Character.WARRIOR:
-            activeSkills.Add(new FocusField(GetSkillData(10101+modify),null,player));
-            activeSkills.Add(new EnergyBurst(GetSkillData(10201+modify),null,player));
-            activeSkills.Add(new EnduranceMode(GetSkillData(10301+modify),null,player));
+            activeSkills.Add(new FocusField(GetSkillData(10101+modify),null,player,QskillIcon));
+            activeSkills.Add(new EnergyBurst(GetSkillData(10201+modify),null,player,EskillIcon));
+            activeSkills.Add(new EnduranceMode(GetSkillData(10301+modify),null,player,RskillIcon));
             break;
         }
         return activeSkills;
     }
 
-
+    public void GetSkillIcon()
+    {
+        QskillIcon = GameObject.FindWithTag("QSkillIcon").GetComponent<Image>();
+        EskillIcon = GameObject.FindWithTag("ESkillIcon").GetComponent<Image>();
+        RskillIcon = GameObject.FindWithTag("RSkillIcon").GetComponent<Image>();
+    }
     IEnumerator TableDownload()
     {
         string url = string.Format(tableUrl, "1RqpyepNlZmXxQXTSdYI3SnyvlICCJdoExM3akJNIGzc", 0);

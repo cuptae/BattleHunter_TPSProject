@@ -168,12 +168,13 @@ MonoBehaviour:
   isDodge: 0
   isAttack: 0
   weapon: {fileID: 3897433851248381228}
-  curHp: 0
   groundCheck: {fileID: 9175028804801671331}
   rSkillTrigger: 0
   qSkillTrigger: 0
   eSkillTrigger: 0
   dodgeTrigger: 0
+  invincible: 0
+  TestBtn: {fileID: 0}
   bulletEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
   gunFire: {fileID: 8078720523478869859, guid: 4f5fc4bbd01b03a4499a6ed77f175fc7, type: 3}
   firePos: {fileID: 6817770147782224660}
@@ -187,7 +188,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1877944450256658566}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 1.5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}

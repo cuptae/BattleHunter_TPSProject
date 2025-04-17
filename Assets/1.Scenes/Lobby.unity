@@ -1456,6 +1456,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   modify: 0
+  QskillIcon: {fileID: 0}
+  EskillIcon: {fileID: 0}
+  RskillIcon: {fileID: 0}
 --- !u!1 &613197069
 GameObject:
   m_ObjectHideFlags: 0

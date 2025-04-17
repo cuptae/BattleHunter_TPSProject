@@ -764,7 +764,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpBar: {fileID: 0}
-  maxHp: 5000
+  maxHp: 500
   curHp: 0
   isDead: 0
   pv: {fileID: 0}

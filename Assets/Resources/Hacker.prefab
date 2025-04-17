@@ -120,8 +120,13 @@ MonoBehaviour:
   isDodge: 0
   isAttack: 0
   weapon: {fileID: 0}
-  curHp: 0
   groundCheck: {fileID: 1020081404115419982}
+  rSkillTrigger: 0
+  qSkillTrigger: 0
+  eSkillTrigger: 0
+  dodgeTrigger: 0
+  invincible: 0
+  TestBtn: {fileID: 0}
   bulletEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
 --- !u!54 &7621017222107906122
 Rigidbody:
@@ -131,7 +136,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 500740715899982824}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 1.5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}

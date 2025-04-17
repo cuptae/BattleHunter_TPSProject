@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GrenadeLauncher : ActiveSkill
 {
@@ -7,7 +9,7 @@ public class GrenadeLauncher : ActiveSkill
     float attackTiming = 0.85f;
     Transform firePos;
     float[] angles;
-    public GrenadeLauncher(ActiveData activeData,GameObject effectVfx,PlayerCtrl player):base(activeData,effectVfx,player)
+    public GrenadeLauncher(ActiveData activeData,GameObject effectVfx,PlayerCtrl player,Image icon):base(activeData,effectVfx,player,icon)
     {
         firePos = player.transform.Find("Sci_Fi_Character_08_03/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/Riple/SciFiGunLightWhite/GrenadeFirePos");
         effectVfx = Resources.Load<GameObject>(activeData.skillName+"Vfx");
@@ -15,6 +17,7 @@ public class GrenadeLauncher : ActiveSkill
     }
     public override IEnumerator Activation()
     {
+        if (isOnCooldown) yield break;
         if (activeData.projectileCount == 1)
             angles = new float[] { 0f };
         else if (activeData.projectileCount == 3)

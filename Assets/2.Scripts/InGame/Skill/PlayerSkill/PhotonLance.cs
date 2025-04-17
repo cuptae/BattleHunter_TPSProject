@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PhotonLance : ActiveSkill
 {
     Transform firePos;
     float duration = 117f / 60f - 69f / 60f;
 
-    public PhotonLance(ActiveData activeData,GameObject effectVfx,PlayerCtrl player):base(activeData,effectVfx,player)
+    public PhotonLance(ActiveData activeData,GameObject effectVfx,PlayerCtrl player,Image icon):base(activeData,effectVfx,player,icon)
     {
         //firePos = player.transform.Find("Sci_Fi_Character_08_03/root/pelvis/spine_01/spine_02/SniperHolster/Sniper_Rifle_03/FirePos");
         firePos = player.transform.Find("Sci_Fi_Character_08_03/PhotonLancePos");
@@ -16,6 +17,7 @@ public class PhotonLance : ActiveSkill
     }
     public override IEnumerator Activation()
     {
+        if (isOnCooldown) yield break;
         Debug.Log("포톤랜스 발동");
         player.animator.SetTrigger("RSkill");
 

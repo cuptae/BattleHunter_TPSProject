@@ -20,6 +20,7 @@ public class StageManager : MonoBehaviour
     {
         Room curRoom = PhotonNetwork.room;
         GameObject player;
+        SkillManager.Instance.GetSkillIcon();
         switch(character)
         {
             case Character.GUNNER:

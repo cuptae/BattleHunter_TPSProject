@@ -2,7 +2,7 @@
   "characterDataList": [
     {
       "characterName": "Warrior",
-      "maxHp": 3000,
+      "maxHp": 800,
       "dodgeTime": 0.7,
       "attackRange": 1.5,
       "attackRate": 0.7,
@@ -14,7 +14,7 @@
     },
     {
       "characterName": "Gunner",
-      "maxHp": 30000,
+      "maxHp": 350,
       "dodgeTime": 0.7,
       "attackRange": 10.0,
       "attackRate": 0.15,

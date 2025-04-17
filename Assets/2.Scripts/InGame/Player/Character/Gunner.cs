@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Properties;
+using UnityEditor.Purchasing;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 public class Gunner : PlayerCtrl
@@ -33,8 +34,11 @@ public class Gunner : PlayerCtrl
         base.Start();
         WeightedTransformArray sourceObjects = multiAimConstraint.data.sourceObjects;
         sourceObjects.Add(new WeightedTransform(aimingPos,aimRig.weight));
-        PoolManager.Instance.CreatePool(bulletEffect.name, bulletEffect, 10);
-        PoolManager.Instance.CreatePool(gunFire.name,gunFire,10);
+        if(pv.isMine)
+        {
+            PoolManager.Instance.CreatePool(bulletEffect.name, bulletEffect, 30);
+            PoolManager.Instance.CreatePool(gunFire.name,gunFire,10);
+        }
     }
 
     // Update is called once per frame
@@ -45,11 +49,7 @@ public class Gunner : PlayerCtrl
         if(pv.isMine)
         {
             FireAnim();
-            // if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
-            // {
-            //     Attack();
-            //     nextFireTime = Time.time + characterStat.AttackRate; // 다음 발사 시간 설정
-            // }
+            UniqueAbility();
         }
     }
 
@@ -106,6 +106,51 @@ public class Gunner : PlayerCtrl
             nextFireTime = Time.time + characterStat.AttackRate; // 다음 발사 시간 설정
         }
     }
+    
+
+    public override void UniqueAbility()
+    {
+        if(Input.GetMouseButtonDown(1)&&canAbility)
+        {
+            ModifyAttackRate(-characterStat.AttackRate*0.5f,3f);
+            ModifyDamage(characterStat.Damage/2,3f);
+            canAbility = false;
+            StartCoroutine(HandleAbilityCooldown());
+        }
+        
+    }
+    private IEnumerator HandleAbilityCooldown()
+    {
+        // 게이지를 감소시킴
+        yield return StartCoroutine(ReduceAbilityBar());
+
+        // 게이지를 천천히 증가시킴
+        yield return StartCoroutine(AbilityCoolTime(13f));
+    }
+    IEnumerator ReduceAbilityBar()
+    {
+        while (abilitycooldownbar.fillAmount > 0f)
+        {
+            abilitycooldownbar.fillAmount = Mathf.MoveTowards(abilitycooldownbar.fillAmount, 0f, Time.deltaTime * 3f);
+            yield return null;
+        }
+        abilitycooldownbar.fillAmount = 0f; // 최종적으로 0으로 설정
+    }
+    IEnumerator AbilityCoolTime(float cooltime)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < cooltime)
+        {
+            elapsedTime += Time.deltaTime;
+            abilitycooldownbar.fillAmount = elapsedTime / cooltime; // 천천히 증가
+            yield return null;
+        }
+        abilitycooldownbar.fillAmount = 1f; // 최종적으로 1로 설정
+        RecoverAttackRate(characterStat.Damage/2,3f); // 원래 공격력으로 복구
+        RecoverAttackRate(characterStat.AttackRate*0.5f,3f); // 원래 공격속도로 복구
+        canAbility = true; // 능력을 다시 사용할 수 있도록 설정
+    }
+
     protected override void  OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         base.OnPhotonSerializeView(stream,info);

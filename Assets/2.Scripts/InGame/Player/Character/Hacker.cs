@@ -90,6 +90,11 @@ public class Hacker : PlayerCtrl
         }
     }
 
+    public override void UniqueAbility()
+    {
+        
+    }
+
     protected override void  OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         base.OnPhotonSerializeView(stream,info);

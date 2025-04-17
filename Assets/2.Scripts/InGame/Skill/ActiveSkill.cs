@@ -4,36 +4,45 @@ using ExitGames.Client.Photon.StructWrapping;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public abstract class ActiveSkill : ISkill
 {
     protected ActiveData activeData;
     protected PlayerCtrl player;
     protected System.Action onSkillEnd;
-    protected bool isActivate;
+    public bool isOnCooldown{get; private set;}
     protected int chargeCount;
     protected GameObject projectilePrefab;
     protected GameObject EffectPrefab;
+    protected Image icon;
 
     public static List<GizmoDrawRequest> gizmo = new List<GizmoDrawRequest>();
     Collider[] monsterCols;
-    public ActiveSkill(ActiveData activeData,GameObject effectVfx,PlayerCtrl player)
+    public ActiveSkill(ActiveData activeData,GameObject effectVfx,PlayerCtrl player,Image icon)
     {
         this.activeData = activeData;
         this.player = player;
         this.chargeCount = activeData.chargeCount;
+        this.icon = icon;
         this.activeData.SetCaster(player);
         if(activeData.skillType == SKILLCONSTANT.SkillType.PROJECTILE)
         {
             SetProjectile(activeData.skillName,activeData.projectileCount+5);
         }
+        AssignSkillIcons();
+        isOnCooldown = false;
 
     }
     public abstract IEnumerator Activation();
 
     public void SetOnSkillEndCallback(System.Action callback)
     {
-        onSkillEnd = callback;
+        onSkillEnd = () =>
+        {
+            callback?.Invoke();
+            StartCoolDown();
+        };
     }
 
     protected List<IDamageable> ScanEnemyBox(float angleOffset)
@@ -101,13 +110,63 @@ public abstract class ActiveSkill : ISkill
         return PoolManager.Instance.GetObject(name,spawnPos,rot);
     }
 
-    protected void CoolDown()
+    protected void AssignSkillIcons()
     {
-        
+        if (icon == null)
+        {
+            Debug.LogError("Icon is not assigned!");
+            return;
+        }
+
+        // 아이콘 스프라이트 로드
+        string iconPath = activeData.skillIcon;
+        Sprite loadedSprite = Resources.Load<Sprite>(iconPath);
+
+        if (loadedSprite == null)
+        {
+            Debug.Log($"Failed to load icon sprite at path: {iconPath}");
+            return;
+        }
+
+        // 자식 아이콘에 스프라이트 설정
+        icon.sprite = loadedSprite;
+
+        // 부모 아이콘에 동일한 스프라이트 설정
+        Image iconBack = icon.transform.parent.GetComponent<Image>();
+        Debug.Log(iconBack.gameObject.name);
+        if (iconBack != null)
+        {
+            iconBack.sprite = loadedSprite;
+            Debug.Log($"Icon Sprite assigned successfully: {icon.sprite.name}");
+        }
+        else
+        {
+            Debug.LogError("Parent icon not found!");
+        }
+
     }
-    
 
+    protected void StartCoolDown()
+    {
+        isOnCooldown = true;
+        icon.fillAmount = 0f;
+        player.StartCoroutine(CoolDown(activeData.cooltime));
+    }
 
+    IEnumerator CoolDown(float time)
+    {
+        float elapsedTime = 0f;
+        Debug.Log($"Cooldown for {time} seconds.");
+        while(elapsedTime < time)
+        {
+            icon.fillAmount = elapsedTime / time;
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        icon.fillAmount = 1f;
+        isOnCooldown = false;
+        yield return null;
+    }
 }
 
 
