@@ -25,7 +25,6 @@ public class Gunner : PlayerCtrl
         aimRig = GetComponentInChildren<Rig>();
         multiAimConstraint = GetComponentInChildren<MultiAimConstraint>();
         aimingPos = GameObject.FindWithTag("AimingPos").transform;
-        //curHp = characterStat.MaxHp;
         SetHPInit(characterStat.MaxHp);
     }
 
@@ -37,7 +36,7 @@ public class Gunner : PlayerCtrl
         if(pv.isMine)
         {
             PoolManager.Instance.CreatePool(bulletEffect.name, bulletEffect, 30);
-            PoolManager.Instance.CreatePool(gunFire.name,gunFire,10);
+            PoolManager.Instance.CreatePool(gunFire.name,gunFire,30);
         }
     }
 

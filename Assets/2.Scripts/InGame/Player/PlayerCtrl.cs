@@ -51,7 +51,7 @@ public abstract class PlayerCtrl : MonoBehaviour
     public CharacterStat characterStat;
     public int curHp { get; private set; }
     public event System.Action OnHpChanged;
-    public float damageReduceRate =0f;
+    public float damageReduceRate =1f;
     public bool invincible;
     #endregion
 
@@ -87,6 +87,7 @@ public abstract class PlayerCtrl : MonoBehaviour
         characterStat = new CharacterStat();
         camFollow = transform.Find("CameraFollow");
         mainCamera = Camera.main;
+        damageReduceRate = 1f;
 
         stateMachine = new PlayerStateMachine();
 
