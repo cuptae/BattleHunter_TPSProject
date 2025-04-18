@@ -27,6 +27,7 @@ public class EnemyCtrl : MonoBehaviour
     public NavMeshAgent navMeshAgent;
 
     public GameObject[] dropItems;
+    [Range(0f, 1f)] public float dropChance = 0.5f; // 드랍될 확률 (70%)
 
     IEnemyState curState;
 
@@ -97,7 +98,7 @@ public void TakeDamage(int damage, PhotonMessageInfo info)
     {
         StartCoroutine(WaitForHPBarDepletion());
         Vector3 dropPos = transform.position + Vector3.up * 1.0f; // 위로 살짝 띄우기
-        DropRandomItem();
+        DropItem();
     }
 }
 
@@ -134,17 +135,18 @@ private IEnumerator WaitForHPBarDepletion()
 
     public void DropItem()
     {
-        foreach (GameObject dropItem in dropItems)
-        {
-            Instantiate(dropItem, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
-        }
-    }
+        float roll = Random.value; // 0 ~ 1 사이의 랜덤 값
 
-    public void DropRandomItem()
-    {
-        if (dropItems.Length == 0) return;
-        int randomIndex = Random.Range(0, dropItems.Length); // 0 ~ Length-1 사이
-        GameObject selectedItem = dropItems[randomIndex];
-        Instantiate(selectedItem, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+        if (roll < dropChance)
+        {
+            int rand = Random.Range(0, dropItems.Length);
+            GameObject selectedItem = dropItems[rand];
+            Instantiate(selectedItem, transform.position + Vector3.up, Quaternion.identity);
+            Debug.Log("드랍된 아이템: " + selectedItem.name);
+        }
+        else
+        {
+            Debug.Log("아이템 드랍되지 않음");
+        }
     }
 }
