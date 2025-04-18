@@ -164,19 +164,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curState: 4
   movetype: 0
+  groundCheck: {fileID: 9175028804801671331}
   isMove: 0
   isDodge: 0
   isAttack: 0
-  weapon: {fileID: 3897433851248381228}
-  groundCheck: {fileID: 9175028804801671331}
-  rSkillTrigger: 0
-  qSkillTrigger: 0
-  eSkillTrigger: 0
-  dodgeTrigger: 0
+  damageReduceRate: 1
   invincible: 0
+  canAbility: 1
+  weapon: {fileID: 3897433851248381228}
   TestBtn: {fileID: 0}
   bulletEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
-  gunFire: {fileID: 8078720523478869859, guid: 4f5fc4bbd01b03a4499a6ed77f175fc7, type: 3}
+  gunFire: {fileID: 5050487563143714509, guid: 32d7e3cae78f2184d89be5c9aa1d6a9b, type: 3}
   firePos: {fileID: 6817770147782224660}
   attackDistance: 0
   attackRange: 0

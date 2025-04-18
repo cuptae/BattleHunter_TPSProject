@@ -22,7 +22,6 @@ public class GrenadeLauncher : ActiveSkill
             angles = new float[] { 0f };
         else if (activeData.projectileCount == 3)
             angles = new float[] { -5f, 0f, 5f };
-        player.animator.SetTrigger("ESkill");
         yield return new WaitForSeconds(attackTiming);
         foreach (float angle in angles)
         {

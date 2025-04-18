@@ -10,6 +10,7 @@ public class DodgeState : PlayerState
 
     public override void EnterState()
     {
+        player.SetInvincible(true);
         player.curState = STATE.DODGE;
         player.StartCoroutine(Dodge());
     }
@@ -18,6 +19,7 @@ public class DodgeState : PlayerState
 
     public override void ExitState()
     {
+        player.SetInvincible(false);
         player.rigid.velocity = Vector3.zero;        
     }
     public override void FixedUpdateState(){}

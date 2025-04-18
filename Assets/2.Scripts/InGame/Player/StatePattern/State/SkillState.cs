@@ -12,6 +12,27 @@ public class SkillState : PlayerState
     public override void EnterState()
     {
         isDone = false;
+        int hundredsPlace = (curSkill.activeData.skillId / 100) % 10;
+        // switch (hundredsPlace)
+        // {
+        //     case 1:
+        //         player.qSkillTrigger = true;
+        //         player.animator.SetTrigger("QSkill");
+        //         break;
+        //     case 2:
+        //         player.eSkillTrigger = true;
+        //         player.animator.SetTrigger("ESkill");
+        //         break;
+        //     case 3:
+        //         player.rSkillTrigger = true;
+        //         player.animator.SetTrigger("RSkill");
+        //         break;
+        //     default:
+        //         Debug.LogWarning($"Unhandled skillId: {curSkill.activeData.skillId}");
+        //         break;
+        // }
+        player.pv.RPC("RPC_PlaySkillAnim", PhotonTargets.AllBuffered, hundredsPlace);
+        
         curSkill.SetOnSkillEndCallback(() => isDone = true);
         player.StartCoroutine(curSkill.Activation());
     }
@@ -28,5 +49,7 @@ public class SkillState : PlayerState
     }
     public override void ExitState()
     {
+
     }
+    
 }

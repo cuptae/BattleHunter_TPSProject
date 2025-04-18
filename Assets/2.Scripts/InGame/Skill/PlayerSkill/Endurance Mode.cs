@@ -14,7 +14,6 @@ public class EnduranceMode : ActiveSkill
     public override IEnumerator Activation()
     {
         if (isOnCooldown) yield break;
-        player.animator.SetTrigger("RSkill");
         GameObject effectObj = PoolManager.Instance.GetObject(activeData.skillName+"Vfx",player.transform.position,Quaternion.identity);
         Transform temp = effectObj.transform.parent;
         effectObj.transform.SetParent(player.transform);

@@ -19,7 +19,6 @@ public class PhotonLance : ActiveSkill
     {
         if (isOnCooldown) yield break;
         Debug.Log("포톤랜스 발동");
-        player.animator.SetTrigger("RSkill");
 
         yield return new WaitForSeconds(1.15f);
 

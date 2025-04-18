@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public abstract class ActiveSkill : ISkill
 {
-    protected ActiveData activeData;
+    public ActiveData activeData{get; private set;}
     protected PlayerCtrl player;
     protected System.Action onSkillEnd;
     public bool isOnCooldown{get; private set;}

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Properties;
-using UnityEditor.Purchasing;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 public class Gunner : PlayerCtrl

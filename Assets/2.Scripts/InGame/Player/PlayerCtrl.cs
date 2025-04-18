@@ -23,7 +23,7 @@ public abstract class PlayerCtrl : MonoBehaviour
     [HideInInspector]
     public Rigidbody rigid { get; private set; }
     protected Camera mainCamera;
-    protected PhotonView pv = null;
+    public PhotonView pv{get; private set;} = null;
     protected Transform tr;
     private Transform camFollow;
     #endregion
@@ -45,6 +45,7 @@ public abstract class PlayerCtrl : MonoBehaviour
     public bool isMove;
     public bool isDodge = false;
     public bool isAttack;
+    public bool isDead = false;
     #endregion
 
     #region Character Stats
@@ -59,9 +60,9 @@ public abstract class PlayerCtrl : MonoBehaviour
     [HideInInspector]
     public List<ActiveSkill> activeSkills;
     protected Image abilitycooldownbar;
-    private bool rSkillTrigger;
-    private bool qSkillTrigger;
-    private bool eSkillTrigger;
+    // public bool rSkillTrigger = false;
+    // public bool qSkillTrigger = false;
+    // public bool eSkillTrigger = false;
     private bool dodgeTrigger;
     public bool canAbility = true;
     #endregion
@@ -120,9 +121,6 @@ public abstract class PlayerCtrl : MonoBehaviour
     {
         if (pv.isMine)
         {
-            qSkillTrigger = QSkillInput();
-            eSkillTrigger = ESkillInput();
-            rSkillTrigger = RSkillInput();
             dodgeTrigger = DodgeInput();
             MoveInput();
             RunInput();
@@ -205,6 +203,22 @@ public abstract class PlayerCtrl : MonoBehaviour
         // 전후 이동 값
         animator.SetFloat("MoveZ", Input.GetAxis("Vertical"));
     }
+    [PunRPC]
+    public void RPC_PlaySkillAnim(int skillType)
+    {
+        switch (skillType)
+        {
+            case 1:
+                animator.SetTrigger("QSkill");
+                break;
+            case 2:
+                animator.SetTrigger("ESkill");
+                break;
+            case 3:
+                animator.SetTrigger("RSkill");
+                break;
+        }
+    }
     #endregion
 
     #region State Management Methods
@@ -232,10 +246,9 @@ public abstract class PlayerCtrl : MonoBehaviour
             stream.SendNext(animator.GetFloat("MoveX"));
             stream.SendNext(animator.GetFloat("MoveZ"));
             stream.SendNext(animator.GetBool("Move"));
-            stream.SendNext(rSkillTrigger);
-            stream.SendNext(qSkillTrigger);
-            stream.SendNext(eSkillTrigger);
-            stream.SendNext(dodgeTrigger);
+            // stream.SendNext(qSkillTrigger);
+            // stream.SendNext(eSkillTrigger);
+            // stream.SendNext(rSkillTrigger);
         }
         else
         {
@@ -247,31 +260,21 @@ public abstract class PlayerCtrl : MonoBehaviour
             animator.SetFloat("MoveX",(float)stream.ReceiveNext());
             animator.SetFloat("MoveZ",(float)stream.ReceiveNext());
             animator.SetBool("Move",(bool)stream.ReceiveNext());
-            rSkillTrigger = (bool)stream.ReceiveNext();
-            qSkillTrigger = (bool)stream.ReceiveNext();
-            eSkillTrigger = (bool)stream.ReceiveNext();
-            dodgeTrigger = (bool)stream.ReceiveNext();
-
-            if (eSkillTrigger)
-            {
-                animator.SetTrigger("ESkill");
-                eSkillTrigger = false;
-            }
-            if (rSkillTrigger)
-            {
-                animator.SetTrigger("RSkill");
-                rSkillTrigger = false; // 한 번만 발동하게 초기화
-            }
-            if (qSkillTrigger)
-            {
-                animator.SetTrigger("QSkill");
-                qSkillTrigger = false;
-            }
-            if (dodgeTrigger)
-            {
-                animator.SetTrigger("Dodge");
-                dodgeTrigger = false;
-            }
+            // qSkillTrigger = (bool)stream.ReceiveNext();
+            // eSkillTrigger = (bool)stream.ReceiveNext();
+            // rSkillTrigger = (bool)stream.ReceiveNext();
+            // if (qSkillTrigger)
+            // {
+            //     animator.SetTrigger("QSkill");
+            // }
+            // if (eSkillTrigger)
+            // {
+            //     animator.SetTrigger("ESkill");
+            // }
+            // if (rSkillTrigger)
+            // {
+            //     animator.SetTrigger("RSkill");
+            // }
         }
     }
     #endregion
@@ -285,7 +288,7 @@ public abstract class PlayerCtrl : MonoBehaviour
     #region Damage and HP Methods
     public void GetDamage(int damage)
     {
-        if (invincible) return;
+        if (invincible||curState == STATE.DEAD) return;
         if (PhotonNetwork.isMasterClient)
         {
             pv.RPC("TakeDamage", PhotonTargets.AllBuffered, damage);
@@ -301,9 +304,14 @@ public abstract class PlayerCtrl : MonoBehaviour
         curHp -= reducedDamage;
 
         // HP가 0 이하라면 사망 상태로 전환
-        if (curHp <= 0)
+        if (curHp <= 0&&curState != STATE.DEAD)
         {
-            ChangeState(new PlayerDieState(this));
+            // 상태 머신을 PlayerDieState로 변경
+            stateMachine.ChangeState(new PlayerDieState(this));
+        }
+        else if (curHp > characterStat.MaxHp)
+        {
+            curHp = characterStat.MaxHp;
         }
 
         // HP 변경 이벤트 호출

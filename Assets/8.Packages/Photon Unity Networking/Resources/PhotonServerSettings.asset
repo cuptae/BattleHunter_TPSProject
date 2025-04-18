@@ -56,4 +56,5 @@ MonoBehaviour:
   - KnockBack
   - RPC_KnockBack
   - RPC_EnableRigBuilder
+  - RPC_PlaySkillAnim
   DisableAutoOpenWizard: 1

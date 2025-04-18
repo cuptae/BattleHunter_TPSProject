@@ -1,48 +1,57 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class WalkState : BossState
 {
     public float moveSpeed = 3f;
+    private NavMeshAgent agent;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
+
         animator.speed = 1f;
-        animator.SetBool("Return", true); // °È±â ½ÃÀÛ
+        animator.SetBool("Return", true); // ê±·ê¸° ì‹œì‘
+
+        agent = animator.GetComponent<NavMeshAgent>();
+        if (agent != null && boss.currentTarget != null)
+        {
+            agent.isStopped = false;
+            agent.speed = moveSpeed;
+            agent.SetDestination(boss.currentTarget.transform.position);
+        }
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (boss.currentTarget != null)
+        if (boss.currentTarget != null && agent != null)
         {
-            Vector3 targetPosition = boss.currentTarget.transform.position;
-            Vector3 direction = targetPosition - animator.transform.position;
-            direction.y = 0f;
+            agent.SetDestination(boss.currentTarget.transform.position);
 
-            float distance = direction.magnitude;
+            float distance = agent.remainingDistance;
 
-            if (distance>7f){ moveSpeed = 3f;}
-            else{ moveSpeed = 1f; }
+            if (distance > 7f) agent.speed = 3f;
+            else agent.speed = 1f;
 
             if (distance > 3f)
             {
-                // ÀÌµ¿ ¹× È¸Àü (¼±ÅÃ»çÇ×)
-                Vector3 moveDirection = direction.normalized;
-                animator.transform.position += moveDirection * moveSpeed * Time.deltaTime;
+                // ìë™ íšŒì „ì´ êº¼ì ¸ ìˆë‹¤ë©´ ìˆ˜ë™ íšŒì „
+                Vector3 direction = agent.steeringTarget - animator.transform.position;
+                direction.y = 0f;
 
-                // Å¸°Ù ¹æÇâÀ» ¹Ù¶óº¸µµ·Ï È¸Àü
-                if (moveDirection != Vector3.zero)
+                if (direction != Vector3.zero)
                 {
-                    Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+                    Quaternion targetRotation = Quaternion.LookRotation(direction);
                     animator.transform.rotation = Quaternion.Slerp(animator.transform.rotation, targetRotation, Time.deltaTime * 5f);
                 }
             }
             else
             {
+                agent.isStopped = true;
                 animator.SetTrigger("Tag");
-                Debug.Log("WalkState: Å¸°Ù°úÀÇ °Å¸®°¡ 3 ÀÌÇÏÀÔ´Ï´Ù. »óÅÂ ÀüÈ¯ ÁØºñ ¿Ï·á.");
+                Debug.Log("WalkState: íƒ€ê²Ÿê³¼ì˜ ê±°ë¦¬ê°€ 3 ì´í•˜ì…ë‹ˆë‹¤. ìƒíƒœ ì „í™˜ ì¤€ë¹„ ì™„ë£Œ.");
             }
         }
     }
@@ -50,6 +59,10 @@ public class WalkState : BossState
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.speed = 1f;
+        if (agent != null)
+        {
+            agent.isStopped = true;
+        }
     }
 }
 

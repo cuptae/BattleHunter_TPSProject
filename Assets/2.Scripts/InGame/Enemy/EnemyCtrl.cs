@@ -114,25 +114,36 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
     }
     public Transform FindClosestPlayer()
     {
-        if(isTaunt)
-            return targetPlayer;
-        else
-        {
-            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            Transform closestPlayer = null;
-            float closestDistance = Mathf.Infinity;
+        if(isTaunt) return targetPlayer;
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        List<GameObject> alivePlayers = new List<GameObject>();
 
-            foreach (GameObject player in players)
+        // 살아 있는 플레이어만 필터링
+        foreach (GameObject player in players)
+        {
+            PlayerCtrl playerCtrl = player.GetComponent<PlayerCtrl>();
+            if (playerCtrl != null && !playerCtrl.isDead)
             {
-                float distance = Vector3.Distance(transform.position, player.transform.position);
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    closestPlayer = player.transform;
-                }
+                alivePlayers.Add(player);
             }
-            return closestPlayer;
         }
+
+        // 살아 있는 플레이어가 없으면 null 반환
+        if (alivePlayers.Count == 0)
+        {
+            return null;
+        }
+
+        // 거리 순으로 정렬
+        alivePlayers.Sort((a, b) =>
+        {
+            float distanceA = Vector3.Distance(transform.position, a.transform.position);
+            float distanceB = Vector3.Distance(transform.position, b.transform.position);
+            return distanceA.CompareTo(distanceB);
+        });
+
+        // 가장 가까운 플레이어 반환
+        return alivePlayers[0].transform;
     }
 
 

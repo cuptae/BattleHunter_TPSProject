@@ -8,7 +8,11 @@ public class PlayerDieState : PlayerState
 
     public override void EnterState()
     {
+        Debug.Log("Player is dead");
         player.curState = STATE.DEAD;
+        player.isDead = true;
+        player.animator.SetBool("IsDead", true);
+        player.animator.SetTrigger("Die");
     }
     public override void UpdateState()
     {

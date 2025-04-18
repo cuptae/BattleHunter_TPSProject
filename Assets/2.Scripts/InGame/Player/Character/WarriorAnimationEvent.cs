@@ -20,8 +20,14 @@ public class WarriorAnimationEvent : MonoBehaviour
 
     public void AttackEffect()
     {
-        index = index%3;
+        // index가 0, 2, 0, 2 반복
+        index = (index == 0) ? 2 : 0;
         attackEffectPrefab[index].gameObject.SetActive(true);
-        index++;
+    }
+    public void AttackEffect2()
+    {
+        // index가 1, 3, 1, 3 반복
+        index = (index == 1) ? 3 : 1;
+        attackEffectPrefab[index].gameObject.SetActive(true);
     }
 }

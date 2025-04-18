@@ -18,7 +18,6 @@ public class ShockWave : ActiveSkill
         if (isOnCooldown) yield break;
 
         Debug.Log($"skillId: {activeData.skillId},skillName: {activeData.skillName},damage: {activeData.damage},attackDistance: {activeData.attackDistance},attackRange: {activeData.attackRange}");
-        player.animator.SetTrigger("QSkill");
         yield return new WaitForSeconds(0.4222f);
         PoolManager.Instance.GetObject(activeData.skillName+"Vfx",firePos.position,Quaternion.LookRotation(firePos.forward));
         if(ScanEnemyBox(0) != null)

@@ -14,7 +14,6 @@ public class FocusField : ActiveSkill
     public override IEnumerator Activation()
     {
         if (isOnCooldown) yield break;
-        player.animator.SetTrigger("QSkill");
         PoolManager.Instance.GetObject(activeData.skillName+"Vfx",player.transform.position,Quaternion.identity);
         if(ScanEnemySphere() != null)
         {

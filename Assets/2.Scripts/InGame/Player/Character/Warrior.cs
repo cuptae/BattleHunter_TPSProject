@@ -26,11 +26,14 @@ public class Warrior : PlayerCtrl
     protected override void Update()
     {
         base.Update();
-        if(Input.GetMouseButtonDown(0))
+        if(pv.isMine)
         {
-            animator.SetTrigger("WAttack");
+            if(Input.GetMouseButtonDown(0))
+            {
+                animator.SetTrigger("WAttack");
+            }
+            UniqueAbility();
         }
-        UniqueAbility();
     }
 
     public override void Attack()
@@ -95,23 +98,7 @@ public class Warrior : PlayerCtrl
             }
         }
     }
-    // public override void UniqueAbility()
-    // {
-    //     if (Input.GetMouseButton(1) && abilitycooldownbar.fillAmount > 0f)
-    //     {
-    //         // 방패를 들고 있는 동안
-    //         damageReduceRate = 0.25f;//25%데미지만 받음
-    //         abilitycooldownbar.fillAmount -= Time.deltaTime / 5f; // 5초 동안 완전히 닳도록 설정
-    //         animator.SetBool("Shield", true);
-    //     }
-    //     else
-    //     {
-    //         // 방패를 내릴 때
-    //         damageReduceRate = 1f; // 원래대로 돌아옴
-    //         abilitycooldownbar.fillAmount = Mathf.MoveTowards(abilitycooldownbar.fillAmount, 1f, Time.deltaTime / 5f); // 5초 동안 완전히 차도록 설정
-    //         animator.SetBool("Shield", false);
-    //     }
-    // }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
