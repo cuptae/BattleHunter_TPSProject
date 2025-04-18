@@ -76,36 +76,24 @@ public class InventoryManager : MonoBehaviour
         itemCursor.SetActive(isMovingItem);
         itemCursor.transform.position = Input.mousePosition;
 
-        if (isMovingItem)
-        {
-            itemCursor.GetComponent<Image>().sprite = movingSlot.GetItem().itemIcon;
-        }
-        if (Input.GetMouseButtonDown(0))
-        {
-            //Debug.Log(GetClosestSlot().GetItem());
-            if (isMovingItem)
-            {
-                EndItemMove();
-            }
-            else
-            {
-                BeginItemMove();
-            }
-        }
-
         // if (isMovingItem)
         // {
-        //     // 마우스 따라다니게
-        //     itemCursor.transform.position = Input.mousePosition;
-
-        //     // 드래그 중인 아이템 아이콘 표시
         //     itemCursor.GetComponent<Image>().sprite = movingSlot.GetItem().itemIcon;
-        //     itemCursor.GetComponent<Image>().enabled = true;
         // }
-        // else
-        // {
-        //     itemCursor.GetComponent<Image>().enabled = false;
-        // }
+
+        if (isMovingItem)
+        {
+            // 마우스 따라다니게
+            itemCursor.transform.position = Input.mousePosition;
+
+            // 드래그 중인 아이템 아이콘 표시
+            itemCursor.GetComponent<Image>().sprite = movingSlot.GetItem().itemIcon;
+            itemCursor.GetComponent<Image>().enabled = true;
+        }
+        else
+        {
+            itemCursor.GetComponent<Image>().enabled = false;
+        }
 
         // 클릭으로 아이템 이동 시작/종료 처리
         if (Input.GetMouseButtonDown(0))
