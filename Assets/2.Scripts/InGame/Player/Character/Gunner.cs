@@ -110,8 +110,8 @@ public class Gunner : PlayerCtrl
     {
         if(Input.GetMouseButtonDown(1)&&canAbility)
         {
-            ModifyAttackRate(-characterStat.AttackRate*0.5f,3f);
-            ModifyDamage(characterStat.Damage/2,3f);
+            ModifyDamage(characterStat.Damage/2);
+            ModifyAttackRate(-characterStat.AttackRate*0.5f);
             canAbility = false;
             StartCoroutine(HandleAbilityCooldown());
         }
@@ -129,10 +129,13 @@ public class Gunner : PlayerCtrl
     {
         while (abilitycooldownbar.fillAmount > 0f)
         {
-            abilitycooldownbar.fillAmount = Mathf.MoveTowards(abilitycooldownbar.fillAmount, 0f, Time.deltaTime * 3f);
+            abilitycooldownbar.fillAmount = Mathf.MoveTowards(abilitycooldownbar.fillAmount,0f,Time.deltaTime * 0.25f);
             yield return null;
         }
         abilitycooldownbar.fillAmount = 0f; // 최종적으로 0으로 설정
+        characterStat.modifyDamage = 0;
+        characterStat.modifyAttackRate = 0;
+        // 능력 사용 후 상태 초기화
     }
     IEnumerator AbilityCoolTime(float cooltime)
     {
@@ -144,8 +147,7 @@ public class Gunner : PlayerCtrl
             yield return null;
         }
         abilitycooldownbar.fillAmount = 1f; // 최종적으로 1로 설정
-        RecoverAttackRate(characterStat.Damage/2,3f); // 원래 공격력으로 복구
-        RecoverAttackRate(characterStat.AttackRate*0.5f,3f); // 원래 공격속도로 복구
+ 
         canAbility = true; // 능력을 다시 사용할 수 있도록 설정
     }
 

@@ -324,50 +324,23 @@ public abstract class PlayerCtrl : MonoBehaviour
 
 
     #region Stat Modification Methods
-    public void ModifyDamage(int damage, float duration)
+    
+    //데미지 변경
+    public void ModifyDamage(int damage)
     {
         characterStat.modifyDamage += damage;
-        //StartCoroutine(RecoverDamage(damage, duration));
-    }
-    public void RecoverDamage(int damage)
-    {
-        characterStat.modifyDamage -= damage;
-    }
-    public IEnumerator RecoverDamage(int damage, float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        characterStat.modifyDamage -= damage;
     }
 
-    public void ModifyMaxHp(int maxHp, float duration)
+    //최대 체력 변경
+    public void ModifyMaxHp(int maxHp)
     {
         characterStat.modifyMaxHp += maxHp;
-        StartCoroutine(RecoverMaxHp(maxHp, duration));
-    }
-    public void RecoverMaxHp(int maxHp)
-    {
-        characterStat.modifyMaxHp -= maxHp;
     }
 
-    public IEnumerator RecoverMaxHp(int maxHp, float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        characterStat.modifyMaxHp -= maxHp;
-    }
-
-    public void ModifyAttackRate(float attackRate, float duration)
+    //공격 속도 변경
+    public void ModifyAttackRate(float attackRate)
     {
         characterStat.modifyAttackRate += attackRate;
-        StartCoroutine(RecoverAttackRate(attackRate, duration));
-    }
-    public void RecoverAttackRate(float attackRate)
-    {
-        characterStat.modifyAttackRate -= attackRate;
-    }
-    public IEnumerator RecoverAttackRate(float attackRate, float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        characterStat.modifyAttackRate -= attackRate;
     }
     #endregion
     
