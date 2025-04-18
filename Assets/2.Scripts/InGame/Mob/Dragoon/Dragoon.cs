@@ -1,68 +1,51 @@
+using Unity.Properties;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Dragoon : MonoBehaviour
+public class Dragoon : EnemyCtrl
 {
-    public float stopDistance = 5f; // ÃÖ´ë Á¢±Ù °Å¸®
-    public float retreatSpeed = 3f; // ÈÄÅð ¼Óµµ
-    public float bufferDistance = 1f; // ÈÄÅð¸¦ ½ÃÀÛÇÏ´Â ¿©À¯ °Å¸®
-    public float rotationSpeed = 5f; // È¸Àü ¼Óµµ
+    public float stopDistance = 10f;
+    public float retreatSpeed = 3f;
+    public float bufferDistance = 1f;
 
-    private NavMeshAgent agent;
-    private Transform targetPlayer; // °¡Àå °¡±î¿î ÇÃ·¹ÀÌ¾î
+    public Transform firePos;
 
-    void Start()
+
+    protected override void Update()
     {
-        agent = GetComponent<NavMeshAgent>();
-    }
-
-    void Update()
-    {
-        targetPlayer = FindClosestPlayer();
-
-        if (targetPlayer == null) return;
-
-        float distance = Vector3.Distance(transform.position, targetPlayer.position);
-
-        // Ç×»ó ÇÃ·¹ÀÌ¾î¸¦ ¹Ù¶óº¸°Ô È¸Àü (ºÎµå·¯¿î È¸Àü Àû¿ë)
-        Vector3 direction = (targetPlayer.position - transform.position).normalized;
-        direction.y = 0; // YÃà È¸Àü Á¦°Å (¹Ù´Ú¸¸ º¸Áö ¾Ê°Ô)
-        Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
-
-        if (distance > stopDistance)
+        base.Update();
+        if(pv.isMine)
         {
-            // ÇÃ·¹ÀÌ¾î¿¡°Ô ´Ù°¡°¡±â
-            agent.SetDestination(targetPlayer.position);
-        }
-        else if (distance < stopDistance - bufferDistance) // ³Ê¹« °¡±î¿ì¸é ÈÄÅð
-        {
-            // ÈÄÅð ¹æÇâ: ¸ó½ºÅÍ -> ÇÃ·¹ÀÌ¾î ¹æÇâÀÇ ¹Ý´ë
-            Vector3 retreatDirection = -direction;
-            agent.Move(retreatDirection * retreatSpeed * Time.deltaTime);
-        }
-        else
-        {
-            agent.ResetPath(); // ÀûÀýÇÑ °Å¸®¿¡¼­ Á¤Áö
+            // //í”Œë ˆì´ì–´ ì ‘ê·¼í•˜ë©´ ë’¤ë¡œê°€ëŠ” ì½”ë“œ
+            // Vector3 direction = (targetPlayer.position - transform.position).normalized;
+            // float distance = Vector3.Distance(transform.position, targetPlayer.position);
+            // // if (distance > stopDistance)
+            // // {
+            // //     navMeshAgent.SetDestination(targetPlayer.position);
+            // // }
+            // if (distance < stopDistance - bufferDistance)
+            // {
+            //     Vector3 retreatDirection = -direction;
+            //     navMeshAgent.Move(retreatDirection * retreatSpeed * Time.deltaTime);
+            // }
+            // else
+            // {
+            //     navMeshAgent.ResetPath();
+            // }
         }
     }
 
-    Transform FindClosestPlayer()
+    public override void Attack()
     {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        Transform closestPlayer = null;
-        float closestDistance = Mathf.Infinity;
-
-        foreach (GameObject player in players)
+        GameObject go = PoolManager.Instance.PvGetObject("DragoonProjectile",firePos.position,Quaternion.identity);
+        DragoonProjectile projectile = go.GetComponent<DragoonProjectile>();
+        if (projectile != null && targetPlayer != null)
         {
-            float distance = Vector3.Distance(transform.position, player.transform.position);
-            if (distance < closestDistance)
-            {
-                closestDistance = distance;
-                closestPlayer = player.transform;
-            }
+            Vector3 shootDirection = (targetPlayer.position - firePos.transform.position).normalized;
+            projectile.transform.position = firePos.transform.position;
+            projectile.Launch(shootDirection);
         }
-
-        return closestPlayer;
+        Vector3 backDirection = -transform.forward;
+        transform.position += backDirection * 0.5f;
     }
 }

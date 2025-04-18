@@ -1,0 +1,40 @@
+{
+  "characterDataList": [
+    {
+      "characterName": "Warrior",
+      "maxHp": 800,
+      "dodgeTime": 0.7,
+      "attackRange": 1.5,
+      "attackRate": 0.7,
+      "attackWalkSpeed": 1.0,
+      "walkSpeed": 3.5,
+      "runSpeed": 6.0,
+      "rotationSpeed": 30.0,
+      "damage": 80
+    },
+    {
+      "characterName": "Gunner",
+      "maxHp": 350,
+      "dodgeTime": 0.7,
+      "attackRange": 10.0,
+      "attackRate": 0.15,
+      "attackWalkSpeed": 3.0,
+      "walkSpeed": 4.5,
+      "runSpeed": 7.0,
+      "rotationSpeed": 30.0,
+      "damage": 30
+    },
+    {
+      "characterName": "Hacker",
+      "maxHp": 200,
+      "dodgeTime": 0.7,
+      "attackRange": 5.0,
+      "attackRate": 0.5,
+      "attackWalkSpeed": 0.0,
+      "walkSpeed": 4.5,
+      "runSpeed": 6.5,
+      "rotationSpeed": 30.0,
+      "damage": 30
+    }
+  ]
+}

@@ -44,4 +44,16 @@ MonoBehaviour:
   - RequestForPickupTimes
   - TaggedPlayer
   - TakeDamage
+  - RequestDamage
+  - DisableObject
+  - EnableObject
+  - SetActiveState
+  - RPC_Taunt
+  - TakeDamageRPC
+  - DisableDebuffMark
+  - EnalbeDebuffMark
+  - RPC_Stun
+  - KnockBack
+  - RPC_KnockBack
+  - RPC_EnableRigBuilder
   DisableAutoOpenWizard: 1

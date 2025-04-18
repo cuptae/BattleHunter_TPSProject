@@ -2,6 +2,6 @@ public enum Character
 {
     GUNNER,
     WARRIOR,
-    HUNTER,
+    HACKER,
     NONSELECTED
 }

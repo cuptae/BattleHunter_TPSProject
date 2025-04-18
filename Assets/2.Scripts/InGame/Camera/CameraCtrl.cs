@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.EventSystems;
 public class CameraCtrl : MonoBehaviour
 {
     private Vector3 clampAngle;
@@ -30,19 +30,22 @@ public class CameraCtrl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None; // 마우스 해제
+            Cursor.lockState = CursorLockMode.None;
         }
 
-        if (Cursor.visible && Input.GetMouseButtonDown(0)) // 마우스 클릭 시 숨기기
+        if (Cursor.visible && Input.GetMouseButtonDown(0))
         {
+            // 마우스 클릭했을 때 UI 위에 있는 경우 무시
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+
             Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked; // 화면 중앙 고정
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 
     private void LateUpdate()
     {
-        if (Cursor.visible) return;
 
         // 타겟 거리 설정
         float targetDistance = target.GetComponentInParent<PlayerCtrl>().isAttack ? attackDist : normalDist;

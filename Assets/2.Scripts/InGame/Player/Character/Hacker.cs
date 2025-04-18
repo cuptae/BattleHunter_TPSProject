@@ -19,6 +19,9 @@ public class Hacker : PlayerCtrl
         aimRig = GetComponentInChildren<Rig>();
         multiAimConstraint = GetComponentInChildren<MultiAimConstraint>();
         aimingPos = GameObject.FindWithTag("AimingPos").transform;
+        characterStat.GetCharacterDataByName("Hacker");
+        //curHp = characterStat.MaxHp;
+        SetHPInit(characterStat.MaxHp);
     }
 
     protected override void Start()
@@ -41,7 +44,7 @@ public class Hacker : PlayerCtrl
             if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
             {
                 Attack();
-                nextFireTime = Time.time + characterData.attackRate; // 다음 발사 시간 설정
+                nextFireTime = Time.time + characterStat.AttackRate; // 다음 발사 시간 설정
             }
         }
     }
@@ -62,12 +65,8 @@ public class Hacker : PlayerCtrl
         }
     }
 
-    void SetRigWeight(float weight)
-    {
-        aimRig.weight = weight;
-    }
 
-    protected override void Attack()
+    public override void Attack()
     {
         if(isDodge)
             return;
@@ -85,10 +84,15 @@ public class Hacker : PlayerCtrl
             if (enemy != null) // 적 오브젝트를 찾았다면
             {
                 Quaternion hitDir = Quaternion.LookRotation(-direction);
-                enemy.GetDamage(characterData.damage); // 부모의 EnemyCtrl에서 데미지 처리
+                enemy.GetDamage(characterStat.Damage); // 부모의 EnemyCtrl에서 데미지 처리
                 StartCoroutine(BulletEffect(hitInfo.point, hitDir));
             }
         }
+    }
+
+    public override void UniqueAbility()
+    {
+        
     }
 
     protected override void  OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -112,5 +116,11 @@ public class Hacker : PlayerCtrl
         yield return new WaitForSeconds(0.3f);
         PoolManager.Instance.ReturnObject(bulletEffect.name,effect);
     }
+ 
+ 
+    // void SetRigWeight(float weight)
+    // {
+    //     aimRig.weight = weight;
+    // }
 
 }

@@ -1,129 +1,124 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
-
 
 public class Warrior : PlayerCtrl
 {
     private Rig aimRig;
-    public int comboStep = 0;
-    private float lastClickTime = 0f;
-    private float comboDelay = 1.0f;
-
-    public bool canCombo = true;
-
+    public Vector3 boxRange;
+    public float boxFoward, boxUp;
+    public GameObject shildEffect;
+    
     protected override void Awake()
     {
         base.Awake();
+        characterStat.GetCharacterDataByName("Warrior");
+        //curHp = characterStat.MaxHp;
+        SetHPInit(characterStat.MaxHp);
     }
-    // Start is called before the first frame update
+
     protected override void Start()
     {
         base.Start();
-        canCombo = true;
     }
-    protected override void Update()
-    // Update is called once per frame
-    {
 
+    protected override void Update()
+    {
         base.Update();
         if(Input.GetMouseButtonDown(0))
         {
-            if(canCombo)
-                HandleCombo();
+            animator.SetTrigger("WAttack");
         }
-
-        if (Time.time - lastClickTime > comboDelay)
-        {
-            ResetCombo();
-        }
-
-        if (Input.GetMouseButton(1))
-        {
-            animator.SetBool("Shield", true);
-        }
-        else
-        {
-            animator.SetBool("Shield", false);
-        }
-    }
-    private void HandleCombo()
-    {
-        lastClickTime = Time.time;
-        StartCoroutine(CanCombo());
-        animator.SetBool("Attack",true);
-        animator.SetInteger("Combo",comboStep);
-        Attack();
-    }
-    IEnumerator CanCombo()
-    {
-        if(comboStep == 0)
-        {
-            isAttack = true;
-            comboStep+=1;
-            canCombo = false;
-        }
-        else if(comboStep == 1)
-        {
-            comboStep+=1;
-            canCombo = false;
-        }
-        else if(comboStep == 2)
-        {
-            comboStep+=1;
-            canCombo = false; 
-        }
-        yield return new WaitForSeconds(0.7f);
-        if(comboStep<3)
-        {
-            canCombo = true;
-        }
-        else
-        {
-            canCombo = true;
-            ResetCombo();
-        }
+        UniqueAbility();
     }
 
-    
-    public void ResetCombo()
+    public override void Attack()
     {
-        comboStep = 0;
-        isAttack = false;
-        animator.SetBool("Attack",isAttack);
-        animator.SetInteger("Combo",comboStep);
-    }
-
-    protected override void Attack()
-    {
-        Vector3 boxRange = new Vector3(3f,3f,2f);
-        Vector3 attackPos = transform.position+transform.forward*2f;
+        boxRange = new Vector3(3f, 2f, 2f);
+        Vector3 attackPos = transform.position + transform.forward * boxFoward + transform.up * boxUp;
         Quaternion attackRot = transform.rotation;
-
-        Collider[] monsterCollider = Physics.OverlapBox(attackPos, boxRange, attackRot, enemyLayerMask);
-        foreach(Collider col in monsterCollider)
+        Collider[] monsterCollider = Physics.OverlapBox(attackPos, boxRange, attackRot, GameManager.Instance.enemyLayerMask);
+        
+        foreach (Collider col in monsterCollider)
         {
-            Debug.Log(col.name);
-            if(col != null)
+            if (col != null)
             {
-                EnemyCtrl enemy = col.transform.GetComponent<EnemyCtrl>();
-                if(enemy != null)
-                    enemy.GetDamage(characterData.damage);
+                var enemy = col.GetComponent<IDamageable>();
+                if (enemy != null)
+                {
+                    enemy.GetDamage(characterStat.Damage);
+                }
             }
         }
     }
-
-
-
-    void ODrawGizmos()
+    public override void UniqueAbility()
     {
-        Gizmos.color = Color.blue; // 파란색으로 표시
-        Vector3 attackPosition = transform.position + transform.forward * 2.0f; // OverlapBox 위치
-        Vector3 boxSize = new Vector3(3f, 2f, 2f); // 박스 크기 설정
-        Gizmos.matrix = Matrix4x4.TRS(attackPosition, transform.rotation, Vector3.one); // 회전 고려
-        Gizmos.DrawWireCube(Vector3.zero, boxSize); // 박스를 그리기
+        if (!canAbility) // canAbility가 false면 UniqueAbility를 사용할 수 없음
+        {
+            shildEffect.SetActive(false); // 방패 이펙트 비활성화
+            damageReduceRate = 1f; // 원래대로 돌아옴
+            // 방패를 내릴 때 게이지를 천천히 채움
+            abilitycooldownbar.fillAmount = Mathf.MoveTowards(abilitycooldownbar.fillAmount, 1f, Time.deltaTime / 5f);
+            if (abilitycooldownbar.fillAmount >= 1f)
+            {
+                canAbility = true; // 게이지가 완전히 차면 다시 사용할 수 있음
+            }
+            animator.SetBool("Shield", false);
+            return;
+        }
+    
+        if (Input.GetMouseButton(1) && abilitycooldownbar.fillAmount > 0f)
+        {
+            // 방패를 들고 있는 동안
+            damageReduceRate = 0.25f; // 25% 데미지만 받음
+            abilitycooldownbar.fillAmount -= Time.deltaTime / 5f; // 5초 동안 완전히 닳도록 설정
+            shildEffect.SetActive(true); // 방패 이펙트 활성화
+            animator.SetBool("Shield", true);
+    
+            if (abilitycooldownbar.fillAmount <= 0f)
+            {
+                canAbility = false; // 게이지가 0이 되면 UniqueAbility를 사용할 수 없도록 설정
+            }
+        }
+        else
+        {
+            // 방패를 내릴 때
+            damageReduceRate = 1f; // 원래대로 돌아옴
+            abilitycooldownbar.fillAmount = Mathf.MoveTowards(abilitycooldownbar.fillAmount, 1f, Time.deltaTime / 10f); // 5초 동안 완전히 차도록 설정
+            shildEffect.SetActive(false); // 방패 이펙트 비활성화
+            animator.SetBool("Shield", false);
+    
+            if (abilitycooldownbar.fillAmount >= 1f)
+            {
+                canAbility = true; // 게이지가 완전히 차면 다시 사용할 수 있음
+            }
+        }
     }
+    // public override void UniqueAbility()
+    // {
+    //     if (Input.GetMouseButton(1) && abilitycooldownbar.fillAmount > 0f)
+    //     {
+    //         // 방패를 들고 있는 동안
+    //         damageReduceRate = 0.25f;//25%데미지만 받음
+    //         abilitycooldownbar.fillAmount -= Time.deltaTime / 5f; // 5초 동안 완전히 닳도록 설정
+    //         animator.SetBool("Shield", true);
+    //     }
+    //     else
+    //     {
+    //         // 방패를 내릴 때
+    //         damageReduceRate = 1f; // 원래대로 돌아옴
+    //         abilitycooldownbar.fillAmount = Mathf.MoveTowards(abilitycooldownbar.fillAmount, 1f, Time.deltaTime / 5f); // 5초 동안 완전히 차도록 설정
+    //         animator.SetBool("Shield", false);
+    //     }
+    // }
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Vector3 attackPosition = transform.position + transform.forward * boxFoward + transform.up * boxUp;
+        Gizmos.matrix = Matrix4x4.TRS(attackPosition, transform.rotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, boxRange);
+    }
+
 
 }

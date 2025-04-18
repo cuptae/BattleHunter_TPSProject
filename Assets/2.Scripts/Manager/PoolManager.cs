@@ -22,6 +22,7 @@ public class PoolManager : MonoSingleton<PoolManager>
             for(int i = 0; i< size; i++)
             {
                 GameObject go = Instantiate(prefab,pa.transform);//프리팹 생성
+                go.transform.name = prefab.name;
                 go.SetActive(false);//비활성
                 pool[key].Enqueue(go);//큐에 넣는다
             }
@@ -41,8 +42,9 @@ public class PoolManager : MonoSingleton<PoolManager>
             for(int i = 0; i< size; i++)
             {
                 GameObject go = PhotonNetwork.Instantiate(prefab.name,transform.position,transform.rotation,0);//프리팹 생성
-                go.transform.parent = pa.transform;
                 go.SetActive(false);//비활성
+                go.transform.parent = pa.transform;
+                go.transform.name = prefab.name;
                 pool[key].Enqueue(go);//큐에 넣는다
             }
         }
@@ -56,11 +58,41 @@ public class PoolManager : MonoSingleton<PoolManager>
             GameObject go = pool[key].Dequeue();
             go.transform.position = pos;
             go.transform.rotation = rot;
-            go.SetActive(true);
+            if(go.activeSelf == false)
+            {
+                go.SetActive(true);
+            }
             return go;
         }
         return null;
     }
+
+    public GameObject PvGetObject(string key, Vector3 pos, Quaternion rot)
+    {
+        if (pool.ContainsKey(key) && pool[key].Count > 0)
+        {
+            GameObject go = pool[key].Dequeue();
+            go.transform.position = pos;
+            go.transform.rotation = rot;
+
+            PhotonView pv = go.GetComponent<PhotonView>();
+            if (pv != null)
+            {
+                // 모든 클라이언트에서 활성화하도록 RPC 호출
+                pv.RPC("EnableObject", PhotonTargets.All, pos, rot);
+            }
+            else
+            {
+                Debug.LogWarning("PhotonView not found on pooled object.");
+                go.SetActive(true);
+            }
+
+            return go;
+        }
+        return null;
+    }
+
+
 
     public void ReturnObject(string key, GameObject go)
     {
@@ -75,4 +107,28 @@ public class PoolManager : MonoSingleton<PoolManager>
             pool[key].Enqueue(go);
         }
     }
+
+    public void PvReturnObject(string key, GameObject go)
+    {
+        PhotonView pv = go.GetComponent<PhotonView>();
+        if (pv != null)
+        {
+            pv.RPC("DisableObject", PhotonTargets.All);
+        }
+        else
+        {
+            go.SetActive(false); // fallback
+        }
+
+        if (pool.ContainsKey(key))
+        {
+            pool[key].Enqueue(go);
+        }
+        else
+        {
+            pool[key] = new Queue<GameObject>();
+            pool[key].Enqueue(go);
+        }
+    }
+
 }

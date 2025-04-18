@@ -27,6 +27,24 @@ public class MoveState : PlayerState
 
         if (!player.isMove){player.ChangeState(new IdleState(player));}
         if (player.DodgeInput()){player.ChangeState(new DodgeState(player));}
+        if(player.isAttack){player.ChangeState(new PlayerAttackState(player));}
+        // Q 스킬 입력 처리
+        if (player.QSkillInput() && !player.activeSkills[0].isOnCooldown)
+        {
+            player.ChangeState(new SkillState(player, player.activeSkills[0]));
+        }
+
+        // E 스킬 입력 처리
+        if (player.ESkillInput() && !player.activeSkills[1].isOnCooldown)
+        {
+            player.ChangeState(new SkillState(player, player.activeSkills[1]));
+        }
+
+        // R 스킬 입력 처리
+        if (player.RSkillInput() && !player.activeSkills[2].isOnCooldown)
+        {
+            player.ChangeState(new SkillState(player, player.activeSkills[2]));
+        }
     }
     public override void FixedUpdateState()
     {
@@ -48,7 +66,10 @@ public class MoveState : PlayerState
                 if(!player.IsSlope())
                     player.rigid.AddForce(player.MoveDir()*moveForce,ForceMode.Force);
                 else
+                {
+                    //player.rigid.AddForce(player.MoveDir()*moveForce,ForceMode.Force);
                     player.rigid.AddForce(Vector3.ProjectOnPlane(player.MoveDir(),player.groundNormal).normalized*moveForce,ForceMode.Force);
+                }
             }
             else
             {
@@ -66,16 +87,13 @@ public class MoveState : PlayerState
     }
     void SpeedCheck()
     {
-        if(player.isAttack){
-            curSpeed = player.characterData.attackWalkSpeed;
-        }
-        else if(player.RunInput())
+        if(player.RunInput())
         {
-            curSpeed = player.characterData.runSpeed;
+            curSpeed = player.characterStat.RunSpeed;
             player.animator.SetFloat("Speed", 1, 0f, Time.deltaTime);
         }
         else{
-            curSpeed = player.characterData.walkSpeed;
+            curSpeed = player.characterStat.WalkSpeed;
         }
     }
     void MoveAnim()

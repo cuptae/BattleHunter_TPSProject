@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: c95e7866947d6d844b207ac638a9651c
+=======
+guid: c73d7fde23492ad4396e20286a94847e
+>>>>>>> STH_Dev
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

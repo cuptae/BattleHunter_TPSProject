@@ -1,27 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
 
 public class GameManager : MonoSingleton<GameManager>
 {
+
     public Character curCharacter = Character.NONSELECTED;
-    public string jsonPath = Application.dataPath + "/2.Scripts/InGame/Player/CharacterData/Characterdata.json";
-    private CharacterDataList characterDataList;
+    public string userId;
+    public int enemyLayerMask;
+    public int groundLayer;
+    public bool gameEnd = false;
+    public bool startGame{get; private set;}
 
-    void Start()
+
+    protected override void Awake()
     {
-        LoadCharacterData();
+        base.Awake();
+        enemyLayerMask = 1<<LayerMask.NameToLayer("ENEMY");
+        groundLayer = 1<<LayerMask.NameToLayer("GROUND");
     }
 
-    void LoadCharacterData()
-    {
-        string jsonData = File.ReadAllText(jsonPath);
-        characterDataList = JsonUtility.FromJson<CharacterDataList>(jsonData);
-    }
-
-    public CharacterData GetCharacterDataByName(string characterName)
-    {
-        return characterDataList.characterDataList.Find(c => c.characterName == characterName);
-    }
+    public void SetStartGame(bool startGame){this.startGame = startGame;}
 }

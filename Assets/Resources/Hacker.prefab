@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6018797343073389844}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: heel.02.R_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 790311511748917609}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand.finger.01.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 7621017222107906122}
   - component: {fileID: 4833555371326546781}
   - component: {fileID: 4835307614292104733}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Hacker
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -98,6 +98,8 @@ Transform:
   m_Children:
   - {fileID: 4943315448963350614}
   - {fileID: 4464966741227592457}
+  - {fileID: 3156797707494188649}
+  - {fileID: 1020081404115419982}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1095192583758836900
@@ -112,18 +114,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c7d4be40b273ec418779279677dffc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  curState: 4
   movetype: 0
-  mainCamera: {fileID: 0}
   isMove: 0
   isDodge: 0
   isAttack: 0
   weapon: {fileID: 0}
-  curState: 4
-  groundNormal: {x: 0, y: 0, z: 0}
-  camFollow: {fileID: 0}
+  groundCheck: {fileID: 1020081404115419982}
+  rSkillTrigger: 0
+  qSkillTrigger: 0
+  eSkillTrigger: 0
+  dodgeTrigger: 0
+  invincible: 0
+  TestBtn: {fileID: 0}
   bulletEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
-  damage: 20
-  fireRate: 0.05
 --- !u!54 &7621017222107906122
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -132,7 +136,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 500740715899982824}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 1.5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -211,7 +215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 156340207858765369}
   - component: {fileID: 2266297117444858927}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: gun_sights_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -241,13 +245,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519107086579341481}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -366,7 +370,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6735957423216569810}
   - component: {fileID: 7902132746797872471}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_side_4panels_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -396,13 +400,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 532063524294379249}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -520,7 +524,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5679059763797293675}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: shin.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -552,7 +556,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3015630828100231684}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -589,7 +593,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2842503654147828315}
   - component: {fileID: 4665786693489416470}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: canister_holder_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -619,13 +623,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 631985613468521596}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -734,6 +738,37 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0000033092365, y: 0.0044493014, z: -0.0044364114}
     m_Extent: {x: 0.00013574876, y: 0.00016450603, z: 0.00014980556}
   m_DirtyAABB: 0
+--- !u!1 &705164092862310912
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1020081404115419982}
+  m_Layer: 0
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1020081404115419982
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705164092862310912}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7259450394693634562}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &735923661759448667
 GameObject:
   m_ObjectHideFlags: 0
@@ -744,7 +779,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4974758864907736259}
   - component: {fileID: 3796773042255874276}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: gun_main_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -774,13 +809,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 735923661759448667}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -899,7 +934,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7774208103511130665}
   - component: {fileID: 2637099191833157709}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: gun_base_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -929,13 +964,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 847112190244834042}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -1054,7 +1089,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2498060184461828813}
   - component: {fileID: 8780535804679850158}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_front_stripes_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1084,13 +1119,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1038838254690921437}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -1208,7 +1243,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6417046816221292626}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_ring_03.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1241,7 +1276,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5343543476605461980}
   - component: {fileID: 2852712942739322059}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_back_panels_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1271,13 +1306,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1136176655033408197}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -1395,7 +1430,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 202705106386719885}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: spine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1434,7 +1469,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6994154873678443149}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_thumb_02.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1467,7 +1502,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6969417827867290419}
   - component: {fileID: 7836317348955616578}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_cables_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1497,13 +1532,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1384789695762592802}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -1622,7 +1657,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7851438767724874764}
   - component: {fileID: 7842902665889456985}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_blocks_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1652,13 +1687,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1451180219183932837}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -1776,7 +1811,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4943670232572547638}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_pinky_01.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1808,7 +1843,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5489168360673304774}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1845,7 +1880,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6014438507316499157}
   - component: {fileID: 1323630825823002722}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_air_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1875,13 +1910,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1647348734721349640}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -1999,7 +2034,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8041132182749824}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_index_01.L_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2030,7 +2065,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3125998468424636640}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand.finger.04.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2063,7 +2098,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4566228334118558705}
   - component: {fileID: 3280137026108805088}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: canister_cable_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2093,13 +2128,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1703517878563689635}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -2218,7 +2253,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8696730025007620362}
   - component: {fileID: 8852703468685669460}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: visor_main_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2248,13 +2283,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1707056241380211901}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -2373,7 +2408,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8439813552017468782}
   - component: {fileID: 8975927804984540554}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: indents_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2403,13 +2438,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1799423487446713958}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -2528,7 +2563,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6555988789775791081}
   - component: {fileID: 930852440182581708}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_clips_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2558,13 +2593,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1829699821865144871}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -2682,7 +2717,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6909384425233322310}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand.finger.02.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2714,7 +2749,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1391011240431245635}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_ring_01.L_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2746,7 +2781,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1863824302183273498}
   - component: {fileID: 515111710117165322}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: shoes_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2776,13 +2811,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2111831973727513546}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -2900,7 +2935,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6265662732876336521}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_thumb_03.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2933,7 +2968,7 @@ GameObject:
   m_Component:
   - component: {fileID: 993753456382460298}
   - component: {fileID: 7292954449904714101}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_top_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2963,13 +2998,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2153606341947728750}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -3087,7 +3122,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1771135156246774218}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_index_01.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3119,7 +3154,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4688892076178988888}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: spine.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3151,7 +3186,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1528902020949242409}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_middle_03.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3183,7 +3218,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1798248592141570227}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_pinky_01.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3215,7 +3250,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9103552285991498400}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_middle_01.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3247,7 +3282,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8043765549747017148}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand.finger.08.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3280,7 +3315,7 @@ GameObject:
   m_Component:
   - component: {fileID: 294922199018409545}
   - component: {fileID: 6719115417044738736}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: gun_cylinders_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3310,13 +3345,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2428016660265362508}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -3434,7 +3469,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8143291729863611223}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: buttocks.L_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3465,7 +3500,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4974367786749851773}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: toe.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3497,7 +3532,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 252154354793630625}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_thumb_03.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3529,7 +3564,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4464966741227592457}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: CameraFollow
   m_TagString: CameraFollow
   m_Icon: {fileID: 0}
@@ -3545,7 +3580,7 @@ Transform:
   m_GameObject: {fileID: 2749047559656063657}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.2, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3561,7 +3596,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3959447448352024381}
   - component: {fileID: 6842220257343022186}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_side_platform_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3591,13 +3626,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2756813233309058592}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -3715,7 +3750,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5545449491453382521}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: heel.02.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3747,7 +3782,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7819713846320753967}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: breast.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3779,7 +3814,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9046092159513180258}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: spine.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3815,7 +3850,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9027752013911371954}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_thumb_01.L_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3847,7 +3882,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8551174836580630654}
   - component: {fileID: 6599439695309064535}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_side_stripes_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3877,13 +3912,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2988142950719585971}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -4002,7 +4037,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4756253760023997054}
   - component: {fileID: 8404842961811173372}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_side_wings_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4032,13 +4067,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3062917627681384516}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -4156,7 +4191,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4395464674912199202}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: spine.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4188,7 +4223,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3407009764375511575}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_ring_03.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4220,7 +4255,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2872831995007216643}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand.finger.07.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4252,7 +4287,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5304469293905215985}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: spine.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4284,7 +4319,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2843887063313545872}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_index_03.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4316,7 +4351,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5810473791549111046}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: upper_arm.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4348,7 +4383,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8481500788059280342}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_middle_01.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4380,7 +4415,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4226237395037522077}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: forearm.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4412,7 +4447,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1185125508475260392}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_thumb_01.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4445,7 +4480,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5480025169836976245}
   - component: {fileID: 1847291152866002958}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: canister_holder_cylinder_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4475,13 +4510,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3815870776734046788}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -4599,7 +4634,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3062220811628687844}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: thigh.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4632,7 +4667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7374935671763684140}
   - component: {fileID: 5133336360693403741}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: gun_notch_02_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4662,13 +4697,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3951245643155772911}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -4786,7 +4821,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1802893150661950631}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: shin.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4818,7 +4853,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6169784367894766846}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: buttocks.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4850,7 +4885,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 81348944435052508}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: thigh.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4882,7 +4917,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5363880243379498018}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_index_01.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4915,7 +4950,7 @@ GameObject:
   m_Component:
   - component: {fileID: 528689449628054903}
   - component: {fileID: 2381320971223112949}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: bodysuit_air_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4945,13 +4980,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4222212492207424273}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -5069,7 +5104,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1158606460094779178}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: spine.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5101,7 +5136,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4868550690735363837}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: spine_tools
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5133,7 +5168,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4729792409565761382}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: buttocks.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5165,7 +5200,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1724185482776362848}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: shoulder.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5198,7 +5233,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2316160020938662091}
   - component: {fileID: 268271650849001743}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: gun_cylinder_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5228,13 +5263,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4492573131612377580}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -5353,7 +5388,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4943315448963350614}
   - component: {fileID: 267416359849045675}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: scifi_scout_girl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5464,7 +5499,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4751534754258709122}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_middle_02.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5497,7 +5532,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8331078826466876444}
   - component: {fileID: 5846801640719252049}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_ear_panel_02_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5527,13 +5562,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4719196434461358096}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -5652,7 +5687,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8407346582496497404}
   - component: {fileID: 7477193351176832613}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: gun_bracelet_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5682,13 +5717,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4752393431644084600}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -5806,7 +5841,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 120065401232200378}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: pelvis.L_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5837,7 +5872,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7840026362200317918}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_middle_03.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5869,7 +5904,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2805374757968641821}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: breast.R_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5900,7 +5935,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 448326513545986634}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_index_01.R_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5932,7 +5967,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8557028089839765442}
   - component: {fileID: 957934454660463886}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: canister_cube_02_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5962,13 +5997,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4955159367492743690}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -6087,7 +6122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6602455190153550283}
   - component: {fileID: 3424731625344080781}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BodySuit_low.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6117,13 +6152,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4985065033614318605}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -6242,7 +6277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4041696657641557178}
   - component: {fileID: 6781516608137947408}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: canister_bolts_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6272,13 +6307,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5078684141050833661}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -6397,7 +6432,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8881134207031819122}
   - component: {fileID: 3612414204524803777}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_wing_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6427,13 +6462,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5091065812340772937}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -6552,7 +6587,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8108287928757345343}
   - component: {fileID: 984525232026319206}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: canister_holder_big_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6582,13 +6617,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5180548046589135337}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -6707,7 +6742,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2041525031800367073}
   - component: {fileID: 5256934181779215170}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: gun_barrel_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6737,13 +6772,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5194360883907657853}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -6861,7 +6896,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2365753628684386296}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand.finger.05.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6893,7 +6928,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 53329742274494764}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: toe.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6926,7 +6961,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3582390036267222340}
   - component: {fileID: 6631175687997075655}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: head_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6956,13 +6991,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5317765412087011825}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -7081,7 +7116,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3283465497184876083}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: pelvis.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7113,7 +7148,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5935215193242700259}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: toe.R_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7145,7 +7180,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3949248830836676037}
   - component: {fileID: 873249954947736318}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: canister_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7175,13 +7210,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5494222714387166300}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -7300,7 +7335,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5212387352369014245}
   - component: {fileID: 8633782323773381621}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: bodysuit_cables_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7330,13 +7365,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5535011641121076003}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -7454,7 +7489,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2252404173662495801}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_index_03.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7487,7 +7522,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1492442402827996710}
   - component: {fileID: 4535691474363030855}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_corner_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7517,13 +7552,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5581902452168543432}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -7641,7 +7676,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3401907312283722540}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: metarig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7674,7 +7709,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1180974406560771734}
   - component: {fileID: 8240202658274001867}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: chestpiece_block_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7704,13 +7739,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5593765138858606013}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -7829,7 +7864,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8269166457090275806}
   - component: {fileID: 2588167045360014653}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_back_cylinder_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7859,13 +7894,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5613807270231526890}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -7984,7 +8019,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6700934549157951671}
   - component: {fileID: 6410776172213864725}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: chestpiece_center_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8014,13 +8049,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5622715931712693329}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -8138,7 +8173,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3571496747004970662}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: breast.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8171,7 +8206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8145025296246731352}
   - component: {fileID: 7018305029098405155}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_ear_panel_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8201,13 +8236,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5745596567570949812}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -8325,7 +8360,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5566974628130200288}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_thumb_01.R_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8356,7 +8391,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 140723153963488825}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_middle_02.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8388,7 +8423,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8817881305885143812}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: pelvis.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8420,7 +8455,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8871669271118052628}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: forearm.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8452,7 +8487,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4394047001434885418}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_ring_01.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8484,7 +8519,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8110112880590816499}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: breast.L_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8516,7 +8551,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1679205677086075952}
   - component: {fileID: 5017500620071992638}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_sides_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8546,13 +8581,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6134459360022901193}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -8670,7 +8705,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 193696706668575132}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_index_02.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8702,7 +8737,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6132554573345614602}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: toe.L_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8734,7 +8769,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4512103795275935105}
   - component: {fileID: 2707198215737212976}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: canister_spiral_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8764,13 +8799,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6242583991296111036}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -8888,7 +8923,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5164770558351742215}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand.finger.06.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8921,7 +8956,7 @@ GameObject:
   m_Component:
   - component: {fileID: 462336984736709872}
   - component: {fileID: 264854231105066807}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ears_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8951,13 +8986,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6308764378419120000}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -9075,7 +9110,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7289019853292609514}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: heel.02.L_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9106,7 +9141,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3642997873495394886}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_pinky_01.R_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9138,7 +9173,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7337409904926325335}
   - component: {fileID: 7090651736556550471}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: canister_cube_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9168,13 +9203,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6614229555566474320}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -9293,7 +9328,7 @@ GameObject:
   m_Component:
   - component: {fileID: 746739810244698632}
   - component: {fileID: 2758016590251958355}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: gun_notch_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9323,13 +9358,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6740270784498728359}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -9448,7 +9483,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8863904507997334966}
   - component: {fileID: 5780780885877707426}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: canister_cable_hanging_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9478,13 +9513,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6741296556301687959}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -9603,7 +9638,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5330204135860129503}
   - component: {fileID: 5496722306226308613}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_pad_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9633,13 +9668,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6785242188088930910}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -9757,7 +9792,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3077748140471017997}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_pinky_01.L_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9789,7 +9824,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9117256659368249408}
   - component: {fileID: 2806168308832114717}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ChestArmor_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9819,13 +9854,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6842209982886131392}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -9943,7 +9978,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8818183794869325768}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_pinky_02.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9976,7 +10011,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1556804682483985591}
   - component: {fileID: 6531197241283025753}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: cable_end_front_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10006,13 +10041,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6870293192886834159}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -10130,7 +10165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2647421805120740775}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_ring_02.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10162,7 +10197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9076502157642644454}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_pinky_03.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10194,7 +10229,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3496492710630799169}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: foot.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10227,7 +10262,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7967680331848716192}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: heel.02.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10259,7 +10294,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9220630403508131052}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_ring_02.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10292,7 +10327,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3245028721009905290}
   - component: {fileID: 830856940221172784}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BodySuit_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10322,13 +10357,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7229620611352283718}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -10446,7 +10481,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8631232450902051534}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_pinky_03.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10478,7 +10513,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8943410618545865740}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: pelvis.R_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10509,7 +10544,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1758538631842863042}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: upper_arm.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10541,7 +10576,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5307429983047133968}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_thumb_01.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10574,7 +10609,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3762736580352222305}
   - component: {fileID: 1623426517454163446}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_top_stripe_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10604,13 +10639,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7823795738012441292}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -10728,7 +10763,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4485826924441248400}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: shoulder.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10760,7 +10795,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7363038270454646627}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_pinky_02.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10793,7 +10828,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5927290386982098729}
   - component: {fileID: 905838735530330901}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: gun_ironsight_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10823,13 +10858,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8021439296636819439}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -10947,7 +10982,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2313396685278975857}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_middle_01.L_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10979,7 +11014,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2641428385603139009}
   - component: {fileID: 8430422973252540635}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_visor_holders_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11009,13 +11044,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8076491526400324623}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -11133,7 +11168,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2526691469154437568}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: foot.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11166,7 +11201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6035692487084411554}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_thumb_02.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11199,7 +11234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6283641097519905932}
   - component: {fileID: 8974961304835585683}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: visor_glass_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11229,13 +11264,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8184884156442376682}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -11354,7 +11389,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6604217603839412425}
   - component: {fileID: 8477889751620726477}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11384,13 +11419,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8246621139875796018}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -11508,7 +11543,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8483035387969102706}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: spine.006_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11540,7 +11575,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2363777367200423012}
   - component: {fileID: 9217204718316612168}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_back_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11570,13 +11605,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8352513420649348889}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -11694,7 +11729,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1205329392051188562}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_ring_01.R_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11726,7 +11761,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3961287966450537803}
   - component: {fileID: 1785579037688484691}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: cable_end_back_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11756,13 +11791,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8484786377891990579}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -11880,7 +11915,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7560847180575562556}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_middle_01.R_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11911,7 +11946,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1788105139972422508}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: spine.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11943,7 +11978,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4408443617026866490}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: spine_tools_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11974,7 +12009,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8158846653944648370}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_ring_01.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12006,7 +12041,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2156699642954113649}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: buttocks.R_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12037,7 +12072,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 772032750691105621}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand.finger.03.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12070,7 +12105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4168660608020855489}
   - component: {fileID: 3075595049110400084}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: helmet_front_design_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12100,13 +12135,13 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9118618606602859380}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -12224,7 +12259,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4406938039060467260}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: hand_finger_index_02.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12247,3 +12282,73 @@ Transform:
   - {fileID: 1771135156246774218}
   m_Father: {fileID: 2252404173662495801}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &3156797707494063339
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7259450394693634562}
+    m_Modifications:
+    - target: {fileID: 100002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
+      propertyPath: m_Name
+      value: BlobShadowProjector
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11900000, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
+      propertyPath: m_IgnoreLayers.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
+--- !u!4 &3156797707494188649 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
+  m_PrefabInstance: {fileID: 3156797707494063339}
+  m_PrefabAsset: {fileID: 0}

@@ -8,10 +8,6 @@ public class StageManager : MonoBehaviour
     PhotonView pv;
     Transform[] playerSpawnPos;
 
-    Transform[] enemySpawnPos;
-
-    GameObject[] enemys;
-
     void Awake()
     {
         pv = GetComponent<PhotonView>();
@@ -24,33 +20,27 @@ public class StageManager : MonoBehaviour
     {
         Room curRoom = PhotonNetwork.room;
         GameObject player;
+        SkillManager.Instance.GetSkillIcon();
         switch(character)
         {
             case Character.GUNNER:
-                Debug.Log("Gunner");
                 player = PhotonNetwork.Instantiate("Gunner",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
-                player.GetComponent<PlayerCtrl>().SetData(GameManager.Instance.GetCharacterDataByName("Gunner"));
+                SkillManager.Instance.player = player.GetComponent<PlayerCtrl>();
+                player.GetComponent<PlayerCtrl>().activeSkills = SkillManager.Instance.SkillAdd();
                 break;
             case Character.WARRIOR:
-                Debug.Log("Warrior");
                 player = PhotonNetwork.Instantiate("Warrior",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
-                player.GetComponent<PlayerCtrl>().SetData(GameManager.Instance.GetCharacterDataByName("Warrior"));
+                SkillManager.Instance.player = player.GetComponent<PlayerCtrl>();
+                player.GetComponent<PlayerCtrl>().activeSkills = SkillManager.Instance.SkillAdd();
                 break;
-            case Character.HUNTER:
-                Debug.Log("Hunter");
+            case Character.HACKER:
                 player = PhotonNetwork.Instantiate("Hacker",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
-                player.GetComponent<PlayerCtrl>().SetData(GameManager.Instance.GetCharacterDataByName("Hacker"));
+                SkillManager.Instance.player = player.GetComponent<PlayerCtrl>();
+                break;
+            default:
                 break;
         }
         
-        yield return null;
-    }
-    IEnumerator InitEnemy()
-    {
-        for(int i = 1; i<enemySpawnPos.Length; i++)
-        {
-            PhotonNetwork.InstantiateSceneObject("Enemy", enemySpawnPos[i].localPosition, enemySpawnPos[i].localRotation, 0, null);
-        }
         yield return null;
     }
 
@@ -58,8 +48,11 @@ public class StageManager : MonoBehaviour
     {
         PhotonNetwork.LeaveRoom();
     }
+
     void OnLeftRoom()
     {
-        SceneManager.LoadScene("TestLobby");
+        SceneManager.LoadScene("Lobby");
     }
+
+    
 }

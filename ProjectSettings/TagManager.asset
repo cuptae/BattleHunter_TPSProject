@@ -11,16 +11,21 @@ TagManager:
   - AimingPos
   - EnemySpawnPoint
   - OpeningDoor
+  - Test
+  - QSkillIcon
+  - ESkillIcon
+  - RSkillIcon
+  - AbilityCooldown
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PLAYER
   - Water
   - UI
   - GROUND
   - ENEMY
-  - 
+  - PLAYERPROJECTILE
   - 
   - 
   - 

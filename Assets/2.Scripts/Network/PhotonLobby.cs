@@ -12,7 +12,7 @@ public class PhotonLobby : MonoBehaviour
     public GameObject roomItem;
     public GameObject scrollContents;
     public InputField roomName;
-
+    
     void Awake()
     {
         if(!PhotonNetwork.connected)
@@ -67,6 +67,7 @@ public class PhotonLobby : MonoBehaviour
         if(userId.IsNullOrEmpty())
         {
             userId = "USER"+Random.Range(0,1000);
+            GameManager.Instance.userId = userId;
         }
         return userId;
     }
