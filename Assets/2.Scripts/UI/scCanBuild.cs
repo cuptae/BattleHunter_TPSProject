@@ -22,8 +22,6 @@ public class scCanBuild : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public GameObject requestItemImage2;
     public GameObject requestItemCount2;
     // Start is called before the first frame update
-   
-
   
     public void OnPointerEnter(PointerEventData eventDate)
     {
@@ -35,9 +33,6 @@ public class scCanBuild : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         for (int i = 0; i < requestSlots.Length; i++)
         {
-
-
-
             ReturnColor(i);
             try
             {
@@ -64,8 +59,6 @@ public class scCanBuild : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
                 }
             }
-            
-
         }
             //btn.interactable = true;
     }
@@ -83,8 +76,6 @@ public class scCanBuild : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             requestSlots[i].transform.GetChild(1).GetComponent<Text>().text = "";
         }
     }
-
- 
 
     void ChangeColor(int i)
     {

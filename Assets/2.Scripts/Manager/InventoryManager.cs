@@ -85,7 +85,6 @@ public class InventoryManager : MonoBehaviour
         {
             // 마우스 따라다니게
             itemCursor.transform.position = Input.mousePosition;
-
             // 드래그 중인 아이템 아이콘 표시
             itemCursor.GetComponent<Image>().sprite = movingSlot.GetItem().itemIcon;
             itemCursor.GetComponent<Image>().enabled = true;

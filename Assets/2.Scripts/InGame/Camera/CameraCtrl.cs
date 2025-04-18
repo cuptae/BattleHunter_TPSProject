@@ -18,6 +18,8 @@ public class CameraCtrl : MonoBehaviour
 
     public Transform target;
     public Vector3 dirOffSet;
+    public IngameUIManager uiManager; // 인스펙터에서 할당
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -33,11 +35,15 @@ public class CameraCtrl : MonoBehaviour
             Cursor.lockState = CursorLockMode.None; // 마우스 해제
         }
 
-        if (Cursor.visible && Input.GetMouseButtonDown(0)) // 마우스 클릭 시 숨기기
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked; // 화면 중앙 고정
-        }
+        if (Cursor.visible && Input.GetMouseButtonDown(0))
+            {
+                // 인벤토리나 옵션창이 켜져있지 않을 때만 커서를 숨김
+                if (uiManager != null && !uiManager.isOnPlaying && !uiManager.isOptionPanel)
+                    {
+                        Cursor.visible = false;
+                        Cursor.lockState = CursorLockMode.Locked;
+                    }
+            }
     }
 
     private void LateUpdate()

@@ -61,6 +61,8 @@ public class IngameUIManager : MonoBehaviour
             {
                 OptionPanel.SetActive(true);
                 isOptionPanel = true;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
             }
             else if(isOnPlaying)
             {
@@ -70,6 +72,8 @@ public class IngameUIManager : MonoBehaviour
             {
                 OptionPanel.SetActive(false);
                 isOptionPanel = false;
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
             }
         }
     }
@@ -94,11 +98,5 @@ public class IngameUIManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             yield return new WaitForSeconds(0.3f);
         }
-    }
-
-    public void OpBackButtonO()
-    {
-        OptionPanel.SetActive(false);
-        isOptionPanel = false;
     }
 }
