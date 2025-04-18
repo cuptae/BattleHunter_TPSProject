@@ -45,12 +45,12 @@ LineRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3216487643202919304}
   m_Enabled: 1
-  m_CastShadows: 0
+  m_CastShadows: 1
   m_ReceiveShadows: 0
   m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 0
-  m_LightProbeUsage: 0
+  m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
@@ -89,7 +89,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.29999924
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -97,13 +97,13 @@ LineRenderer:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.9847716
-        value: 0.4871794
-        inSlope: -1.3599608
-        outSlope: -1.3599608
+        time: 0.989746
+        value: 0.32468092
+        inSlope: -0.0010523944
+        outSlope: -0.0010523944
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.20103094
+        inWeight: 0.3063198
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -148,7 +148,7 @@ LineRenderer:
   m_MaskInteraction: 0
   m_UseWorldSpace: 0
   m_Loop: 1
-  m_ApplyActiveColorSpace: 1
+  m_ApplyActiveColorSpace: 0
 --- !u!1 &7291686534928586105
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,7 +209,7 @@ Transform:
   m_GameObject: {fileID: 7843644476085878631}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 5.365}
+  m_LocalPosition: {x: 0.009, y: -0.013, z: 6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -469,7 +469,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.65
+      scalar: 1
       minScalar: 1
       maxCurve:
         serializedVersion: 2
