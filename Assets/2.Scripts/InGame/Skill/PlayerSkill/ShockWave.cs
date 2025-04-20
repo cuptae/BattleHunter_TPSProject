@@ -11,7 +11,7 @@ public class ShockWave : ActiveSkill
         firePos = player.transform.Find("Sci_Fi_Character_08_03/root/pelvis/spine_01/spine_02/ShotHolster/ShotGun/FirePos");
         if (activeData.projectileCount == 1)
         effectVfx = Resources.Load<GameObject>(activeData.skillName+"Vfx");
-        PoolManager.Instance.CreatePool(activeData.skillName+"Vfx",effectVfx,3);
+        PoolManager.Instance.CreatePhotonPool(activeData.skillName+"Vfx",effectVfx,3);
     }
     public override IEnumerator Activation()
     {
@@ -19,7 +19,7 @@ public class ShockWave : ActiveSkill
 
         Debug.Log($"skillId: {activeData.skillId},skillName: {activeData.skillName},damage: {activeData.damage},attackDistance: {activeData.attackDistance},attackRange: {activeData.attackRange}");
         yield return new WaitForSeconds(0.4222f);
-        PoolManager.Instance.GetObject(activeData.skillName+"Vfx",firePos.position,Quaternion.LookRotation(firePos.forward));
+        PoolManager.Instance.PvGetObject(activeData.skillName+"Vfx",firePos.position,Quaternion.LookRotation(firePos.forward));
         if(ScanEnemyBox(0) != null)
         {
             foreach(IDamageable enemy in ScanEnemyBox(0))

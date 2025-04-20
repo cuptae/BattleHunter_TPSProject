@@ -345,8 +345,6 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
         curPos = pos;
         curRot = rot;
         gameObject.SetActive(true);
-
-    gameObject.SetActive(true);
     }
     [PunRPC]
     public void DisableObject()

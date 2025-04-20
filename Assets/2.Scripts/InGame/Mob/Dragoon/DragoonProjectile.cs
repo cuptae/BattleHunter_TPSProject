@@ -15,7 +15,7 @@ public class DragoonProjectile : MonoBehaviour
 
     void OnEnable()
     {
-        Invoke("ResetProjectile",5.0f);
+        //Invoke("ResetProjectile",5.0f);
     }
 
 

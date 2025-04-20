@@ -6,7 +6,8 @@ public class AutoParticleReturn : MonoBehaviour
 {
     void OnParticleSystemStopped()
     {
-        PoolManager.Instance.ReturnObject(gameObject.name, gameObject);
+        if(gameObject.activeSelf == true)
+            PoolManager.Instance.ReturnObject(gameObject.name, gameObject);
     }
 
     void Start()
