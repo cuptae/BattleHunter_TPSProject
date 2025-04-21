@@ -48891,7 +48891,8 @@ GameObject:
   - component: {fileID: 4638377481891691631}
   - component: {fileID: 2868216338370173421}
   - component: {fileID: 428826029692590997}
-  - component: {fileID: 4659594935160858008}
+  - component: {fileID: 6321887444172791943}
+  - component: {fileID: 5561668724389785978}
   m_Layer: 0
   m_Name: Energy BurstVfx
   m_TagString: Untagged
@@ -53722,7 +53723,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &4659594935160858008
+--- !u!114 &6321887444172791943
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -53731,7 +53732,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 8464950693656172981}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1be2aaaa2e5c9f498137006e7297b9a, type: 3}
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 3
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 4638377481891691631}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
+--- !u!114 &5561668724389785978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8464950693656172981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea008e440ba69fb4db5e818e0981a6ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8487342368223044495

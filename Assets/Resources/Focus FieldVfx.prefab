@@ -14688,7 +14688,8 @@ GameObject:
   - component: {fileID: 8507035169876421166}
   - component: {fileID: 7982383132497440533}
   - component: {fileID: 3453786004465087387}
-  - component: {fileID: -8564629273537527271}
+  - component: {fileID: 9087385607630606144}
+  - component: {fileID: -3287796621107261997}
   m_Layer: 0
   m_Name: Focus FieldVfx
   m_TagString: Untagged
@@ -19570,7 +19571,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &-8564629273537527271
+--- !u!114 &9087385607630606144
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -19579,9 +19580,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 4295509444505158038}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1be2aaaa2e5c9f498137006e7297b9a, type: 3}
+  m_Script: {fileID: 11500000, guid: ea008e440ba69fb4db5e818e0981a6ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3287796621107261997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4295509444505158038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 3
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 8507035169876421166}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &8606871961866925366
 GameObject:
   m_ObjectHideFlags: 0

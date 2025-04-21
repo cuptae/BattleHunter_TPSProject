@@ -277,6 +277,24 @@ public abstract class PlayerCtrl : MonoBehaviour
             // }
         }
     }
+
+    [PunRPC]
+    public void AttachEffect(int viewID)
+    {
+        GameObject effect = PhotonView.Find(viewID).gameObject;
+        effect.transform.SetParent(this.transform);
+        effect.transform.localPosition = new Vector3(0, 1f, 0);
+        effect.transform.localRotation = Quaternion.identity;
+    }
+
+    [PunRPC]
+    public void DetachEffect(int viewID)
+    {
+        GameObject effect = PhotonView.Find(viewID).gameObject;
+        effect.transform.SetParent(null);
+        effect.transform.localPosition = Vector3.zero;
+        effect.transform.localRotation = Quaternion.identity;
+    }
     #endregion
 
     #region Skill Input Methods
@@ -319,7 +337,20 @@ public abstract class PlayerCtrl : MonoBehaviour
     }
 
     protected void SetHPInit(int hp) { curHp = hp; }
-    public void SetInvincible(bool _invincible) { invincible = _invincible; }
+
+    [PunRPC]
+    public void RPC_SetInvincible(bool _invincible)
+    {
+        invincible = _invincible;
+    }
+
+    public void SetInvincible(bool _invincible) { 
+        invincible = _invincible;
+        if (pv.isMine)
+        {
+            pv.RPC("RPC_SetInvincible", PhotonTargets.AllBuffered, _invincible);
+        }
+    }
     #endregion
 
 

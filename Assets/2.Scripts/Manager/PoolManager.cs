@@ -31,6 +31,7 @@ public class PoolManager : MonoSingleton<PoolManager>
 
     public void CreatePhotonPool(string key, GameObject prefab, int size)
     {
+        
         GameObject pa = new GameObject(key);
         //만약 풀에 해당 key 값이 없다면
         if(!pool.ContainsKey(key))
@@ -42,7 +43,8 @@ public class PoolManager : MonoSingleton<PoolManager>
             for(int i = 0; i< size; i++)
             {
                 GameObject go = PhotonNetwork.Instantiate(prefab.name,transform.position,transform.rotation,0);//프리팹 생성
-                go.SetActive(false);//비활성
+                PhotonView pv = go.GetComponent<PhotonView>();
+                pv.RPC("DisableObject", PhotonTargets.All);
                 go.transform.parent = pa.transform;
                 go.transform.name = prefab.name;
                 pool[key].Enqueue(go);//큐에 넣는다

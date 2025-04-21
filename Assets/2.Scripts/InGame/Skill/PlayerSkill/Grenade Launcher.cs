@@ -13,7 +13,10 @@ public class GrenadeLauncher : ActiveSkill
     {
         firePos = player.transform.Find("Sci_Fi_Character_08_03/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/Riple/SciFiGunLightWhite/GrenadeFirePos");
         effectVfx = Resources.Load<GameObject>(activeData.skillName+"Vfx");
-        PoolManager.Instance.CreatePhotonPool(activeData.skillName+"Vfx",effectVfx,3);
+        if(player.pv.isMine)
+        {
+            PoolManager.Instance.CreatePhotonPool(activeData.skillName+"Vfx",effectVfx,3);
+        }
     }
     public override IEnumerator Activation()
     {

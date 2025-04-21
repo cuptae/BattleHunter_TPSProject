@@ -14617,8 +14617,8 @@ GameObject:
   - component: {fileID: 8555746380200063504}
   - component: {fileID: 4666331426315735973}
   - component: {fileID: 7750921469018327378}
-  - component: {fileID: 6577239206634584899}
   - component: {fileID: 2248663838473290421}
+  - component: {fileID: 3349691376704683400}
   m_Layer: 0
   m_Name: Photon LanceVfx
   m_TagString: Untagged
@@ -19443,18 +19443,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &6577239206634584899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8832636029624755589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1be2aaaa2e5c9f498137006e7297b9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2248663838473290421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19482,6 +19470,18 @@ MonoBehaviour:
   instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
+--- !u!114 &3349691376704683400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8832636029624755589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea008e440ba69fb4db5e818e0981a6ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8975376108179892585
 GameObject:
   m_ObjectHideFlags: 0

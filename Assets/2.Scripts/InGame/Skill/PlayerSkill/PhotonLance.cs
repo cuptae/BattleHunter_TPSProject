@@ -10,10 +10,12 @@ public class PhotonLance : ActiveSkill
 
     public PhotonLance(ActiveData activeData,GameObject effectVfx,PlayerCtrl player,Image icon):base(activeData,effectVfx,player,icon)
     {
-        //firePos = player.transform.Find("Sci_Fi_Character_08_03/root/pelvis/spine_01/spine_02/SniperHolster/Sniper_Rifle_03/FirePos");
         firePos = player.transform.Find("Sci_Fi_Character_08_03/PhotonLancePos");
         effectVfx = Resources.Load<GameObject>(activeData.skillName+"Vfx");
-        PoolManager.Instance.CreatePhotonPool(activeData.skillName+"Vfx",effectVfx,3);
+        if(player.pv.isMine)
+        {
+            PoolManager.Instance.CreatePhotonPool(activeData.skillName+"Vfx",effectVfx,3);
+        }
     }
     public override IEnumerator Activation()
     {
@@ -26,8 +28,8 @@ public class PhotonLance : ActiveSkill
 
         if (activeData.projectileCount == 2)
         {
-            GameObject rightEffect = PoolManager.Instance.GetObject(activeData.skillName + "Vfx", firePos.position, Quaternion.LookRotation(firePos.forward));
-            GameObject leftEffect = PoolManager.Instance.GetObject(activeData.skillName + "Vfx", firePos.position, Quaternion.LookRotation(firePos.forward));
+            GameObject rightEffect = PoolManager.Instance.PvGetObject(activeData.skillName + "Vfx", firePos.position, Quaternion.LookRotation(firePos.forward));
+            GameObject leftEffect = PoolManager.Instance.PvGetObject(activeData.skillName + "Vfx", firePos.position, Quaternion.LookRotation(firePos.forward));
             player.StartCoroutine(DealDamageCoroutine(duration, interval));
             float timer = 0f;
             while (timer < duration)
@@ -48,7 +50,7 @@ public class PhotonLance : ActiveSkill
         }
         else
         {
-            GameObject effect = PoolManager.Instance.GetObject(activeData.skillName +"Vfx", firePos.position, Quaternion.LookRotation(firePos.forward));
+            GameObject effect = PoolManager.Instance.PvGetObject(activeData.skillName +"Vfx", firePos.position, Quaternion.LookRotation(firePos.forward));
             float timer = 0f;
             while (timer < duration)
             {

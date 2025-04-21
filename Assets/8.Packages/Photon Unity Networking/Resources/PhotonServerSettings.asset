@@ -57,4 +57,7 @@ MonoBehaviour:
   - RPC_KnockBack
   - RPC_EnableRigBuilder
   - RPC_PlaySkillAnim
+  - AttachEffect
+  - RPC_SetInvincible
+  - DetachEffect
   DisableAutoOpenWizard: 1

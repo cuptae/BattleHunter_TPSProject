@@ -11,7 +11,10 @@ public class ShockWave : ActiveSkill
         firePos = player.transform.Find("Sci_Fi_Character_08_03/root/pelvis/spine_01/spine_02/ShotHolster/ShotGun/FirePos");
         if (activeData.projectileCount == 1)
         effectVfx = Resources.Load<GameObject>(activeData.skillName+"Vfx");
-        PoolManager.Instance.CreatePhotonPool(activeData.skillName+"Vfx",effectVfx,3);
+        if(player.pv.isMine)
+        {   
+            PoolManager.Instance.CreatePhotonPool(activeData.skillName+"Vfx",effectVfx,3);
+        }
     }
     public override IEnumerator Activation()
     {
