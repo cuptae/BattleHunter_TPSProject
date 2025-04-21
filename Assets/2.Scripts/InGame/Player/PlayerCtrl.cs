@@ -53,7 +53,12 @@ public abstract class PlayerCtrl : MonoBehaviour
     public int curHp { get; private set; }
     public event System.Action OnHpChanged;
     public float damageReduceRate =1f;
+    public float curdamageReduce;
+   
     public bool invincible;
+
+    public int skillQ;
+    public int skillE;
     #endregion
 
     #region Skill Variables
@@ -89,6 +94,7 @@ public abstract class PlayerCtrl : MonoBehaviour
         camFollow = transform.Find("CameraFollow");
         mainCamera = Camera.main;
         damageReduceRate = 1f;
+        
 
         stateMachine = new PlayerStateMachine();
 
@@ -114,6 +120,12 @@ public abstract class PlayerCtrl : MonoBehaviour
             stateMachine.Initialize(new IdleState(this));
         }
 
+        skillQ = GameStartData.skillIdQ;
+        skillE = GameStartData.skillIdE;
+
+        SlotExStat(skillE);
+        SlotExStat(skillQ);
+
         TestBtn.GetComponent<Button>().onClick.AddListener(TestSkillLevelUP);
     }
 
@@ -135,6 +147,7 @@ public abstract class PlayerCtrl : MonoBehaviour
             MoveAnim();
             stateMachine.Update();
         }
+        curdamageReduce = damageReduceRate;
     }
 
     private void FixedUpdate()
@@ -324,25 +337,24 @@ public abstract class PlayerCtrl : MonoBehaviour
 
 
     #region Stat Modification Methods
-    public void ModifyDamage(int damage, float duration)
+    public void ModifyDamage(int damage)
     {
         characterStat.modifyDamage += damage;
-        //StartCoroutine(RecoverDamage(damage, duration));
     }
     public void RecoverDamage(int damage)
     {
         characterStat.modifyDamage -= damage;
     }
+
     public IEnumerator RecoverDamage(int damage, float duration)
     {
         yield return new WaitForSeconds(duration);
         characterStat.modifyDamage -= damage;
     }
 
-    public void ModifyMaxHp(int maxHp, float duration)
+    public void ModifyMaxHp(int maxHp)
     {
         characterStat.modifyMaxHp += maxHp;
-        StartCoroutine(RecoverMaxHp(maxHp, duration));
     }
     public void RecoverMaxHp(int maxHp)
     {
@@ -355,10 +367,9 @@ public abstract class PlayerCtrl : MonoBehaviour
         characterStat.modifyMaxHp -= maxHp;
     }
 
-    public void ModifyAttackRate(float attackRate, float duration)
+    public void ModifyAttackRate(float attackRate)
     {
         characterStat.modifyAttackRate += attackRate;
-        StartCoroutine(RecoverAttackRate(attackRate, duration));
     }
     public void RecoverAttackRate(float attackRate)
     {
@@ -389,4 +400,26 @@ public abstract class PlayerCtrl : MonoBehaviour
         activeSkills = SkillManager.Instance.SkillAdd();
     }
 
+    public void SlotExStat(int a)
+    {
+        switch (a)
+        {
+            case 1: //공격력 증가
+                ModifyDamage(10); // 예시로 10 증가 
+                break;
+
+            case 2: //체력 증가
+                ModifyMaxHp(50); // 예시로 50 증가
+                SetHPInit(characterStat.MaxHp); // 최대 체력으로 초기화 가능   
+                break;
+
+            case 3: //데미지 감소
+                damageReduceRate = damageReduceRate - 0.1f; // 예: 데미지 10% 감소
+                break;
+
+            default:
+                Debug.Log("유효하지 않은 슬롯입니다.");
+                break;
+        }
+    }
 }

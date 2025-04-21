@@ -5,6 +5,9 @@ using UnityEngine.Animations.Rigging;
 
 public class Warrior : PlayerCtrl
 {
+
+    
+
     private Rig aimRig;
     public Vector3 boxRange;
     public float boxFoward, boxUp;
@@ -60,7 +63,7 @@ public class Warrior : PlayerCtrl
         if (!canAbility) // canAbility가 false면 UniqueAbility를 사용할 수 없음
         {
             shildEffect.SetActive(false); // 방패 이펙트 비활성화
-            damageReduceRate = 1f; // 원래대로 돌아옴
+            damageReduceRate = curdamageReduce; // 원래대로 돌아옴
             // 방패를 내릴 때 게이지를 천천히 채움
             abilitycooldownbar.fillAmount = Mathf.MoveTowards(abilitycooldownbar.fillAmount, 1f, Time.deltaTime / 5f);
             if (abilitycooldownbar.fillAmount >= 1f)
@@ -87,7 +90,7 @@ public class Warrior : PlayerCtrl
         else
         {
             // 방패를 내릴 때
-            damageReduceRate = 1f; // 원래대로 돌아옴
+            damageReduceRate =curdamageReduce; // 원래대로 돌아옴
             abilitycooldownbar.fillAmount = Mathf.MoveTowards(abilitycooldownbar.fillAmount, 1f, Time.deltaTime / 10f); // 5초 동안 완전히 차도록 설정
             shildEffect.SetActive(false); // 방패 이펙트 비활성화
             animator.SetBool("Shield", false);

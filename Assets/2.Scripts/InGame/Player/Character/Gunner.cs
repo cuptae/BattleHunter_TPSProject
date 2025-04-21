@@ -110,8 +110,8 @@ public class Gunner : PlayerCtrl
     {
         if(Input.GetMouseButtonDown(1)&&canAbility)
         {
-            ModifyAttackRate(-characterStat.AttackRate*0.5f,3f);
-            ModifyDamage(characterStat.Damage/2,3f);
+            ModifyAttackRate(-characterStat.AttackRate*0.5f);
+            ModifyDamage(characterStat.Damage/2);
             canAbility = false;
             StartCoroutine(HandleAbilityCooldown());
         }
