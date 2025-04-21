@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using System.IO;
 
 public class scJson : MonoBehaviour
@@ -27,23 +28,6 @@ public class scJson : MonoBehaviour
     {
         thePlayer = player;
     }
-
-    // private IEnumerator Start()
-    // {
-    //     // 최대 2초 동안 플레이어가 생성될 때까지 대기
-    //     float timer = 0f;
-    //     while (thePlayer == null && timer < 2f)
-    //     {
-    //         thePlayer = FindObjectOfType<PlayerCtrl>();
-    //         if (thePlayer != null) break;
-    //         timer += Time.deltaTime;
-    //         yield return null;
-    //     }
-    //     if (thePlayer == null)
-    //     {
-    //         Debug.LogWarning("PlayerCtrl not found!");
-    //     }
-    // }
         
     public void Save()
     {
