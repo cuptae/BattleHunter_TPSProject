@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1251341496898927274}
   - component: {fileID: 724162145757898719}
   m_Layer: 0
-  m_Name: vfx_Flames_01
+  m_Name: Flames
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
