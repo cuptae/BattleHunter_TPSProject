@@ -6,13 +6,9 @@ using System.IO;
 
 public class InventoryManager : MonoBehaviour
 {
-    [SerializeField] private List<CraftingRecipeClass> craftingRecipes = new List<CraftingRecipeClass>();
     [SerializeField] private GameObject itemCursor;
     [SerializeField] public GameObject slotHolder;
     [SerializeField] private GameObject quickSlotHolder;
-    //[SerializeField] private ItemClass itemToAdd;
-    //[SerializeField] private ItemClass itemToRemove;
-    //[SerializeField] private SlotClass[] startingItems;
 
     public SlotClass[] items;
 
@@ -69,18 +65,9 @@ public class InventoryManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            Craft(craftingRecipes[0]);
-        }
         itemCursor.SetActive(isMovingItem);
         itemCursor.transform.position = Input.mousePosition;
-
-        // if (isMovingItem)
-        // {
-        //     itemCursor.GetComponent<Image>().sprite = movingSlot.GetItem().itemIcon;
-        // }
-
+        
         if (isMovingItem)
         {
             // 마우스 따라다니게
@@ -191,18 +178,6 @@ public class InventoryManager : MonoBehaviour
         }
 
         quickSlotSelector.transform.position = quickSlots[selectedSlotIndex].transform.position;
-    }
-
-    private void Craft(CraftingRecipeClass recipe)
-    {
-        if (recipe.CanCraft(this))
-        {
-            recipe.Craft(this);
-        }
-        else
-        {
-            Debug.Log("Can't crafting Item!");
-        }
     }
 
     #region Inventory Utils
