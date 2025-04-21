@@ -28,11 +28,6 @@ public class LobbySoundManager : MonoSingleton<LobbySoundManager>
     {
         LoadData();
         SetSound();
-        //PlayBackground(SceneManager.sceneCountInBuildSettings);
-        //if (SceneManager.sceneCount == 1)
-        //    PlayBackground(0);
-        //if (SceneManager.sceneCount == 3)
-        //    PlayBackground(3);
         switch (SceneManager.GetActiveScene().buildIndex)
         {
             case 0:
