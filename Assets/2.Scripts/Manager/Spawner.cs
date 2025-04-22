@@ -14,6 +14,7 @@ public class Spawner : MonoBehaviour
     public int oneceSpawnCnt;
     public float spawnDelay = 5.0f;
 
+
     void Awake()
     {
         spawnPos = GameObject.FindWithTag("EnemySpawnPoint").GetComponentsInChildren<Transform>();
@@ -34,44 +35,52 @@ public class Spawner : MonoBehaviour
 
     IEnumerator SpawnEnemy()
     {
-    while (GameManager.Instance.startGame)
-        {
-            yield return new WaitForSeconds(spawnDelay);
-
-            for (int i = 0; i < oneceSpawnCnt; i++)
+        while (!GameManager.Instance.gameEnd)
             {
-                int randPos = Random.Range(1, spawnPos.Length);
+                yield return new WaitForSeconds(spawnDelay);
 
-                // 30마리 중 1마리 확률로 eliteEnemy 스폰
-                bool isElite = Random.Range(0, 30) == 0;
-
-                if (isElite)
+                for (int i = 0; i < oneceSpawnCnt; i++)
                 {
-                    // eliteEnemy 스폰
-                    GameObject eliteEnemy = PoolManager.Instance.PvGetObject("Mantis", spawnPos[randPos].position, spawnPos[randPos].rotation);
-                    if (eliteEnemy == null)
+                    int randPos = Random.Range(1, spawnPos.Length);
+
+                    // 30마리 중 1마리 확률로 eliteEnemy 스폰
+                    bool isElite = Random.Range(0, 30) == 0;
+
+                    if (isElite)
                     {
-                        continue;
+                        // eliteEnemy 스폰
+                        GameObject eliteEnemy = PoolManager.Instance.PvGetObject("Mantis", spawnPos[randPos].position, spawnPos[randPos].rotation);
+                        if (eliteEnemy == null)
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        // 일반 적 스폰
+                        GameObject dragoon = PoolManager.Instance.PvGetObject("Dragoon", spawnPos[randPos].position, spawnPos[randPos].rotation);
+                        if (dragoon == null)
+                        {
+                            continue;
+                        }
                     }
                 }
-                else
-                {
-                    // 일반 적 스폰
-                    GameObject dragoon = PoolManager.Instance.PvGetObject("Dragoon", spawnPos[randPos].position, spawnPos[randPos].rotation);
-                    if (dragoon == null)
-                    {
-                        continue;
-                    }
-                }
-            }
-    }
+        }
     }
 
     public void StartSpawn()
     {
-        Debug.Log("Spawn Start");
-        GameManager.Instance.SetStartGame(true);
-        StartCoroutine(SpawnEnemy());
+        if(PhotonNetwork.isMasterClient)
+        {
+            Debug.Log("Spawn Start");
+            GameManager.Instance.SetStartGame(true);
+            StartCoroutine(SpawnEnemy());
+        }
+        else
+        {
+            Debug.Log("Not Master Client");
+            return;
+        }
     }
 
 
