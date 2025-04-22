@@ -11,6 +11,6 @@ public class DontDestroy : MonoBehaviour
         //이 오브젝트는 씬 전환시 사라지지 않음
         DontDestroyOnLoad(this.gameObject);
         //Application.LoadLevel("scLobby");
-        SceneManager.LoadScene("TestIngame");
+        SceneManager.LoadScene("Ingame");
     }
 }

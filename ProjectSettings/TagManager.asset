@@ -11,11 +11,8 @@ TagManager:
   - AimingPos
   - EnemySpawnPoint
   - OpeningDoor
-  - Test
-  - QSkillIcon
-  - ESkillIcon
-  - RSkillIcon
-  - AbilityCooldown
+  - UIManager
+  - InventoryManager
   layers:
   - Default
   - TransparentFX
@@ -26,7 +23,7 @@ TagManager:
   - GROUND
   - ENEMY
   - PLAYERPROJECTILE
-  - 
+  - ItemGroundCol
   - 
   - 
   - 

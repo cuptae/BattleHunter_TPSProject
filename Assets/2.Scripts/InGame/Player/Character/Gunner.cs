@@ -15,6 +15,7 @@ public class Gunner : PlayerCtrl
     public Transform firePos;
     public float attackDistance;
     public float attackRange;
+    public IngameUIManager uiManager; // 인스펙터에 드래그해서 연결
     
 
     protected override void Awake()
@@ -74,6 +75,10 @@ public class Gunner : PlayerCtrl
 
     public override void Attack()
     {
+        // UI 열려 있으면 공격 금지
+        if (uiManager != null && (uiManager.isOnPlaying || uiManager.isOptionPanel))
+            return;
+
         if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
         {
 
