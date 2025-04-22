@@ -191,6 +191,7 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
 
         if (curHp <= 0)
         {
+
             ChangeState(new EnemyDieState());
         }
         if(!isDead&&skill != null)
@@ -370,7 +371,11 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
         gameObject.SetActive(false);
     }
 
-
+    [PunRPC]
+    public void PlusPoint()
+    {
+        GameManager.Instance.AddPoint();
+    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

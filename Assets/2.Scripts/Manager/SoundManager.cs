@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public enum SFXCategory
 {
-    PLAYER,
-    MOBS,
+    GUNNER,
+    WARRIOR,
+    DRAGOOON,
     BOSS,
     OBJECT
 }
@@ -21,10 +22,11 @@ public enum BGMType
 public enum PLAYER
 {
     STEP,
-    RUN,
-    JUMP,
     ATTACK,
-    SKILL,
+    QSKILL,
+    ESKILL,
+    ESkill2,
+    RSKILL,
     DIE
 }
 
@@ -40,9 +42,10 @@ public enum BOSS
 
 public enum UIType
 {
-    SELECTCHAR,
-    CROSSBTN,
-    PUSHBTN
+    TOGGLE,
+    BUTTON,
+    BUTTONOVER,
+    BACK
 }
 
 
@@ -86,23 +89,27 @@ public class SoundManager : MonoSingleton<SoundManager>
     void LoadSFX()
     {
     // 플레이어 효과음 등록
-    sfxClips[SFXCategory.PLAYER] = new Dictionary<PLAYER, AudioClip>();
-    sfxClips[SFXCategory.PLAYER][PLAYER.STEP] = Resources.Load<AudioClip>("Sounds/SFX/Player/Step");
-    sfxClips[SFXCategory.PLAYER][PLAYER.RUN] = Resources.Load<AudioClip>("Sounds/SFX/Player/Run");
-    sfxClips[SFXCategory.PLAYER][PLAYER.JUMP] = Resources.Load<AudioClip>("Sounds/SFX/Player/Jump");
-    sfxClips[SFXCategory.PLAYER][PLAYER.ATTACK] = Resources.Load<AudioClip>("Sounds/SFX/Player/Shoot");
-    sfxClips[SFXCategory.PLAYER][PLAYER.SKILL] = Resources.Load<AudioClip>("Sounds/SFX/Player/Skill");
-    sfxClips[SFXCategory.PLAYER][PLAYER.DIE] = Resources.Load<AudioClip>("Sounds/SFX/Player/PlayerDie");
+    sfxClips[SFXCategory.GUNNER] = new Dictionary<PLAYER, AudioClip>();
+    sfxClips[SFXCategory.GUNNER][PLAYER.ATTACK] = Resources.Load<AudioClip>("Sounds/SFX/Gunner/Shoot");
+    sfxClips[SFXCategory.GUNNER][PLAYER.STEP] = Resources.Load<AudioClip>("Sounds/SFX/Gunner/Step");
+    sfxClips[SFXCategory.GUNNER][PLAYER.QSKILL] = Resources.Load<AudioClip>("Sounds/SFX/Gunner/ShockWave");
+    sfxClips[SFXCategory.GUNNER][PLAYER.ESKILL] = Resources.Load<AudioClip>("Sounds/SFX/Gunner/GrenadeLauncher");
+    sfxClips[SFXCategory.GUNNER][PLAYER.ESkill2] = Resources.Load<AudioClip>("Sounds/SFX/Gunner/Grenade");
+    sfxClips[SFXCategory.GUNNER][PLAYER.RSKILL] = Resources.Load<AudioClip>("Sounds/SFX/Gunner/PhotonLance");
+
+    sfxClips[SFXCategory.WARRIOR] = new Dictionary<PLAYER, AudioClip>();
+    sfxClips[SFXCategory.WARRIOR][PLAYER.ATTACK] = Resources.Load<AudioClip>("Sounds/SFX/Warrior/Attack");
 
     // 몹 효과음 등록
-    sfxClips[SFXCategory.MOBS] = new Dictionary<PLAYER, AudioClip>();
-    sfxClips[SFXCategory.MOBS][PLAYER.STEP] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/Step");
-    sfxClips[SFXCategory.MOBS][PLAYER.JUMP] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/Jump");
-    sfxClips[SFXCategory.MOBS][PLAYER.DIE] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/MobDie");
+    // sfxClips[SFXCategory.MOBS] = new Dictionary<PLAYER, AudioClip>();
+    // sfxClips[SFXCategory.MOBS][PLAYER.STEP] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/Step");
+    // sfxClips[SFXCategory.MOBS][PLAYER.JUMP] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/Jump");
+    // sfxClips[SFXCategory.MOBS][PLAYER.DIE] = Resources.Load<AudioClip>("Sounds/SFX/Mobs/MobDie");
 
-    uiClips[UIType.SELECTCHAR] = Resources.Load<AudioClip>("Sounds/UI/SelectCharacter");
-    uiClips[UIType.CROSSBTN] = Resources.Load<AudioClip>("Sounds/UI/CrossButton");
-    uiClips[UIType.PUSHBTN] = Resources.Load<AudioClip>("Sounds/UI/PushButton");
+    uiClips[UIType.TOGGLE] = Resources.Load<AudioClip>("Sounds/UI/SelectCharacter");
+    uiClips[UIType.BUTTON] = Resources.Load<AudioClip>("Sounds/UI/Click");
+    uiClips[UIType.BUTTONOVER] = Resources.Load<AudioClip>("Sounds/UI/CrossButton");
+    uiClips[UIType.BACK] = Resources.Load<AudioClip>("Sounds/UI/Back");
     }
 
     // ✅ 🎵 BGM 재생 (페이드 인/아웃 적용)

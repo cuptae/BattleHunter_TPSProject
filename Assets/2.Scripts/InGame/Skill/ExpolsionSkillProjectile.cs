@@ -16,7 +16,7 @@ public class ExpolsionSkillProjectile : MonoBehaviour
         Vector3 hitPos = transform.position; // 또는 other.ClosestPoint(transform.position);
         Vector3 direction = (other.transform.position - transform.position).normalized;
         Quaternion hitRot = Quaternion.LookRotation(direction);
-
+        SoundManager.Instance.PlaySFX(SFXCategory.GUNNER, PLAYER.ESKILL, hitPos);
         PoolManager.Instance.PvGetObject(data.skillName +"Vfx", hitPos, hitRot);
         Explosion();
     }

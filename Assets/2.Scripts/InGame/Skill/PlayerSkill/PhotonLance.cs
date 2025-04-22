@@ -43,7 +43,7 @@ public class PhotonLance : ActiveSkill
 
                 leftEffect.transform.rotation = Quaternion.LookRotation(leftDir);
                 rightEffect.transform.rotation = Quaternion.LookRotation(rightDir);
-
+                SoundManager.Instance.PlaySFX(SFXCategory.GUNNER, PLAYER.RSKILL, firePos.position);
                 timer += Time.deltaTime;
                 yield return null;
             }
@@ -57,7 +57,8 @@ public class PhotonLance : ActiveSkill
                 List<IDamageable> enemies = ScanEnemyBox(0);
                 foreach (IDamageable enemy in enemies)
                     enemy.GetDamage(activeData.damage);
-
+                
+                SoundManager.Instance.PlaySFX(SFXCategory.GUNNER, PLAYER.RSKILL, firePos.position);
                 timer += interval;
                 yield return new WaitForSeconds(interval);
             }

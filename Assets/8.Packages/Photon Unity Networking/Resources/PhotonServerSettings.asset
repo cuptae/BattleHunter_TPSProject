@@ -65,4 +65,5 @@ MonoBehaviour:
   - ImageActive
   - StartGame
   - RPC_StartGame
+  - PlusPoint
   DisableAutoOpenWizard: 1

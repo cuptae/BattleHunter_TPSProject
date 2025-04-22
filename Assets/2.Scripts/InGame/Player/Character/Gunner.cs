@@ -91,16 +91,12 @@ public class Gunner : PlayerCtrl
                 Quaternion hitDir = Quaternion.LookRotation(-direction);
                 if (enemy != null) // 적 오브젝트를 찾았다면
                 {
-                    enemy.GetDamage(characterStat.Damage); 
+                    enemy.GetDamage(characterStat.Damage);
+                    Debug.Log(characterStat.Damage);
                     BulletEffect(hitInfo.point, hitDir);
                 }
-                // if (Boss != null)
-                // {
-                //     Boss.GetDamage(characterStat.Damage);
-                //     BulletEffect(hitInfo.point, hitDir); // 중복되더라도 상관 없으면 그대로
-                // }
             }
-            SoundManager.Instance.PlaySFX(SFXCategory.PLAYER, PLAYER.ATTACK, tr.position);
+            SoundManager.Instance.PlaySFX(SFXCategory.GUNNER, PLAYER.ATTACK, tr.position);
             nextFireTime = Time.time + characterStat.AttackRate; // 다음 발사 시간 설정
         }
     }

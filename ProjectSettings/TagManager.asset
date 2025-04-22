@@ -16,6 +16,7 @@ TagManager:
   - ESkillIcon
   - RSkillIcon
   - AbilityCooldown
+  - BackBtn
   layers:
   - Default
   - TransparentFX

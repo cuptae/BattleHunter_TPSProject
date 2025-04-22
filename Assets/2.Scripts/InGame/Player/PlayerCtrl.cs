@@ -407,20 +407,20 @@ public abstract class PlayerCtrl : MonoBehaviour
     }
     public void SlotExStat(int slotId)
     {
-        switch (slotId)
+        switch (slotId%3)
         {
-            case 1: //공격력 증가
+            case 0: //공격력 증가
                 ModifyDamage(10); // 예시로 10 증가 
                 Debug.Log("공격력 증가");
                 break;
 
-            case 2: //체력 증가
+            case 1: //체력 증가
                 ModifyMaxHp(50); // 예시로 50 증가
                 SetHPInit(characterStat.MaxHp); // 최대 체력으로 초기화 가능   
                 Debug.Log("체력 증가");
                 break;
 
-            case 3: //이동속도 증가
+            case 2: //이동속도 증가
                 ModifyMoveSpeed(5f);
                 Debug.Log("이동속도 증가");
                 break;

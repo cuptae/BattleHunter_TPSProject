@@ -26,6 +26,7 @@ public class GrenadeLauncher : ActiveSkill
         else if (activeData.projectileCount == 3)
             angles = new float[] { -5f, 0f, 5f };
         yield return new WaitForSeconds(attackTiming);
+        SoundManager.Instance.PlaySFX(SFXCategory.GUNNER, PLAYER.ESkill2, firePos.position);
         foreach (float angle in angles)
         {
             Debug.Log(activeData.projectileCount);

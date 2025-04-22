@@ -23,6 +23,7 @@ public class ShockWave : ActiveSkill
         Debug.Log($"skillId: {activeData.skillId},skillName: {activeData.skillName},damage: {activeData.damage},attackDistance: {activeData.attackDistance},attackRange: {activeData.attackRange}");
         yield return new WaitForSeconds(0.4222f);
         PoolManager.Instance.PvGetObject(activeData.skillName+"Vfx",firePos.position,Quaternion.LookRotation(firePos.forward));
+        SoundManager.Instance.PlaySFX(SFXCategory.GUNNER, PLAYER.QSKILL,firePos.position);
         if(ScanEnemyBox(0) != null)
         {
             foreach(IDamageable enemy in ScanEnemyBox(0))

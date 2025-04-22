@@ -12,6 +12,8 @@ public class MoveState : PlayerState
     private float curSpeed;
     private float moveAnimPercent;
     private float moveForce = 30f;
+    private float nextStepTime = 0f;
+    private float stepDelay;
     public MoveState(PlayerCtrl player) : base(player) {}
     public override void EnterState()
     {
@@ -24,7 +26,11 @@ public class MoveState : PlayerState
         player.MoveDir();
         player.Rotation();
         SpeedCheck();
-
+        if(Time.time >= nextStepTime)
+        {
+            SoundManager.Instance.PlaySFX(SFXCategory.GUNNER, PLAYER.STEP,player.transform.position);
+            nextStepTime = Time.time + stepDelay;
+        }
         if (!player.isMove){player.ChangeState(new IdleState(player));}
         if (player.DodgeInput()){player.ChangeState(new DodgeState(player));}
         if(player.isAttack){player.ChangeState(new PlayerAttackState(player));}
@@ -90,10 +96,12 @@ public class MoveState : PlayerState
         if(player.RunInput())
         {
             curSpeed = player.characterStat.RunSpeed;
+            stepDelay = 0.2f;
             player.animator.SetFloat("Speed", 1, 0f, Time.deltaTime);
         }
         else{
             curSpeed = player.characterStat.WalkSpeed;
+            stepDelay = 0.5f;
         }
     }
     void MoveAnim()

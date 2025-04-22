@@ -6,7 +6,7 @@ public class EnemyDieState : IEnemyState
     {
         enemy.currState = EnemyState.DIE;
         enemy.isDead = true;
-
+        enemy.pv.RPC("PlusPoint", PhotonTargets.All);
         if(enemy.pv.isMine)
         {
             var agent = enemy.GetComponent<NavMeshAgent>();

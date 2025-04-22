@@ -30,4 +30,8 @@ public class WarriorAnimationEvent : MonoBehaviour
         index = (index == 1) ? 3 : 1;
         attackEffectPrefab[index].gameObject.SetActive(true);
     }
+    public void SwordSound()
+    {
+        SoundManager.Instance.PlaySFX(SFXCategory.WARRIOR, PLAYER.ATTACK, player.transform.position);
+    }
 }

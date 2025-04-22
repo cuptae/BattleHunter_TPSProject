@@ -10,7 +10,7 @@ public class GameManager : MonoSingleton<GameManager>
     public bool gameEnd = false;
     public bool startGame{get; private set;}
 
-
+    public int pointCount = 0;
     protected override void Awake()
     {
         base.Awake();
@@ -19,5 +19,5 @@ public class GameManager : MonoSingleton<GameManager>
     }
 
     public void SetStartGame(bool startGame){this.startGame = startGame;}
-
+    public void AddPoint(){pointCount++;}
 }

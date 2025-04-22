@@ -1108,7 +1108,7 @@ GameObject:
   - component: {fileID: 440514148}
   m_Layer: 5
   m_Name: CloseBtn
-  m_TagString: Untagged
+  m_TagString: BackBtn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4545,7 +4545,7 @@ GameObject:
   - component: {fileID: 1824821950}
   m_Layer: 5
   m_Name: Back
-  m_TagString: Untagged
+  m_TagString: BackBtn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5396,6 +5396,7 @@ MonoBehaviour:
   enemyLayerMask: 0
   groundLayer: 0
   gameEnd: 0
+  pointCount: 0
 --- !u!4 &2083063859
 Transform:
   m_ObjectHideFlags: 0
@@ -27505,7 +27506,7 @@ GameObject:
   - component: {fileID: 8927063359135812710}
   m_Layer: 5
   m_Name: CloseBtn
-  m_TagString: Untagged
+  m_TagString: BackBtn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30835,7 +30836,7 @@ GameObject:
   - component: {fileID: 1538976510773444296}
   m_Layer: 5
   m_Name: Exit
-  m_TagString: Untagged
+  m_TagString: BackBtn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
