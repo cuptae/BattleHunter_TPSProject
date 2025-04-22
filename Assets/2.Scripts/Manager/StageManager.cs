@@ -39,10 +39,6 @@ public class StageManager : MonoBehaviour
             default:
                 yield break;
         }
-        foreach(PhotonPlayer photonPlayer in PhotonNetwork.playerList)
-        {
-    
-        }
         // 자신의 플레이어인지 확인
         PlayerCtrl playerCtrl = player.GetComponent<PlayerCtrl>();
         if (player.GetComponent<PhotonView>().isMine)

@@ -90,7 +90,7 @@ public abstract class PlayerCtrl : MonoBehaviour
     {
         invenMgr = GameObject.FindGameObjectWithTag("InventoryManager").GetComponent<InventoryManager>();
         IngameUI = GameObject.FindGameObjectWithTag("UIManager").GetComponent<IngameUIManager>();
-        TestBtn = GameObject.FindWithTag("Test");
+        //TestBtn = GameObject.FindWithTag("Test");
         abilitycooldownbar = GameObject.FindWithTag("AbilityCooldown").GetComponent<Image>();
         animator = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();

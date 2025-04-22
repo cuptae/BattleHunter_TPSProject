@@ -463,10 +463,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6440524527091855857}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d752b2515b128d843928134253e13e10, type: 3}
+  m_Script: {fileID: 11500000, guid: 333657417d64acc4983d28fa4bd87aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hpSlider: {fileID: 185273540226883415}
+  hpSlider: {fileID: 0}
   enemyNameText: {fileID: 0}
   enemyTransform: {fileID: 0}
   hpBarCanvasGroup: {fileID: 0}
@@ -474,11 +474,8 @@ MonoBehaviour:
   smoothSpeed: 0.1
   enemyCtrl: {fileID: 0}
   mainCamera: {fileID: 0}
-  offset: {x: 0, y: 1.5, z: 0}
-  deBuff:
-  - {fileID: 8497897460269877519}
-  - {fileID: 1585332387315736262}
-  - {fileID: 4306657874234344334}
+  offset: {x: 0, y: -5, z: 0}
+  deBuff: []
 --- !u!1 &8193523437932907995
 GameObject:
   m_ObjectHideFlags: 0

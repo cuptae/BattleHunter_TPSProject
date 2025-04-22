@@ -20,7 +20,7 @@ public class InventoryManager : MonoBehaviour
     private SlotClass originalSlot;
     bool isMovingItem;
 
-    [SerializeField] private GameObject quickSlotSelector;
+    //[SerializeField] private GameObject quickSlotSelector;
     [SerializeField] private int selectedSlotIndex = 0;
     public ItemClass selectedItem;
 
@@ -177,7 +177,7 @@ public class InventoryManager : MonoBehaviour
             UseSelected();
         }
 
-        quickSlotSelector.transform.position = quickSlots[selectedSlotIndex].transform.position;
+        //quickSlotSelector.transform.position = quickSlots[selectedSlotIndex].transform.position;
     }
 
     #region Inventory Utils
