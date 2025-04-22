@@ -35,7 +35,6 @@ public class DropItem : MonoBehaviour
             Debug.Log("플레이어가 아이템에 닿았어요!");
             InvenAdd();
             Destroy(this.gameObject);
-            LobbySoundManager.Instance.PlayEffect(itemaddsound);
         }
     }
     

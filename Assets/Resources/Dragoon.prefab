@@ -1594,6 +1594,7 @@ MonoBehaviour:
   - {fileID: 7151176108056059030, guid: 6ea190f2b6c386a41b820cd51f7a571b, type: 3}
   - {fileID: 3360220000004996657, guid: d58fb744dbb6c324597a2e432f404867, type: 3}
   - {fileID: 8107677012736325626, guid: c157e6b1e7688564395a587b095b4b7c, type: 3}
+  dropChance: 0.5
   stopDistance: 5
   retreatSpeed: 3
   bufferDistance: 1

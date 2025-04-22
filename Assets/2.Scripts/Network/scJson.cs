@@ -61,7 +61,7 @@ public class scJson : MonoBehaviour
 
     public void Load()
     {
-        Debug.Log("Load");        
+        Debug.Log("Load");
         string json = File.ReadAllText(path + filename);
         JsonData jsondata = JsonUtility.FromJson<JsonData>(json);
         Debug.Log(jsondata.items[0].itemID);

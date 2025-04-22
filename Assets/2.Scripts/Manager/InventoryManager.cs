@@ -8,7 +8,7 @@ public class InventoryManager : MonoBehaviour
 {
     [SerializeField] private GameObject itemCursor;
     [SerializeField] public GameObject slotHolder;
-    [SerializeField] private GameObject quickSlotHolder;
+    //[SerializeField] private GameObject quickSlotHolder;
 
     public SlotClass[] items;
 
@@ -37,10 +37,10 @@ public class InventoryManager : MonoBehaviour
     {
         slots = new GameObject[slotHolder.transform.childCount];
         items = new SlotClass[slots.Length];
-        quickSlots = new GameObject[quickSlotHolder.transform.childCount];
+        //quickSlots = new GameObject[quickSlotHolder.transform.childCount];
         for (int i = 0; i < quickSlots.Length; i++)
         {
-            quickSlots[i] = quickSlotHolder.transform.GetChild(i).gameObject;
+            //quickSlots[i] = quickSlotHolder.transform.GetChild(i).gameObject;
         }
         for (int i = 0; i < items.Length; i++)
         {
@@ -98,20 +98,17 @@ public class InventoryManager : MonoBehaviour
                 //소모품이면
                 if (GetClosestSlot().GetItem().GetConsumable())
                 {
-                    LobbySoundManager.Instance.PlayEffect(eatSound);
                     GetClosestSlot().GetItem().Use(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCtrl>());
                     Remove(GetClosestSlot().GetItem());
                 }
                 //무기아이템이면
                 else if (GetClosestSlot().GetItem().GetTool())
                 {
-                    LobbySoundManager.Instance.PlayEffect(equipChangeSound);
                     GetClosestSlot().GetItem().Use(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCtrl>());
                 }
                 //장비아이템이면
                 else if (GetClosestSlot().GetItem().GetEquipment())
                 {
-                    LobbySoundManager.Instance.PlayEffect(equipChangeSound);
                     GetClosestSlot().GetItem().Use(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCtrl>());
                 }
                 //기타잡템일때
@@ -177,7 +174,7 @@ public class InventoryManager : MonoBehaviour
             UseSelected();
         }
 
-        quickSlotSelector.transform.position = quickSlots[selectedSlotIndex].transform.position;
+        //quickSlotSelector.transform.position = quickSlots[selectedSlotIndex].transform.position;
     }
 
     #region Inventory Utils
@@ -338,12 +335,11 @@ public class InventoryManager : MonoBehaviour
         selectedItem.Use(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCtrl>());
         if (selectedItem.GetConsumable())
         {
-            LobbySoundManager.Instance.PlayEffect(eatSound);
             Remove(selectedItem);
         }
         else if(selectedItem.GetTool()||selectedItem.GetEquipment())
         {
-            LobbySoundManager.Instance.PlayEffect(equipChangeSound);
+            
         }
         RefreshUI();
     }
