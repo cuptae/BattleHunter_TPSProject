@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,8 +7,10 @@ using System.IO;
 public class InventoryManager : MonoBehaviour
 {
     [SerializeField] private GameObject itemCursor;
-    [SerializeField] public GameObject slotHolder;
-    //[SerializeField] private GameObject quickSlotHolder;
+    [SerializeField] public GameObject slotGhost;
+    [SerializeField] private GameObject quickSlotGhost;
+    [SerializeField] private RectTransform inventoryPanel;
+
 
     public SlotClass[] items;
 
@@ -20,46 +22,36 @@ public class InventoryManager : MonoBehaviour
     private SlotClass originalSlot;
     bool isMovingItem;
 
-    [SerializeField] private GameObject quickSlotSelector;
+    [SerializeField] private GameObject sureBox;
+    private SlotClass pendingDropSlot; // 임시 저장 슬롯
+    private SlotClass pendingOriginalSlot; // 되돌릴 슬롯 위치
+    
+    
     [SerializeField] private int selectedSlotIndex = 0;
     public ItemClass selectedItem;
 
-    private AudioClip eatSound;
-    private AudioClip equipChangeSound;
-
-    public scJson jaondata;
-    private void Awake()
-    {
-        eatSound = Resources.Load("eatSound") as AudioClip;
-        equipChangeSound = Resources.Load("equipChangeSound") as AudioClip;
-    }
+    public scJson jsondata;
     private void Start()
     {
-        slots = new GameObject[slotHolder.transform.childCount];
+        slots = new GameObject[slotGhost.transform.childCount];
         items = new SlotClass[slots.Length];
-        //quickSlots = new GameObject[quickSlotHolder.transform.childCount];
+        quickSlots = new GameObject[quickSlotGhost.transform.childCount];
         for (int i = 0; i < quickSlots.Length; i++)
         {
-            //quickSlots[i] = quickSlotHolder.transform.GetChild(i).gameObject;
+            quickSlots[i] = quickSlotGhost.transform.GetChild(i).gameObject;
         }
         for (int i = 0; i < items.Length; i++)
         {
             items[i] = new SlotClass();
         }
-        //for (int i = 0; i < startingItems.Length; i++)
-        //{
-        //    items[i] = startingItems[i];
-        //}
-        for (int i = 0; i < slotHolder.transform.childCount; i++)
+        for (int i = 0; i < slotGhost.transform.childCount; i++)
         {
-            slots[i] = slotHolder.transform.GetChild(i).gameObject;
+            slots[i] = slotGhost.transform.GetChild(i).gameObject;
         }
         RefreshUI();
-        //Add(itemToAdd, 1);
-        //Remove(itemToRemove);
-        if (File.Exists(jaondata.path + jaondata.filename))
+        if (File.Exists(jsondata.path + jsondata.filename))
         {
-            jaondata.Load();
+            jsondata.Load();
         }
     }
 
@@ -125,56 +117,6 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            selectedSlotIndex = Mathf.Clamp(selectedSlotIndex = 0, 0, quickSlots.Length);
-            selectedItem = items[selectedSlotIndex].GetItem();
-            UseSelected();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            selectedSlotIndex = Mathf.Clamp(selectedSlotIndex = 1, 0, quickSlots.Length);
-            selectedItem = items[selectedSlotIndex].GetItem();
-            UseSelected();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            selectedSlotIndex = Mathf.Clamp(selectedSlotIndex = 2, 0, quickSlots.Length);
-            selectedItem = items[selectedSlotIndex].GetItem();
-            UseSelected();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            selectedSlotIndex = Mathf.Clamp(selectedSlotIndex = 3, 0, quickSlots.Length);
-            selectedItem = items[selectedSlotIndex].GetItem();
-            UseSelected();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            selectedSlotIndex = Mathf.Clamp(selectedSlotIndex = 4, 0, quickSlots.Length);
-            selectedItem = items[selectedSlotIndex].GetItem();
-            UseSelected();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            selectedSlotIndex = Mathf.Clamp(selectedSlotIndex = 5, 0, quickSlots.Length);
-            selectedItem = items[selectedSlotIndex].GetItem();
-            UseSelected();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha7))
-        {
-            selectedSlotIndex = Mathf.Clamp(selectedSlotIndex = 6, 0, quickSlots.Length);
-            selectedItem = items[selectedSlotIndex].GetItem();
-            UseSelected();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            selectedSlotIndex = Mathf.Clamp(selectedSlotIndex = 7, 0, quickSlots.Length);
-            selectedItem = items[selectedSlotIndex].GetItem();
-            UseSelected();
-        }
-
-        //quickSlotSelector.transform.position = quickSlots[selectedSlotIndex].transform.position;
     }
 
     #region Inventory Utils
@@ -250,14 +192,6 @@ public class InventoryManager : MonoBehaviour
                     break;
                 }
             }
-            //if (items.Count < slots.Length)
-            //{
-            //    items.Add(new SlotClass(item, 1));
-            //}
-            //else
-            //{
-            //    return false;
-            //}
         }
         RefreshUI();
         return true;
@@ -294,42 +228,8 @@ public class InventoryManager : MonoBehaviour
         return true;
     }
 
-    public bool Remove(ItemClass item, int count)
-    {
-        SlotClass temp = Contains(item);
-        if (temp != null)
-        {
-            if (temp.GetCount() > 1)
-            {
-                temp.SubCount(count);
-            }
-            else
-            {
-                int slotToRemoveIndex = 0;
-
-                for (int i = 0; i < items.Length; i++)
-                {
-                    if (items[i].GetItem() == item)
-                    {
-                        slotToRemoveIndex = i;
-                        break;
-                    }
-                }
-                items[slotToRemoveIndex].Clear();
-            }
-        }
-        else
-        {
-            return false;
-        }
-        RefreshUI();
-        return true;
-    }
-
     public void UseSelected()
     {
-        //items[selectedSlotIndex].SubCount(1);
-        //RefreshUI();
         if (selectedItem == null)
             return;
         selectedItem.Use(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCtrl>());
@@ -419,6 +319,18 @@ public class InventoryManager : MonoBehaviour
     private bool EndItemMove()
     {
         originalSlot = GetClosestSlot();
+
+        // 인벤토리 밖으로 드래그 → 삭제 확인 UI 활성화
+    if (!IsPointerInsideInventory() && movingSlot != null && movingSlot.GetItem() != null)
+    {
+        Debug.Log("TrashZone으로 아이템을 버립니다: " + movingSlot.GetItem().itemName);
+        
+        sureBox.SetActive(true); // 삭제 확인창 활성화
+        pendingDropSlot = new SlotClass(movingSlot); // 삭제할 아이템 백업
+        pendingOriginalSlot = originalSlot; // 되돌릴 위치 백업
+        return false; // 잠시 대기
+    }
+
         if (originalSlot == null)
         {
             Add(movingSlot.GetItem(), movingSlot.GetCount());
@@ -504,6 +416,40 @@ public class InventoryManager : MonoBehaviour
         }
         return null;
     }
+
+    private bool IsPointerInsideInventory()
+    {
+        return RectTransformUtility.RectangleContainsScreenPoint(inventoryPanel, Input.mousePosition, null);
+    }
+
+    public void DropItem()
+{
+    if (pendingDropSlot != null)
+    {
+        Debug.Log("아이템을 버렸습니다: " + pendingDropSlot.GetItem().itemName);
+        pendingDropSlot.Clear();
+        movingSlot.Clear();
+        isMovingItem = false;
+        sureBox.SetActive(false);
+        RefreshUI();
+    }
+}
+
+    public void CancelDropItem()
+{
+    if (pendingDropSlot != null && pendingDropSlot.GetItem() != null)
+    {
+        // 기존 슬롯에 복원
+        Add(pendingDropSlot.GetItem(), pendingDropSlot.GetCount());
+        movingSlot.Clear();
+        isMovingItem = false;
+        sureBox.SetActive(false);
+        RefreshUI();
+    }
+}
+
+
+
     #endregion Moving Stuff
 
     public SlotClass[] CurrentItems()
