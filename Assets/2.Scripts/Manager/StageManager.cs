@@ -56,19 +56,19 @@ public class StageManager : MonoBehaviour
     {
         int pointCount = GameManager.Instance.pointCount;
 
-        if (!isKill50Reached && pointCount >= 50)
+        if (!isKill50Reached && pointCount >= 20)
         {
             isKill50Reached = true;
             vertDoor[0].SetBool("Open", true);
         }
 
-        if (!isKill100Reached && pointCount >= 100)
+        if (!isKill100Reached && pointCount >= 40)
         {
             isKill100Reached = true;
             vertDoor[1].SetBool("Open", true);
         }
 
-        if (!isKill150Reached && pointCount >= 150)
+        if (!isKill150Reached && pointCount >= 80)
         {
             isKill150Reached = true;
             vertDoor[2].SetBool("Open", true);
@@ -115,19 +115,21 @@ public class StageManager : MonoBehaviour
     {
         Room curRoom = PhotonNetwork.room;
         GameObject player;
-        SkillManager.Instance.GetSkillIcon();
+
 
         switch (character)
         {
             case Character.GUNNER:
                 player = PhotonNetwork.Instantiate("Gunner", playerSpawnPos[curRoom.PlayerCount].position, playerSpawnPos[curRoom.PlayerCount].rotation, 0);
+                SkillManager.Instance.GetSkillIcon();
                 break;
             case Character.WARRIOR:
                 player = PhotonNetwork.Instantiate("Warrior", playerSpawnPos[curRoom.PlayerCount].position, playerSpawnPos[curRoom.PlayerCount].rotation, 0);
+                SkillManager.Instance.GetSkillIcon();
                 break;
-            case Character.HACKER:
-                player = PhotonNetwork.Instantiate("Hacker", playerSpawnPos[curRoom.PlayerCount].position, playerSpawnPos[curRoom.PlayerCount].rotation, 0);
-                break;
+            // case Character.HACKER:
+            //     player = PhotonNetwork.Instantiate("Hacker", playerSpawnPos[curRoom.PlayerCount].position, playerSpawnPos[curRoom.PlayerCount].rotation, 0);
+            //     break;
             default:
                 yield break;
         }

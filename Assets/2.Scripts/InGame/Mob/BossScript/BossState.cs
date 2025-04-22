@@ -17,30 +17,32 @@ public class BossState : StateMachineBehaviour
 
     protected GameObject FindRandomTargetInRange(Transform bossTransform)
     {
+
         playersInRange.Clear();
+        playersInRange.Add(boss.currentTarget);
+        return boss.currentTarget;
+        // float scaledRadius = GetScaledDetectionRadius(bossTransform);
+        // GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        float scaledRadius = GetScaledDetectionRadius(bossTransform);
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        // foreach (GameObject player in players)
+        // {
+        //     float distance = Vector3.Distance(bossTransform.position, player.transform.position);
+        //     if (distance <= scaledRadius)
+        //     {
+        //         playersInRange.Add(player);
+        //     }
+        // }
 
-        foreach (GameObject player in players)
-        {
-            float distance = Vector3.Distance(bossTransform.position, player.transform.position);
-            if (distance <= scaledRadius)
-            {
-                playersInRange.Add(player);
-            }
-        }
+        // if (playersInRange.Count > 0)
+        // {
+        //     int index = Random.Range(0, playersInRange.Count);
+        //     GameObject chosen = playersInRange[index];
+        //     boss.currentTarget = chosen;
+        //     return chosen;
+        // }
 
-        if (playersInRange.Count > 0)
-        {
-            int index = Random.Range(0, playersInRange.Count);
-            GameObject chosen = playersInRange[index];
-            boss.currentTarget = chosen;
-            return chosen;
-        }
-
-        boss.currentTarget = null;
-        return null;
+        // boss.currentTarget = null;
+        // return null;
     }
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

@@ -14,12 +14,12 @@ public class SearchState : BossState
         GameObject foundTarget = FindRandomTargetInRange(animator.transform);
         if (foundTarget != null)
         {
-            Debug.Log($"[Search] Å½ÁöµÈ ÇÃ·¹ÀÌ¾î ¼ö: {playersInRange.Count}, ¼±ÅÃµÈ Å¸°Ù: {foundTarget.name}");
+            Debug.Log($"[Search] Å½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½: {playersInRange.Count}, ï¿½ï¿½ï¿½Ãµï¿½ Å¸ï¿½ï¿½: {foundTarget.name}");
             isRotating = true;
         }
         else
         {
-            Debug.Log("[Search] Å½Áö ¹Ý°æ ³»¿¡ ÇÃ·¹ÀÌ¾î ¾øÀ½.");
+            Debug.Log("[Search] Å½ï¿½ï¿½ ï¿½Ý°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½.");
             animator.SetBool("Return", true);
         }
     }
@@ -46,7 +46,7 @@ public class SearchState : BossState
                     animator.transform.rotation = targetRotation;
                     isRotating = false;
                     animator.SetBool("Return", false);
-                    Debug.Log("È¸Àü ¿Ï·á. Return false ¼³Á¤µÊ");
+                    Debug.Log("È¸ï¿½ï¿½ ï¿½Ï·ï¿½. Return false ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
                 }
             }
         }

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using WebSocketSharp;
-
+using UnityEngine.XR.Management;
 public class PhotonLobby : MonoBehaviour
 {
     public string version = "Ver 0.10";
@@ -113,12 +113,65 @@ public class PhotonLobby : MonoBehaviour
     IEnumerator LoadStage()
     {
         PhotonNetwork.isMessageQueueRunning = false;
+        if(GameManager.Instance.curCharacter != Character.HACKER)
+        {
+            AsyncOperation ao = SceneManager.LoadSceneAsync("Ingame");
+            yield return StopXR();
+            yield return ao;
+        }
+        else
+        {
 
-        AsyncOperation ao = SceneManager.LoadSceneAsync("Ingame");
+            AsyncOperation ao = SceneManager.LoadSceneAsync("VRIngame");
+            //yield return StartXR();
+            yield return ao;
+        }
 
-        yield return ao;
     }
 
+    // IEnumerator StartXR()
+    // {
+    //     XRGeneralSettings.Instance.Manager.InitializeLoaderSync();
+
+    //     if (XRGeneralSettings.Instance.Manager.activeLoader == null)
+    //     {
+    //         Debug.LogError("XR 로더를 시작할 수 없습니다.");
+    //         yield break;
+    //     }
+
+    //     XRGeneralSettings.Instance.Manager.StartSubsystems();
+    // }
+
+    // IEnumerator StopXR()
+    // {
+    //     XRGeneralSettings.Instance.Manager.StopSubsystems();
+    //     XRGeneralSettings.Instance.Manager.DeinitializeLoader();
+    //     yield return null;
+    // }
+
+    IEnumerator StartXR()
+    {
+        Debug.Log("Starting XR...");
+        XRGeneralSettings.Instance.Manager.InitializeLoaderSync();
+
+        if (XRGeneralSettings.Instance.Manager.activeLoader == null)
+        {
+            Debug.LogError("XR 로더를 시작할 수 없습니다.");
+            yield break;
+        }
+
+        XRGeneralSettings.Instance.Manager.StartSubsystems();
+        Debug.Log("XR Started.");
+    }
+
+    IEnumerator StopXR()
+    {
+        Debug.Log("Stopping XR...");
+        XRGeneralSettings.Instance.Manager.StopSubsystems();
+        XRGeneralSettings.Instance.Manager.DeinitializeLoader();
+        yield return null;
+        Debug.Log("XR Stopped.");
+    }
 
     // void OnGUI()
     // {

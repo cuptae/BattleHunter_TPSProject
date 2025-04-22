@@ -10,10 +10,14 @@ public class Boss : MonoBehaviour
     public GameObject ColliderObject1 => colliderObject1;
     public GameObject ColliderObject2 => colliderObject2;
 
-    [Header("Å¸°Ù")]
+    [Header("Å¸ï¿½ï¿½")]
     public GameObject currentTarget;
 
-  
+    void Start()
+    {
+        currentTarget = GameObject.FindGameObjectWithTag("Player");
+    }
+
     public void DisableAttackColliders()
     {
         if (ColliderObject1 != null)
@@ -28,6 +32,6 @@ public class Boss : MonoBehaviour
             if (col2 != null) col2.enabled = false;
         }
 
-        Debug.Log("¾Ö´Ï¸ÞÀÌ¼Ç ÀÌº¥Æ®: ÄÝ¶óÀÌ´õ ºñÈ°¼ºÈ­ ¿Ï·á");
+        Debug.Log("ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½Ìºï¿½Æ®: ï¿½Ý¶ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­ ï¿½Ï·ï¿½");
     }
 }

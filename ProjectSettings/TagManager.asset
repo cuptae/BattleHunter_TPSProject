@@ -17,6 +17,10 @@ TagManager:
   - RSkillIcon
   - AbilityCooldown
   - BackBtn
+  - Left Hand
+  - Right Hand
+  - intercom
+  - gun
   layers:
   - Default
   - TransparentFX

@@ -17,6 +17,11 @@ public class ChildHealth : MainHealth,IDamageable
     public int CurrentHealth => currentHealth;
     public int Hp => currentHealth;
 
+    public void GetDamageVR(int damage)
+    {
+        currentHealth -= damage;
+    }
+
     void Start()
     {
         currentHealth = maxHealth;
