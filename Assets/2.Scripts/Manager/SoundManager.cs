@@ -103,6 +103,8 @@ public class SoundManager : MonoSingleton<SoundManager>
     uiClips[UIType.SELECTCHAR] = Resources.Load<AudioClip>("Sounds/UI/SelectCharacter");
     uiClips[UIType.CROSSBTN] = Resources.Load<AudioClip>("Sounds/UI/CrossButton");
     uiClips[UIType.PUSHBTN] = Resources.Load<AudioClip>("Sounds/UI/PushButton");
+
+    
     }
 
     // ✅ 🎵 BGM 재생 (페이드 인/아웃 적용)
