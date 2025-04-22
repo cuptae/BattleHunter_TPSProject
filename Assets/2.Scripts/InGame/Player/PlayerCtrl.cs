@@ -53,7 +53,10 @@ public abstract class PlayerCtrl : MonoBehaviour
     public int curHp { get; private set; }
     public event System.Action OnHpChanged;
     public float damageReduceRate =1f;
+
     public bool invincible;
+    public int skillQ;
+    public int skillE;
     #endregion
 
     #region Skill Variables
@@ -113,6 +116,11 @@ public abstract class PlayerCtrl : MonoBehaviour
         {
             stateMachine.Initialize(new IdleState(this));
         }
+        skillQ = GameStartData.skillIdQ;
+        skillE = GameStartData.skillIdE;
+
+        SlotExStat(skillE);
+        SlotExStat(skillQ);
     }
 
     protected virtual void Update()
@@ -371,6 +379,13 @@ public abstract class PlayerCtrl : MonoBehaviour
     {
         characterStat.modifyAttackRate += attackRate;
     }
+
+    //이동 속도 변경
+    public void ModifyMoveSpeed(float moveSpeed)
+    {
+        characterStat.modifyWalkSpeed += moveSpeed;
+        characterStat.modifyRunSpeed += moveSpeed;
+    }
     #endregion
     
 
@@ -390,5 +405,29 @@ public abstract class PlayerCtrl : MonoBehaviour
         activeSkills.Clear();
         activeSkills = SkillManager.Instance.SkillAdd();
     }
+    public void SlotExStat(int slotId)
+    {
+        switch (slotId)
+        {
+            case 1: //공격력 증가
+                ModifyDamage(10); // 예시로 10 증가 
+                Debug.Log("공격력 증가");
+                break;
 
+            case 2: //체력 증가
+                ModifyMaxHp(50); // 예시로 50 증가
+                SetHPInit(characterStat.MaxHp); // 최대 체력으로 초기화 가능   
+                Debug.Log("체력 증가");
+                break;
+
+            case 3: //이동속도 증가
+                ModifyMoveSpeed(5f);
+                Debug.Log("이동속도 증가");
+                break;
+
+            default:
+                Debug.Log("유효하지 않은 슬롯입니다.");
+                break;
+        }
+    }
 }

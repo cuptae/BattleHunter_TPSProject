@@ -12,6 +12,8 @@ public class PhotonLobby : MonoBehaviour
     public GameObject roomItem;
     public GameObject scrollContents;
     public InputField roomName;
+
+    public InputField userIdInputField;
     
     void Awake()
     {
@@ -19,7 +21,7 @@ public class PhotonLobby : MonoBehaviour
         {
             PhotonNetwork.ConnectUsingSettings(version);
             Debug.Log("connected!");
-            PhotonNetwork.playerName = "USER"+Random.Range(0,9999);
+            PhotonNetwork.playerName = userIdInputField.text;
         }
     }
 
@@ -66,7 +68,7 @@ public class PhotonLobby : MonoBehaviour
         string userId = PlayerPrefs.GetString("USER_ID");
         if(userId.IsNullOrEmpty())
         {
-            userId = "USER"+Random.Range(0,1000);
+            userId = userIdInputField.text;
             GameManager.Instance.userId = userId;
         }
         return userId;
