@@ -18,6 +18,7 @@ public class EnemyAttackState : IEnemyState
 
     public void UpdateState(EnemyCtrl enemy)
     {
+
             Vector3 direction = (enemy.targetPlayer.position - enemy.transform.position).normalized;
             direction.y = 0;
             Quaternion lookRotation = Quaternion.LookRotation(direction);

@@ -21,6 +21,10 @@ public class Spawner : MonoBehaviour
 
     void Start()
     {
+        if(!PhotonNetwork.isMasterClient)
+        {
+            return;
+        }
         if(PhotonNetwork.isMasterClient)
         {
             PoolManager.Instance.CreatePhotonPool("Dragoon",enemyPrefabs[0],maxEnemyCnt);

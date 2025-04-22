@@ -8,6 +8,9 @@ public class StageManager : MonoBehaviour
     PhotonView pv;
     Transform[] playerSpawnPos;
 
+    public List<PlayerCtrl> players = new List<PlayerCtrl>();
+
+
     void Awake()
     {
         pv = GetComponent<PhotonView>();
@@ -21,26 +24,32 @@ public class StageManager : MonoBehaviour
         Room curRoom = PhotonNetwork.room;
         GameObject player;
         SkillManager.Instance.GetSkillIcon();
-        switch(character)
+
+        switch (character)
         {
             case Character.GUNNER:
-                player = PhotonNetwork.Instantiate("Gunner",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
-                SkillManager.Instance.player = player.GetComponent<PlayerCtrl>();
-                player.GetComponent<PlayerCtrl>().activeSkills = SkillManager.Instance.SkillAdd();
+                player = PhotonNetwork.Instantiate("Gunner", playerSpawnPos[curRoom.PlayerCount].position, playerSpawnPos[curRoom.PlayerCount].rotation, 0);
                 break;
             case Character.WARRIOR:
-                player = PhotonNetwork.Instantiate("Warrior",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
-                SkillManager.Instance.player = player.GetComponent<PlayerCtrl>();
-                player.GetComponent<PlayerCtrl>().activeSkills = SkillManager.Instance.SkillAdd();
+                player = PhotonNetwork.Instantiate("Warrior", playerSpawnPos[curRoom.PlayerCount].position, playerSpawnPos[curRoom.PlayerCount].rotation, 0);
                 break;
             case Character.HACKER:
-                player = PhotonNetwork.Instantiate("Hacker",playerSpawnPos[curRoom.PlayerCount].position,playerSpawnPos[curRoom.PlayerCount].rotation,0);
-                SkillManager.Instance.player = player.GetComponent<PlayerCtrl>();
+                player = PhotonNetwork.Instantiate("Hacker", playerSpawnPos[curRoom.PlayerCount].position, playerSpawnPos[curRoom.PlayerCount].rotation, 0);
                 break;
             default:
-                break;
+                yield break;
         }
-        
+        foreach(PhotonPlayer photonPlayer in PhotonNetwork.playerList)
+        {
+    
+        }
+        // 자신의 플레이어인지 확인
+        PlayerCtrl playerCtrl = player.GetComponent<PlayerCtrl>();
+        if (player.GetComponent<PhotonView>().isMine)
+        {
+            SkillManager.Instance.player = playerCtrl; // 내 플레이어 설정
+            playerCtrl.activeSkills = SkillManager.Instance.SkillAdd();
+        }
         yield return null;
     }
 
@@ -54,5 +63,16 @@ public class StageManager : MonoBehaviour
         SceneManager.LoadScene("Lobby");
     }
 
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if(stream.isWriting)
+        {
+
+        }
+        else
+        {
+
+        }
+    }
     
 }

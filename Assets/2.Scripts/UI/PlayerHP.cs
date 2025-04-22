@@ -24,7 +24,6 @@ public class PlayerHP : MonoBehaviour
         if (player != null && hpBar != null)
         {
             float hpPercentage = (float)player.curHp / player.characterStat.MaxHp; // int를 float로 변환
-            Debug.Log("Current HP: " + player.curHp + ", Max HP: " + player.characterStat.MaxHp + ", Percentage: " + hpPercentage);
             hpBar.fillAmount = hpPercentage;
         }
     }

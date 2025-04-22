@@ -60,4 +60,5 @@ MonoBehaviour:
   - AttachEffect
   - RPC_SetInvincible
   - DetachEffect
+  - RPC_AmorBreak
   DisableAutoOpenWizard: 1

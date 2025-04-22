@@ -113,8 +113,6 @@ public abstract class PlayerCtrl : MonoBehaviour
         {
             stateMachine.Initialize(new IdleState(this));
         }
-
-        TestBtn.GetComponent<Button>().onClick.AddListener(TestSkillLevelUP);
     }
 
     protected virtual void Update()

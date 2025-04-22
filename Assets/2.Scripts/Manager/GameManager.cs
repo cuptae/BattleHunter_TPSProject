@@ -1,8 +1,8 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-
     public Character curCharacter = Character.NONSELECTED;
     public string userId;
     public int enemyLayerMask;
@@ -19,4 +19,5 @@ public class GameManager : MonoSingleton<GameManager>
     }
 
     public void SetStartGame(bool startGame){this.startGame = startGame;}
+
 }

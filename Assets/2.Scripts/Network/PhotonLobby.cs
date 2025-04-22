@@ -99,7 +99,7 @@ public class PhotonLobby : MonoBehaviour
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.IsOpen = true;
         roomOptions.IsVisible = true;
-        roomOptions.MaxPlayers = 10;
+        roomOptions.MaxPlayers = 3;
 
         //생성할 룸의 조건 설정 2 (객체 생성과 동시에 멤버변수 초기화)
         //RoomOptions roomOptions = new RoomOptions() { IsOpen=true, IsVisible=true, MaxPlayers=50 };
@@ -118,60 +118,60 @@ public class PhotonLobby : MonoBehaviour
     }
 
 
-    void OnGUI()
-    {
+    // void OnGUI()
+    // {
 
-        //화면 좌측 상단에 접속 과정에 대한 로그를 출력(포톤 클라우드 접속 상태 메시지 출력)
-        // PhotonNetwork.ConnectUsingSettings 함수 호출시 속성 PhotonNetwork.connectionStateDetailed는
-        //포톤 클라우드 서버에 접속하는 단계별 메시지를 반환함.
-        //Joined Lobby 메시지시 포톤 클라우드 서버로 접속해 로비에 안전하게 입장했다는 뜻
-        GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
+    //     //화면 좌측 상단에 접속 과정에 대한 로그를 출력(포톤 클라우드 접속 상태 메시지 출력)
+    //     // PhotonNetwork.ConnectUsingSettings 함수 호출시 속성 PhotonNetwork.connectionStateDetailed는
+    //     //포톤 클라우드 서버에 접속하는 단계별 메시지를 반환함.
+    //     //Joined Lobby 메시지시 포톤 클라우드 서버로 접속해 로비에 안전하게 입장했다는 뜻
+    //     GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
 
-        //만약 포톤네트워크에 연결 되었다면...
-        if (PhotonNetwork.connected)
-        {
-            GUI.Label(new Rect(0, 50, 200, 100), "Connected");
+    //     //만약 포톤네트워크에 연결 되었다면...
+    //     if (PhotonNetwork.connected)
+    //     {
+    //         GUI.Label(new Rect(0, 50, 200, 100), "Connected");
 
-            //룸 리스트를 배열로 받아온다.
-            RoomInfo[] roomList = PhotonNetwork.GetRoomList();
+    //         //룸 리스트를 배열로 받아온다.
+    //         RoomInfo[] roomList = PhotonNetwork.GetRoomList();
 
-            if (roomList.Length > 0)
-            {
-                foreach (RoomInfo info in roomList)
-                {
-                    GUI.Label(new Rect(0, 80, 400, 100), "Room: " + info.Name
-                        + " PlayerCount/MaxPlayer :" + info.PlayerCount + "/" + info.MaxPlayers //현재 플레이어/최대 플레이어
-                        + " CustomProperties Count " + info.CustomProperties.Count // 설정한 CustomProperties 수 
-                        + " Map ???: " + info.CustomProperties.ContainsKey("Map") //키로 설정한 Map이 있나
-                        + " Map Count " + info.CustomProperties["Map"] // 설정한 키 값 
-                        + " GameType ??? " + info.CustomProperties.ContainsKey("GameType") //키로 설정한 GameType이 있나
-                        + " GameType " + info.CustomProperties["GameType"]);// 설정한 키 값 
-                }
-            }
-            else
-            {
-                GUI.Label(new Rect(0, 80, 400, 100), "No Room List");
-            }
-        }
+    //         if (roomList.Length > 0)
+    //         {
+    //             foreach (RoomInfo info in roomList)
+    //             {
+    //                 GUI.Label(new Rect(0, 80, 400, 100), "Room: " + info.Name
+    //                     + " PlayerCount/MaxPlayer :" + info.PlayerCount + "/" + info.MaxPlayers //현재 플레이어/최대 플레이어
+    //                     + " CustomProperties Count " + info.CustomProperties.Count // 설정한 CustomProperties 수 
+    //                     + " Map ???: " + info.CustomProperties.ContainsKey("Map") //키로 설정한 Map이 있나
+    //                     + " Map Count " + info.CustomProperties["Map"] // 설정한 키 값 
+    //                     + " GameType ??? " + info.CustomProperties.ContainsKey("GameType") //키로 설정한 GameType이 있나
+    //                     + " GameType " + info.CustomProperties["GameType"]);// 설정한 키 값 
+    //             }
+    //         }
+    //         else
+    //         {
+    //             GUI.Label(new Rect(0, 80, 400, 100), "No Room List");
+    //         }
+    //     }
 
         
 
-        //PhotonServerSettings 값 가져오기
-        {
-            GUI.Label(new Rect(0, 170, 400, 100), "AppID  :  " +
-                PhotonNetwork.PhotonServerSettings.AppID);
-            GUI.Label(new Rect(0, 200, 200, 100), "HostType  :  " +
-                PhotonNetwork.PhotonServerSettings.HostType);
-            GUI.Label(new Rect(0, 230, 200, 100), "ServerAddress  :  " +
-                PhotonNetwork.PhotonServerSettings.ServerAddress);
-            GUI.Label(new Rect(0, 260, 200, 100), "ServerPort  :  " +
-                PhotonNetwork.PhotonServerSettings.ServerPort);
-            //PhotonNetwork.PhotonServerSettings.UseCloud(); 
+    //     //PhotonServerSettings 값 가져오기
+    //     {
+    //         GUI.Label(new Rect(0, 170, 400, 100), "AppID  :  " +
+    //             PhotonNetwork.PhotonServerSettings.AppID);
+    //         GUI.Label(new Rect(0, 200, 200, 100), "HostType  :  " +
+    //             PhotonNetwork.PhotonServerSettings.HostType);
+    //         GUI.Label(new Rect(0, 230, 200, 100), "ServerAddress  :  " +
+    //             PhotonNetwork.PhotonServerSettings.ServerAddress);
+    //         GUI.Label(new Rect(0, 260, 200, 100), "ServerPort  :  " +
+    //             PhotonNetwork.PhotonServerSettings.ServerPort);
+    //         //PhotonNetwork.PhotonServerSettings.UseCloud(); 
 
-            //핑 테스트
-            int pingTime = PhotonNetwork.GetPing();
-            GUI.Label(new Rect(0, 310, 200, 100), "Ping: " + pingTime.ToString());
-        }
-    }
+    //         //핑 테스트
+    //         int pingTime = PhotonNetwork.GetPing();
+    //         GUI.Label(new Rect(0, 310, 200, 100), "Ping: " + pingTime.ToString());
+    //     }
+    // }
 
 }

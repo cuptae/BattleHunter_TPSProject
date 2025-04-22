@@ -40,6 +40,8 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
 
     public int amorBreakRate = 1;
 
+    public bool isStunned = false;
+
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -83,6 +85,9 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
     // Update is called once per frame
     protected virtual void Update()
     {
+        if (isDead) return;
+        if (isStunned) return;
+
         if(pv.isMine)
         {
             curState?.UpdateState(this);
@@ -232,31 +237,6 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
         TakeDamage(damage, skill);
     }
 
-
-    public void Stun(float time)
-    {
-        pv.RPC("RPC_Stun", PhotonTargets.All, time);
-    }
-
-    [PunRPC]
-    public void RPC_Stun(float time)
-    {
-        ChangeState(new EnemyStunState(time));
-
-        // 마크 표시
-        EnalbeDebuffMark(1);
-    }
-
-    public void AmorBreak(float duration)
-    {
-        amorBreakRate = 2;
-        Invoke("RecoverAmor",duration);
-    }
-    public void RecoverAmor()
-    {
-        amorBreakRate = 1;
-    }
-
     public void Taunt(Transform target, float time)
     {
         pv.RPC("RPC_Taunt", PhotonTargets.All, target.GetComponent<PhotonView>().viewID, time);
@@ -287,6 +267,44 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
         }
         isTaunt = false;
     }
+
+    public void Stun(float duration){pv.RPC("RPC_Stun", PhotonTargets.All, duration);}
+    [PunRPC]
+    public void RPC_Stun(float duration)
+    {
+        isStunned = true;
+        Invoke("UnStun", duration);
+        // 마크 표시
+        EnalbeDebuffMark(1);
+    }
+    public void UnStun()
+    {
+        isStunned = false;
+        // 마크 제거
+        DisableDebuffMark(1);
+    }
+
+    public void AmorBreak(float duration)
+    {
+        pv.RPC("RPC_AmorBreak", PhotonTargets.All, duration);
+    }
+    [PunRPC]
+    public void RPC_AmorBreak(float duration)
+    {
+        amorBreakRate = 2;
+        // 마크 표시
+        EnalbeDebuffMark(2);
+        Invoke("RecoverAmor",duration);
+    }
+    public void RecoverAmor()
+    {
+        amorBreakRate = 1;
+        // 마크 제거
+        DisableDebuffMark(2);
+    }
+
+
+
 
     public void KnockBack(Transform caster)
     {
