@@ -73,6 +73,11 @@ public abstract class PlayerCtrl : MonoBehaviour
     #region Weapon and Effects
     public GameObject weapon;
     public GameObject TestBtn;
+    
+    public InventoryManager invenMgr;
+    public IngameUIManager IngameUI;
+    public SlotClass[] backupItems;
+
     #endregion
 
     #region Photon Networking
@@ -83,6 +88,8 @@ public abstract class PlayerCtrl : MonoBehaviour
     #region Unity Callbacks
     protected virtual void Awake()
     {
+        invenMgr = GameObject.FindGameObjectWithTag("InventoryManager").GetComponent<InventoryManager>();
+        IngameUI = GameObject.FindGameObjectWithTag("UIManager").GetComponent<IngameUIManager>();
         TestBtn = GameObject.FindWithTag("Test");
         abilitycooldownbar = GameObject.FindWithTag("AbilityCooldown").GetComponent<Image>();
         animator = GetComponentInChildren<Animator>();
@@ -121,6 +128,11 @@ public abstract class PlayerCtrl : MonoBehaviour
 
         SlotExStat(skillE);
         SlotExStat(skillQ);
+        backupItems = new SlotClass[32];
+        for(int i = 0; i < backupItems.Length; i++)
+        {
+            backupItems[i] = new SlotClass();
+        }
     }
 
     protected virtual void Update()
@@ -332,6 +344,22 @@ public abstract class PlayerCtrl : MonoBehaviour
         {
             // 상태 머신을 PlayerDieState로 변경
             stateMachine.ChangeState(new PlayerDieState(this));
+            //아이템 백업
+            for (int i = 0; i < invenMgr.items.Length; i++)
+            {
+                if(invenMgr.items[i] != null)
+                {
+                    backupItems[i].AddItem(invenMgr.items[i].GetItem(), invenMgr.items[i].GetCount());                
+                }
+            }
+            
+            //빈털터리됨
+            for(int i = 0; i < invenMgr.CurrentItems().Length; i++)
+            {
+                invenMgr.CurrentItems()[i].Clear();
+            }
+            
+
         }
         else if (curHp > characterStat.MaxHp)
         {
