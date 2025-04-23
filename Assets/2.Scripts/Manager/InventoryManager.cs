@@ -25,6 +25,8 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private GameObject sureBox;
     private SlotClass pendingDropSlot; // 임시 저장 슬롯
     private SlotClass pendingOriginalSlot; // 되돌릴 슬롯 위치
+    [SerializeField] private GameObject trashSlot; // 휴지통 오브젝트 (UI 상에서 드래그할 수 있는 위치에 있어야 함)
+
     
     
     [SerializeField] private int selectedSlotIndex = 0;
@@ -106,14 +108,7 @@ public class InventoryManager : MonoBehaviour
                 //기타잡템일때
                 else if (GetClosestSlot().GetItem().GetMisc())
                 {
-                    if (isMovingItem)
-                    {
-                        EndItemMove_Single();
-                    }
-                    else
-                    {
-                        BeginItemMove_Half();
-                    }
+                    
                 }
             }
         }
@@ -297,38 +292,15 @@ public class InventoryManager : MonoBehaviour
         return true;
     }
 
-    private bool BeginItemMove_Half()
-    {
-        originalSlot = GetClosestSlot();
-        if (originalSlot == null || originalSlot.GetItem() == null)
-        {
-            return false;
-        }
-        movingSlot = new SlotClass(originalSlot.GetItem(), Mathf.CeilToInt(originalSlot.GetCount() / 2f));
-        originalSlot.SubCount(Mathf.CeilToInt(originalSlot.GetCount() / 2f));
-
-        if (originalSlot.GetCount() == 0)
-        {
-            originalSlot.Clear();
-        }
-        isMovingItem = true;
-        RefreshUI();
-        return true;
-    }
-
     private bool EndItemMove()
     {
         originalSlot = GetClosestSlot();
 
-        // 인벤토리 밖으로 드래그 → 삭제 확인 UI 활성화
-    if (!IsPointerInsideInventory() && movingSlot != null && movingSlot.GetItem() != null)
+        // 휴지통 위로 드롭하면 삭제
+    if (IsPointerOverTrashSlot())
     {
-        Debug.Log("TrashZone으로 아이템을 버립니다: " + movingSlot.GetItem().itemName);
-        
-        sureBox.SetActive(true); // 삭제 확인창 활성화
-        pendingDropSlot = new SlotClass(movingSlot); // 삭제할 아이템 백업
-        pendingOriginalSlot = originalSlot; // 되돌릴 위치 백업
-        return false; // 잠시 대기
+        Debug.Log("휴지통에 아이템을 버립니다: " + movingSlot.GetItem().itemName);
+        sureBox.SetActive(true);
     }
 
         if (originalSlot == null)
@@ -372,39 +344,6 @@ public class InventoryManager : MonoBehaviour
         return true;
     }
 
-    private bool EndItemMove_Single()
-    {
-        originalSlot = GetClosestSlot();
-        if (originalSlot == null)
-        {
-            return false;
-        }
-        if (originalSlot.GetItem() != null && originalSlot.GetItem() != movingSlot.GetItem())
-        {
-            return false;
-        }
-        movingSlot.SubCount(1);
-        if (originalSlot.GetItem() != null && originalSlot.GetItem() == movingSlot.GetItem())
-        {
-            originalSlot.AddCount(1);
-        }
-        else
-        {
-            originalSlot.AddItem(movingSlot.GetItem(), 1);
-        }
-        if (movingSlot.GetCount() < 1)
-        {
-            isMovingItem = false;
-            movingSlot.Clear();
-        }
-        else
-        {
-            isMovingItem = true;
-        }
-        RefreshUI();
-        return true;
-    }
-
     private SlotClass GetClosestSlot()
     {
         for (int i = 0; i < slots.Length; i++)
@@ -417,35 +356,32 @@ public class InventoryManager : MonoBehaviour
         return null;
     }
 
-    private bool IsPointerInsideInventory()
-    {
-        return RectTransformUtility.RectangleContainsScreenPoint(inventoryPanel, Input.mousePosition, null);
-    }
+    // 휴지통 슬롯에 마우스가 올라가 있는지 확인
+private bool IsPointerOverTrashSlot()
+{
+    if (trashSlot == null) return false;
+    return Vector2.Distance(trashSlot.transform.position, Input.mousePosition) <= 32f;
+}
 
     public void DropItem()
 {
-    if (pendingDropSlot != null)
+    movingSlot.Clear();
+    isMovingItem = false;
+    if (pendingDropSlot != null && pendingDropSlot.GetItem() != null)
     {
         Debug.Log("아이템을 버렸습니다: " + pendingDropSlot.GetItem().itemName);
-        pendingDropSlot.Clear();
-        movingSlot.Clear();
-        isMovingItem = false;
-        sureBox.SetActive(false);
-        RefreshUI();
+        pendingDropSlot.Clear(); // 삭제할 슬롯도 클리어
     }
+    sureBox.SetActive(false);
+    RefreshUI();
 }
 
     public void CancelDropItem()
 {
-    if (pendingDropSlot != null && pendingDropSlot.GetItem() != null)
-    {
-        // 기존 슬롯에 복원
-        Add(pendingDropSlot.GetItem(), pendingDropSlot.GetCount());
-        movingSlot.Clear();
-        isMovingItem = false;
-        sureBox.SetActive(false);
-        RefreshUI();
-    }
+    movingSlot.Clear();
+    isMovingItem = true;
+    sureBox.SetActive(false);
+    RefreshUI();
 }
 
 
