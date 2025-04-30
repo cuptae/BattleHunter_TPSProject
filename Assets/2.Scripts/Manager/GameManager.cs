@@ -11,6 +11,8 @@ public class GameManager : MonoSingleton<GameManager>
     public bool startGame{get; private set;}
 
     public int pointCount = 0;
+
+    public List<PlayerCtrl> players = new List<PlayerCtrl>();
     protected override void Awake()
     {
         base.Awake();

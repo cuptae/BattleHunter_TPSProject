@@ -14,7 +14,6 @@ public class SkillManager : MonoSingleton<SkillManager>
     [HideInInspector]
     public PlayerCtrl player;
 
-    public int modify = 0;
     public Image QskillIcon;
     public Image EskillIcon;
     public Image RskillIcon;
@@ -26,14 +25,6 @@ public class SkillManager : MonoSingleton<SkillManager>
     IEnumerator Start()
     {
         yield return StartCoroutine(TableDownload());
-        // skillId가 10101인 스킬 데이터 찾기
-
-        
-        // if (skillData != null)
-        // {
-        //     Debug.Log(skillData["skillId"]);
-        // }
-
     }
 
 
@@ -43,16 +34,16 @@ public class SkillManager : MonoSingleton<SkillManager>
         switch(GameManager.Instance.curCharacter)
         {
             case Character.GUNNER:
-            activeSkills.Add(new ShockWave(GetSkillData(20101+modify),null,player,QskillIcon));
-            activeSkills.Add(new GrenadeLauncher(GetSkillData(20201+modify),null,player,EskillIcon));
-            activeSkills.Add(new PhotonLance(GetSkillData(20301+modify),null,player,RskillIcon));
+            activeSkills.Add(new ShockWave(GetSkillData(20101),null,player,QskillIcon));
+            activeSkills.Add(new GrenadeLauncher(GetSkillData(20201),null,player,EskillIcon));
+            activeSkills.Add(new PhotonLance(GetSkillData(20301),null,player,RskillIcon));
             break;
             case Character.HACKER:
             break;
             case Character.WARRIOR:
-            activeSkills.Add(new FocusField(GetSkillData(10101+modify),null,player,QskillIcon));
-            activeSkills.Add(new EnergyBurst(GetSkillData(10201+modify),null,player,EskillIcon));
-            activeSkills.Add(new EnduranceMode(GetSkillData(10301+modify),null,player,RskillIcon));
+            activeSkills.Add(new FocusField(GetSkillData(10101),null,player,QskillIcon));
+            activeSkills.Add(new EnergyBurst(GetSkillData(10201),null,player,EskillIcon));
+            activeSkills.Add(new EnduranceMode(GetSkillData(10301),null,player,RskillIcon));
             break;
         }
         return activeSkills;

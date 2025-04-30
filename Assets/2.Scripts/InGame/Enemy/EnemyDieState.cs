@@ -16,7 +16,10 @@ public class EnemyDieState : IEnemyState
                 agent.ResetPath(); // 필요 시
             }
         }
-
+        foreach(var players in GameManager.Instance.players)
+        {
+            players.pv.RPC("AddExp", PhotonTargets.All, 10);
+        }
         enemy.Die();
     }
 

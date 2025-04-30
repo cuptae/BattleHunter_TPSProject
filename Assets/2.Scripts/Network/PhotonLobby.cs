@@ -19,6 +19,7 @@ public class PhotonLobby : MonoBehaviour
     {
         if(!PhotonNetwork.connected)
         {
+            StartCoroutine(StopXR());
             PhotonNetwork.ConnectUsingSettings(version);
             Debug.Log("connected!");
             PhotonNetwork.playerName = userIdInputField.text;
@@ -123,7 +124,7 @@ public class PhotonLobby : MonoBehaviour
         {
 
             AsyncOperation ao = SceneManager.LoadSceneAsync("VRIngame");
-            //yield return StartXR();
+            yield return StartXR();
             yield return ao;
         }
 

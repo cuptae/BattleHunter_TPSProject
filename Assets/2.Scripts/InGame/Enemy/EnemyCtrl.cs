@@ -186,7 +186,6 @@ public class EnemyCtrl : MonoBehaviour,IDamageable
         }
         int totalDamage = damage*amorBreakRate;
         curHp -= totalDamage;
-        Debug.Log(totalDamage);
 
 
         if (curHp <= 0)

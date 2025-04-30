@@ -66,4 +66,5 @@ MonoBehaviour:
   - StartGame
   - RPC_StartGame
   - PlusPoint
+  - AddExp
   DisableAutoOpenWizard: 1

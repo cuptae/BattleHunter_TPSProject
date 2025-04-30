@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public abstract class ActiveSkill : ISkill
 {
     public ActiveData activeData{get; private set;}
+    public bool max;
     protected PlayerCtrl player;
     protected System.Action onSkillEnd;
     public bool isOnCooldown{get; private set;}
@@ -16,7 +17,8 @@ public abstract class ActiveSkill : ISkill
     protected GameObject projectilePrefab;
     protected GameObject EffectPrefab;
     protected Image icon;
-
+    protected string skillDesc;
+    public string nextSkillDesc;
     public static List<GizmoDrawRequest> gizmo = new List<GizmoDrawRequest>();
     Collider[] monsterCols;
     public ActiveSkill(ActiveData activeData,GameObject effectVfx,PlayerCtrl player,Image icon)
@@ -26,15 +28,51 @@ public abstract class ActiveSkill : ISkill
         this.chargeCount = activeData.chargeCount;
         this.icon = icon;
         this.activeData.SetCaster(player);
+        this.skillDesc = activeData.skillDesc;
+        this.nextSkillDesc = SkillManager.Instance.GetSkillData(activeData.skillId+1).skillDesc;
         if(activeData.skillType == SKILLCONSTANT.SkillType.PROJECTILE)
         {
-            SetProjectile(activeData.skillName,activeData.projectileCount+5);
+            SetProjectile(activeData.skillName,activeData.projectileCount+10);
         }
         AssignSkillIcons();
         isOnCooldown = false;
 
     }
     public abstract IEnumerator Activation();
+    public IEnumerator LevelUp()
+    {
+        // 다음 레벨의 스킬 ID 계산
+        int nextSkillId = activeData.skillId + 1;
+
+        // 다음 레벨의 데이터 로드
+        ActiveData nextData = SkillManager.Instance.GetSkillData(nextSkillId);
+        if(SkillManager.Instance.GetSkillData(nextSkillId+1) != null)
+        {
+            string nextSkillDesc = SkillManager.Instance.GetSkillData(nextSkillId+1).skillDesc;
+            this.nextSkillDesc = nextSkillDesc;
+        }
+
+        if (nextData == null)
+        {
+            Debug.LogWarning($"No data found for skillId: {nextSkillId}. Max level?");
+            yield break;
+        }
+
+        // 새로운 데이터로 교체
+        this.activeData = nextData;
+        this.chargeCount = nextData.chargeCount;
+        this.activeData.SetCaster(player);
+
+        // Projectile 재설정 (필요할 경우)
+        if (nextData.skillType == SKILLCONSTANT.SkillType.PROJECTILE)
+        {
+            SetProjectile(nextData.skillName, nextData.projectileCount + 10);
+        }
+
+        // 아이콘 재할당 (스킬 레벨이 올라가면 아이콘이 바뀔 수도 있으니까)
+        AssignSkillIcons();
+        Debug.Log($"{activeData.skillName} Leveled up compelete");
+    }
 
     public void SetOnSkillEndCallback(System.Action callback)
     {

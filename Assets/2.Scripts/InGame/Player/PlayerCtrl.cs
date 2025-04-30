@@ -63,9 +63,8 @@ public abstract class PlayerCtrl : MonoBehaviour
     [HideInInspector]
     public List<ActiveSkill> activeSkills;
     protected Image abilitycooldownbar;
-    // public bool rSkillTrigger = false;
-    // public bool qSkillTrigger = false;
-    // public bool eSkillTrigger = false;
+
+
     private bool dodgeTrigger;
     public bool canAbility = true;
     #endregion
@@ -79,11 +78,14 @@ public abstract class PlayerCtrl : MonoBehaviour
     protected Vector3 curPos = Vector3.zero;
     protected Quaternion curRot = Quaternion.identity;
     #endregion
-
+    public int curLevel = 1;
+    public int maxLevel = 6;
+    private int curExp = 0;
+    private int nextExp = 100;
     #region Unity Callbacks
     protected virtual void Awake()
     {
-        TestBtn = GameObject.FindWithTag("Test");
+        
         abilitycooldownbar = GameObject.FindWithTag("AbilityCooldown").GetComponent<Image>();
         animator = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();
@@ -118,7 +120,9 @@ public abstract class PlayerCtrl : MonoBehaviour
         }
         skillQ = GameStartData.skillIdQ;
         skillE = GameStartData.skillIdE;
-
+        LevelUpManager.Instance.qdesc.text = activeSkills[0].nextSkillDesc;
+        LevelUpManager.Instance.edesc.text = activeSkills[1].nextSkillDesc;
+        LevelUpManager.Instance.rdesc.text = activeSkills[2].nextSkillDesc;
         SlotExStat(skillE);
         SlotExStat(skillQ);
     }
@@ -303,10 +307,52 @@ public abstract class PlayerCtrl : MonoBehaviour
     }
     #endregion
 
-    #region Skill Input Methods
+    #region Skill Methods
     public bool QSkillInput() { return Input.GetKeyDown(KeyCode.Q); }
     public bool ESkillInput() { return Input.GetKeyDown(KeyCode.E); }
     public bool RSkillInput() { return Input.GetKeyDown(KeyCode.R); }
+
+    void LeveUp()
+    {
+        if(curLevel >= maxLevel) return;
+
+        if(curLevel<maxLevel)
+        {
+            LevelUpManager.Instance.ShowLevelUpPanel();
+            curLevel++;
+        }
+    }
+    public void QLevelUp()
+    {
+        if (pv.isMine)
+        {
+            if (activeSkills != null && activeSkills.Count > 0)
+            {
+                StartCoroutine(activeSkills[0].LevelUp());
+            }
+        }
+    }
+    public void ELevelUp()
+    {
+        if (pv.isMine)
+        {
+            if (activeSkills != null && activeSkills.Count > 0)
+            {
+                StartCoroutine(activeSkills[1].LevelUp());
+            }
+        }
+    }
+    public void RLevelUp()
+    {
+        if (pv.isMine)
+        {
+            if (activeSkills != null && activeSkills.Count > 0)
+            {
+
+                StartCoroutine(activeSkills[2].LevelUp());
+            }
+        }
+    }
     #endregion
 
     #region Damage and HP Methods
@@ -388,23 +434,6 @@ public abstract class PlayerCtrl : MonoBehaviour
     }
     #endregion
     
-
-    public void TestSkillLevelUP()
-    {
-        if(SkillManager.Instance.modify <3)
-        {
-            SkillManager.Instance.modify += 1;
-            Debug.Log($"현재 레벨 : {SkillManager.Instance.modify}");
-        }
-        else
-        {
-            Debug.Log("이미 최대 레벨 입니다");
-            return;
-        }
-
-        activeSkills.Clear();
-        activeSkills = SkillManager.Instance.SkillAdd();
-    }
     public void SlotExStat(int slotId)
     {
         switch (slotId%3)
@@ -428,6 +457,19 @@ public abstract class PlayerCtrl : MonoBehaviour
             default:
                 Debug.Log("유효하지 않은 슬롯입니다.");
                 break;
+        }
+    }
+    [PunRPC]
+    public void AddExp(int exp)
+    {
+        curExp += exp;
+        Debug.Log("현재 경험치: " + curExp);
+        if (curExp >= nextExp)
+        {
+            LeveUp();
+            curExp = 0;
+            nextExp += 100; // 다음 레벨업에 필요한 경험치 증가
+            Debug.Log("레벨업! 현재 레벨: " + curLevel);
         }
     }
 }

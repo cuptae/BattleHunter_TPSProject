@@ -92,7 +92,6 @@ public class Gunner : PlayerCtrl
                 if (enemy != null) // 적 오브젝트를 찾았다면
                 {
                     enemy.GetDamage(characterStat.Damage);
-                    Debug.Log(characterStat.Damage);
                     BulletEffect(hitInfo.point, hitDir);
                 }
             }
