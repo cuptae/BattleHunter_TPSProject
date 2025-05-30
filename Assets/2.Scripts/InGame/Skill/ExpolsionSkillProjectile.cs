@@ -29,7 +29,7 @@ public class ExpolsionSkillProjectile : MonoBehaviour
         {
             foreach(Collider col in enemyCols)
             {
-                col.GetComponent<IDamageable>().GetDamage(data.damage,null);
+                col.GetComponent<IDamageable>().GetDamage(data.damage,data);
             }
         }
         PoolManager.Instance.PvReturnObject(this.transform.name,this.gameObject);

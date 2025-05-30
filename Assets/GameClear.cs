@@ -22,7 +22,7 @@ public class GameClear : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerCount++;
-            if (playerCount == 2)
+            if (playerCount == 1)
             {
                 gameClearImage.gameObject.SetActive(true);
                 gameClearCanvasGroup = gameClearImage.GetComponent<CanvasGroup>();

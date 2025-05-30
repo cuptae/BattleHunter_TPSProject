@@ -67,19 +67,19 @@ public class StageManager : MonoBehaviour
     {
         int pointCount = GameManager.Instance.pointCount;
 
-        if (!isKill50Reached && pointCount >= 5)
+        if (!isKill50Reached && pointCount >= 50)
         {
             isKill50Reached = true;
             vertDoor[0].SetBool("Open", true);
         }
 
-        if (!isKill100Reached && pointCount >= 8)
+        if (!isKill100Reached && pointCount >= 80)
         {
             isKill100Reached = true;
             vertDoor[1].SetBool("Open", true);
         }
 
-        if (!isKill150Reached && pointCount >= 10)
+        if (!isKill150Reached && pointCount >= 150)
         {
             isKill150Reached = true;
             vertDoor[2].SetBool("Open", true);
