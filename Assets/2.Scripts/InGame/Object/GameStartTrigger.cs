@@ -38,11 +38,11 @@ public class GameStartTrigger : MonoBehaviour
 
     private void OnTriggerExit(Collider other) 
     {
-        if(other.CompareTag("Player") && other.gameObject == currentPlayer)
+        if(other.CompareTag("Player") && other.gameObject == currentPlayer&& !ready)
         {
             pv.RPC("ImageActive", PhotonTargets.All, false);
-            ready = false;
-            pv.RPC("ChangeSprite", PhotonTargets.All, 0);
+            // ready = false;
+            // pv.RPC("ChangeSprite", PhotonTargets.All, 0);
 
             if (checkKeyCoroutine != null)
             {
@@ -92,6 +92,7 @@ public class GameStartTrigger : MonoBehaviour
                 {
                     if (gameStartTrigger.ready && spawner != null)
                     {
+                        ready = true;
                         pv.RPC("ChangeSprite", PhotonTargets.All, 1);
                         Invoke("StartGame", 2f);
                     }
