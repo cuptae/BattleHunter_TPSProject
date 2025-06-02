@@ -6,28 +6,31 @@ using UnityEngine.UI;
 
 public class IngameUIManager : MonoBehaviour
 {
+    public static IngameUIManager Instance; // 싱글톤 인스턴스
+
     public Animator anim;
     public string InvenOn;
     public string InvenOff;
     public GameObject OptionPanel;
+    public GameObject InventoryPanel;
 
     public bool isOnPlaying = false;
     public bool isOptionPanel = false;
 
-    private AudioClip invenOpenSound;
-    private AudioClip invenCloseSound;
-
     private void Awake()
     {
-        invenOpenSound = Resources.Load("invenOpenSound") as AudioClip;
-        invenCloseSound = Resources.Load("invenCloseSound") as AudioClip;
-    }
-    private void Start()
-    {
-        
+        // 싱글톤 할당
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -35,25 +38,24 @@ public class IngameUIManager : MonoBehaviour
             if(!isOnPlaying && !isOptionPanel)
             {
                 anim.SetTrigger(InvenOn);
+                InventoryPanel.SetActive(true);
                 isOnPlaying = true;
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Confined;
             } 
-            
             else if(isOptionPanel)
             {
                 return;
             }
-
             else if(isOnPlaying)
             {
                 anim.SetTrigger(InvenOff);
+                InventoryPanel.SetActive(false);
                 isOnPlaying = false;
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
             }
         }
-
 
         if(Input.GetKeyDown(KeyCode.Escape))
         {
@@ -77,6 +79,7 @@ public class IngameUIManager : MonoBehaviour
             }
         }
     }
+
     public IEnumerator WorkBenchInteraction()
     {
         if (!isOnPlaying && !isOptionPanel)

@@ -14,13 +14,13 @@ public class SlotClass
         count = 0;
     }
 
-    public SlotClass (ItemClass _item, int _count) //아이템과 수량 슬롯
+    public SlotClass(ItemClass _item, int _count) //아이템과 수량 슬롯
     {
         item = _item;
         count = _count;
     }
 
-    public SlotClass (SlotClass slot) //기존 슬롯을 복사해 새로운 슬롯 생성
+    public SlotClass(SlotClass slot) //기존 슬롯을 복사해 새로운 슬롯 생성
     {
         this.item = slot.GetItem();
         this.count = slot.GetCount();
@@ -36,16 +36,22 @@ public class SlotClass
     public int GetCount() { return count; } // 현재 슬롯 안에 수량 리턴
     public void AddCount(int _count) { count += _count; } //현재 수량에 더함 (겹쳐서 같은 거 없애는 기능)
     public void SubCount(int _count) //수량 감소
-    { 
-        count -= _count; 
-        if(count <= 0)
+    {
+        count -= _count;
+        if (count <= 0)
         {
             Clear(); //줄이다가 개수가 0이하가 되면 슬롯을 초기화 시킴
         }
     }
     public void AddItem(ItemClass item, int count) //슬롯에 새 아이템과 수량을 설정시킴
     {
-        this.item = item;   
+        this.item = item;
         this.count = count;
+    }
+    
+    public void SetSlot(SlotClass slot)
+    {
+        this.item = slot.GetItem();
+        this.count = slot.GetCount();
     }
 }

@@ -8,74 +8,45 @@ public class InventoryManager : MonoBehaviour
 {
     [SerializeField] private GameObject itemCursor;
     [SerializeField] public GameObject slotGhost;
-    [SerializeField] private GameObject quickSlotGhost;
     [SerializeField] private RectTransform inventoryPanel;
+    [SerializeField] private GameObject trashCheckBox;
 
-
-    public SlotClass[] items;
-
-    public GameObject[] slots;
-    [SerializeField] private GameObject[] quickSlots;
+    public GameObject[] slots;   // public으로 변경 (외부 접근 가능)
+    public SlotClass[] items;    // public으로 변경
 
     private SlotClass movingSlot;
-    private SlotClass tempSlot;
     private SlotClass originalSlot;
-    bool isMovingItem;
+    private SlotClass tempSlot;
+    private SlotClass trashSlot;
 
-    [SerializeField] private GameObject sureBox;
-    private SlotClass pendingDropSlot; // 임시 저장 슬롯
-    private SlotClass pendingOriginalSlot; // 되돌릴 슬롯 위치
-    [SerializeField] private GameObject trashSlot; // 휴지통 오브젝트 (UI 상에서 드래그할 수 있는 위치에 있어야 함)
-
-    
-    
-    [SerializeField] private int selectedSlotIndex = 0;
-    public ItemClass selectedItem;
+    private int trashSlotIndex = -1;
+    private bool isMovingItem;
 
     public scJson jsondata;
+    public ItemClass selectedItem;
+
     private void Start()
     {
         slots = new GameObject[slotGhost.transform.childCount];
         items = new SlotClass[slots.Length];
-        quickSlots = new GameObject[quickSlotGhost.transform.childCount];
-        for (int i = 0; i < quickSlots.Length; i++)
-        {
-            quickSlots[i] = quickSlotGhost.transform.GetChild(i).gameObject;
-        }
-        for (int i = 0; i < items.Length; i++)
-        {
-            items[i] = new SlotClass();
-        }
-        for (int i = 0; i < slotGhost.transform.childCount; i++)
+
+        for (int i = 0; i < slots.Length; i++)
         {
             slots[i] = slotGhost.transform.GetChild(i).gameObject;
+            items[i] = new SlotClass();
         }
+
         RefreshUI();
+
         if (File.Exists(jsondata.path + jsondata.filename))
-        {
             jsondata.Load();
-        }
     }
 
     private void Update()
     {
-        itemCursor.SetActive(isMovingItem);
-        itemCursor.transform.position = Input.mousePosition;
-        
-        if (isMovingItem)
-        {
-            // 마우스 따라다니게
-            itemCursor.transform.position = Input.mousePosition;
-            // 드래그 중인 아이템 아이콘 표시
-            itemCursor.GetComponent<Image>().sprite = movingSlot.GetItem().itemIcon;
-            itemCursor.GetComponent<Image>().enabled = true;
-        }
-        else
-        {
-            itemCursor.GetComponent<Image>().enabled = false;
-        }
+        if (!IngameUIManager.Instance.isOnPlaying)
+            return;
 
-        // 클릭으로 아이템 이동 시작/종료 처리
         if (Input.GetMouseButtonDown(0))
         {
             if (isMovingItem)
@@ -83,93 +54,60 @@ public class InventoryManager : MonoBehaviour
             else
                 BeginItemMove();
         }
-        
-        else if (Input.GetMouseButtonDown(1))
 
+        if (Input.GetMouseButtonDown(1))
         {
-            if (GetClosestSlot() != null)
+            SlotClass targetSlot = GetClosestSlot();
+            if (targetSlot != null && targetSlot.GetItem() != null)
             {
-                //소모품이면
-                if (GetClosestSlot().GetItem().GetConsumable())
-                {
-                    GetClosestSlot().GetItem().Use(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCtrl>());
-                    Remove(GetClosestSlot().GetItem());
-                }
-                //무기아이템이면
-                else if (GetClosestSlot().GetItem().GetTool())
-                {
-                    GetClosestSlot().GetItem().Use(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCtrl>());
-                }
-                //장비아이템이면
-                else if (GetClosestSlot().GetItem().GetEquipment())
-                {
-                    GetClosestSlot().GetItem().Use(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCtrl>());
-                }
-                //기타잡템일때
-                else if (GetClosestSlot().GetItem().GetMisc())
-                {
-                    
-                }
+                ItemClass item = targetSlot.GetItem();
+                PlayerCtrl player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCtrl>();
+
+                item.Use(player);
+                if (item.GetConsumable())
+                    Remove(item);
             }
+        }
+
+        UpdateCursorUI();
+    }
+
+    private void UpdateCursorUI()
+    {
+        itemCursor.SetActive(isMovingItem && movingSlot != null && movingSlot.GetItem() != null);
+        if (itemCursor.activeSelf)
+        {
+            itemCursor.transform.position = Input.mousePosition;
+            itemCursor.GetComponent<Image>().sprite = movingSlot.GetItem().itemIcon;
         }
     }
 
-    #region Inventory Utils
     public void RefreshUI()
     {
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < items.Length; i++)
         {
-            try
+            Image icon = slots[i].transform.GetChild(0).GetComponent<Image>();
+            Text countText = slots[i].transform.GetChild(1).GetComponent<Text>();
+
+            if (items[i].GetItem() != null)
             {
-                slots[i].transform.GetChild(0).GetComponent<Image>().enabled = true;
-                slots[i].transform.GetChild(0).GetComponent<Image>().sprite = items[i].GetItem().itemIcon;
+                icon.enabled = true;
+                icon.sprite = items[i].GetItem().itemIcon;
+
                 if (items[i].GetItem().isStackable)
-                {
-                    slots[i].transform.GetChild(1).GetComponent<Text>().text = items[i].GetCount() + "";
-                }
+                    countText.text = items[i].GetCount().ToString();
                 else
-                {
-                    slots[i].transform.GetChild(1).GetComponent<Text>().text = "";
-                }
+                    countText.text = "";
             }
-            catch
+            else
             {
-                slots[i].transform.GetChild(0).GetComponent<Image>().sprite = null;
-                slots[i].transform.GetChild(0).GetComponent<Image>().enabled = false;
-                slots[i].transform.GetChild(1).GetComponent<Text>().text = "";
+                icon.enabled = false;
+                icon.sprite = null;
+                countText.text = "";
             }
-
-        }
-
-        RefreshQuickSlot();
-    }
-
-    public void RefreshQuickSlot()
-    {
-        for (int i = 0; i < quickSlots.Length; i++)
-        {
-            try
-            {
-                quickSlots[i].transform.GetChild(0).GetComponent<Image>().enabled = true;
-                quickSlots[i].transform.GetChild(0).GetComponent<Image>().sprite = items[i].GetItem().itemIcon;
-                if (items[i].GetItem().isStackable)
-                {
-                    quickSlots[i].transform.GetChild(1).GetComponent<Text>().text = items[i].GetCount() + "";
-                }
-                else
-                {
-                    quickSlots[i].transform.GetChild(1).GetComponent<Text>().text = "";
-                }
-            }
-            catch
-            {
-                quickSlots[i].transform.GetChild(0).GetComponent<Image>().sprite = null;
-                quickSlots[i].transform.GetChild(0).GetComponent<Image>().enabled = false;
-                quickSlots[i].transform.GetChild(1).GetComponent<Text>().text = "";
-            }
-
         }
     }
+
     public bool Add(ItemClass item, int count)
     {
         SlotClass slot = Contains(item);
@@ -188,77 +126,32 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
+
         RefreshUI();
         return true;
     }
+
     public bool Remove(ItemClass item)
     {
-        SlotClass temp = Contains(item);
-        if (temp != null)
+        SlotClass slot = Contains(item);
+        if (slot != null)
         {
-            if (temp.GetCount() >= 1)
-            {
-                temp.SubCount(1);
-            }
-            else
-            {
-                int slotToRemoveIndex = 0;
+            slot.SubCount(1);
+            if (slot.GetCount() <= 0)
+                slot.Clear();
 
-                for (int i = 0; i < items.Length; i++)
-                {
-                    if (items[i].GetItem() == item)
-                    {
-                        slotToRemoveIndex = i;
-                        break;
-                    }
-                }
-                items[slotToRemoveIndex].Clear();
-            }
+            RefreshUI();
+            return true;
         }
-        else
-        {
-            return false;
-        }
-        RefreshUI();
-        return true;
-    }
-
-    public void UseSelected()
-    {
-        if (selectedItem == null)
-            return;
-        selectedItem.Use(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCtrl>());
-        if (selectedItem.GetConsumable())
-        {
-            Remove(selectedItem);
-        }
-        else if(selectedItem.GetTool()||selectedItem.GetEquipment())
-        {
-            
-        }
-        RefreshUI();
-    }
-
-    public bool isFull()
-    {
-        for (int i = 0; i < items.Length; i++)
-        {
-            if (items[i].GetItem() == null)
-            {
-                return false;
-            }
-        }
-        return true;
+        return false;
     }
 
     public SlotClass Contains(ItemClass item)
     {
         for (int i = 0; i < items.Length; i++)
         {
-            if (items[i].GetItem() == item && items[i].GetItem().isStackable)
-            {
+            if (items[i].GetItem() == item && item.isStackable)
                 return items[i];
-            }
         }
         return null;
     }
@@ -267,24 +160,28 @@ public class InventoryManager : MonoBehaviour
     {
         for (int i = 0; i < items.Length; i++)
         {
-            //Debug.Log(items[i]);
             if (items[i].GetItem() == item && items[i].GetCount() >= count)
-            {
                 return true;
-            }
         }
         return false;
     }
-    #endregion Inventory Utils
 
-    #region Moving Stuff
+    public bool isFull()
+    {
+        foreach (SlotClass slot in items)
+        {
+            if (slot.GetItem() == null)
+                return false;
+        }
+        return true;
+    }
+
     private bool BeginItemMove()
     {
         originalSlot = GetClosestSlot();
         if (originalSlot == null || originalSlot.GetItem() == null)
-        {
             return false;
-        }
+
         movingSlot = new SlotClass(originalSlot);
         originalSlot.Clear();
         isMovingItem = true;
@@ -294,54 +191,53 @@ public class InventoryManager : MonoBehaviour
 
     private bool EndItemMove()
     {
-        originalSlot = GetClosestSlot();
+        SlotClass targetSlot = GetClosestSlot();
 
-        // 휴지통 위로 드롭하면 삭제
-    if (IsPointerOverTrashSlot())
-    {
-        Debug.Log("휴지통에 아이템을 버립니다: " + movingSlot.GetItem().itemName);
-        sureBox.SetActive(true);
-    }
-
-        if (originalSlot == null)
+        // 인벤토리 영역 밖으로 드래그 시
+        if (!IsPointerOverInventoryPanel())
         {
-            Add(movingSlot.GetItem(), movingSlot.GetCount());
+            trashCheckBox.SetActive(true);
+            trashSlot = new SlotClass(movingSlot);
+            trashSlotIndex = GetSlotIndex(originalSlot); 
             movingSlot.Clear();
+            isMovingItem = false;
+            RefreshUI();
+            return true;
+        }
+
+        if (targetSlot == null)
+        {
+            // 빈 슬롯이 없으면 원래 자리로 되돌리기
+            originalSlot.AddItem(movingSlot.GetItem(), movingSlot.GetCount());
+        }
+        else if (targetSlot.GetItem() == null)
+        {
+            targetSlot.AddItem(movingSlot.GetItem(), movingSlot.GetCount());
+        }
+        else if (targetSlot.GetItem() == movingSlot.GetItem() && movingSlot.GetItem().isStackable)
+        {
+            targetSlot.AddCount(movingSlot.GetCount());
         }
         else
         {
-            if (originalSlot.GetItem() != null)
-            {
-                if (originalSlot.GetItem() == movingSlot.GetItem())
-                {
-                    if (originalSlot.GetItem().isStackable)
-                    {
-                        originalSlot.AddCount(movingSlot.GetCount());
-                        movingSlot.Clear();
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    tempSlot = new SlotClass(originalSlot);
-                    originalSlot.AddItem(movingSlot.GetItem(), movingSlot.GetCount());
-                    movingSlot.AddItem(tempSlot.GetItem(), tempSlot.GetCount());
-                    RefreshUI();
-                    return true;
-                }
-            }
-            else
-            {
-                originalSlot.AddItem(movingSlot.GetItem(), movingSlot.GetCount());
-                movingSlot.Clear();
-            }
+            tempSlot = new SlotClass(targetSlot);
+            targetSlot.AddItem(movingSlot.GetItem(), movingSlot.GetCount());
+            movingSlot = new SlotClass(tempSlot);
+            RefreshUI();
+            UpdateCursorUI();
+            return true;
         }
+
+        movingSlot.Clear();
         isMovingItem = false;
         RefreshUI();
+        UpdateCursorUI();
         return true;
+    }
+
+    private bool IsPointerOverInventoryPanel()
+    {
+        return RectTransformUtility.RectangleContainsScreenPoint(inventoryPanel, Input.mousePosition, null);
     }
 
     private SlotClass GetClosestSlot()
@@ -349,47 +245,50 @@ public class InventoryManager : MonoBehaviour
         for (int i = 0; i < slots.Length; i++)
         {
             if (Vector2.Distance(slots[i].transform.position, Input.mousePosition) <= 32)
-            {
                 return items[i];
-            }
         }
         return null;
     }
 
-    // 휴지통 슬롯에 마우스가 올라가 있는지 확인
-private bool IsPointerOverTrashSlot()
-{
-    if (trashSlot == null) return false;
-    return Vector2.Distance(trashSlot.transform.position, Input.mousePosition) <= 32f;
-}
-
-    public void DropItem()
-{
-    movingSlot.Clear();
-    isMovingItem = false;
-    if (pendingDropSlot != null && pendingDropSlot.GetItem() != null)
+    private int GetSlotIndex(SlotClass slot)
     {
-        Debug.Log("아이템을 버렸습니다: " + pendingDropSlot.GetItem().itemName);
-        pendingDropSlot.Clear(); // 삭제할 슬롯도 클리어
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i] == slot)
+                return i;
+        }
+        return -1;
     }
-    sureBox.SetActive(false);
-    RefreshUI();
-}
 
-    public void CancelDropItem()
-{
-    movingSlot.Clear();
-    isMovingItem = true;
-    sureBox.SetActive(false);
-    RefreshUI();
-}
+    public void Sure()
+    {
+        trashSlot.Clear();
+        trashCheckBox.SetActive(false);
+        trashSlotIndex = -1;
+        RefreshUI();
+    }
+
+    public void Not()
+    {
+        if (trashSlot != null && trashSlot.GetItem() != null && trashSlotIndex >= 0)
+        {
+            items[trashSlotIndex].AddItem(trashSlot.GetItem(), trashSlot.GetCount());
+        }
+
+        Debug.Log($"[Not()] trashSlot: {trashSlot.GetItem()?.itemName}, Count: {trashSlot.GetCount()}, Index: {trashSlotIndex}");
 
 
+        trashSlot.Clear();
+        trashSlotIndex = -1;
+        isMovingItem = false;
+        movingSlot.Clear();
 
-    #endregion Moving Stuff
+        trashCheckBox.SetActive(false);
+        RefreshUI();
+    }
 
     public SlotClass[] CurrentItems()
     {
-        return this.items;
+        return items;
     }
 }
